@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.Button;
 
 import java.awt.*;
@@ -19,8 +20,7 @@ public class DiscordManager extends ListenerAdapter {
         return instance;
     }
 
-    private final TextChannel reportChannel = Main.JDA.getTextChannelById(901752768149225492L);
-    private final TextChannel staffLogChannel = Main.JDA.getTextChannelById(910915767195811851L);
+    private final TextChannel reportChannel = Main.JDA.getTextChannelById(967374877151625246L);
 
     public DiscordManager() {
         instance = this;
@@ -45,34 +45,17 @@ public class DiscordManager extends ListenerAdapter {
 
         assert reportChannel != null;
         reportChannel.sendMessageEmbeds(eb.build())
-                .append("<@&703491862740336712>")
-                .setActionRow(Button.success("check", "Checked"))
+                .append("<@&967374822772461579> <@&967374824232083506>")
+                .setActionRows(
+                        ActionRow.of(Button.success("true_report", "Report checked")),
+                        ActionRow.of(Button.danger("false_report", "False report"))
+                )
                 .queue();
-    }
-
-    public void sendStaffLogMessage(Staff staff) {
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle(String.format("**%s** Left the server", staff.getUsername()), null);
-
-        eb.setColor(new Color(0x8E48CA));
-
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-
-        eb.addField("Join:", timeFormatter.format(staff.getJoinDate()), false);
-        eb.addField("Leave:", timeFormatter.format(staff.getLeaveDate()), false);
-
-        eb.setAuthor("Log System!", null,
-                "https://cdn.discordapp.com/attachments/587612394768039947/901758237475487774/IMG_20211024_123512_497.jpg");
-
-        eb.setThumbnail(String.format("http://cravatar.eu/avatar/%s/64.png", staff.getUsername()));
-
-        assert staffLogChannel != null;
-        staffLogChannel.sendMessageEmbeds(eb.build()).queue();
     }
 
     @Override
     public void onButtonClick(ButtonClickEvent event) {
-        if (event.getComponentId().equals("check")) {
+        if (event.getComponentId().equals("true_report") || event.getComponentId().equals("false_report")) {
             Message message = event.getMessage();
             message.delete().queue();
 
@@ -82,7 +65,7 @@ public class DiscordManager extends ListenerAdapter {
             EmbedBuilder eb = new EmbedBuilder();
             eb.setTitle(String.format("Report checked by %s", checkerName), null);
 
-            eb.setColor(Color.red);
+            eb.setColor(Color.green);
             eb.setColor(new Color(0x00FF4D));
 
             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -92,7 +75,7 @@ public class DiscordManager extends ListenerAdapter {
             eb.addBlankField(false);
             message.getEmbeds().forEach(embed -> embed.getFields().forEach(eb::addField));
 
-            eb.setAuthor("Report Checked!", null,
+            eb.setAuthor(event.getComponentId().equals("true_report") ? "Report Checked!" : "False report checked!", null,
                     "https://cdn.discordapp.com/attachments/587612394768039947/901758237475487774/IMG_20211024_123512_497.jpg");
 
             eb.setThumbnail(user.getAvatarUrl());

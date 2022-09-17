@@ -34,27 +34,27 @@ public class ReportCommand implements SimpleCommand {
             String reportedName = args[0];
 
             if (!Main.getInstance().server.getPlayer(reportedName).isPresent()) {
-                player.sendMessage(miniMessage.parse(Main.PREFIX + "<color:#ff6a00>Player not found!"));
+                player.sendMessage(miniMessage.deserialize(Main.PREFIX + "<color:#ff6a00>Player not found!"));
                 return;
             }
 
             if (Main.getInstance().server.getPlayer(reportedName).isPresent()) {
                 Player vanishedPlayer = Main.getInstance().server.getPlayer(reportedName).get();
                 if (VelocityMain.SQL.isVanished(vanishedPlayer.getUniqueId())) {
-                    player.sendMessage(miniMessage.parse(Main.PREFIX + "<color:#ff6a00>Player not found!"));
+                    player.sendMessage(miniMessage.deserialize(Main.PREFIX + "<color:#ff6a00>Player not found!"));
                     return;
                 }
             }
 
             if (player.getUsername().equalsIgnoreCase(reportedName)) {
-                player.sendMessage(miniMessage.parse(Main.PREFIX + "<color:#ff6a00>You can't report yourself!"));
+                player.sendMessage(miniMessage.deserialize(Main.PREFIX + "<color:#ff6a00>You can't report yourself!"));
                 return;
             }
 
             if (args.length == 1) {
-                player.sendMessage(miniMessage.parse(Main.PREFIX + "<color:#ff6a00>Please provide report reason."));
-                player.sendMessage(miniMessage.parse(Main.PREFIX + "<color:#929CCB>Valid reasons:"));
-                player.sendMessage(miniMessage.parse(Main.PREFIX + "<color:#929CCB>TpKill/Killfarm/Killaura/Scaffold/Reach/CrossTeam/Fly/AntiKB/Others"));
+                player.sendMessage(miniMessage.deserialize(Main.PREFIX + "<color:#ff6a00>Please provide report reason."));
+                player.sendMessage(miniMessage.deserialize(Main.PREFIX + "<color:#929CCB>Valid reasons:"));
+                player.sendMessage(miniMessage.deserialize(Main.PREFIX + "<color:#929CCB>TpKill/Killfarm/Killaura/Scaffold/Reach/CrossTeam/Fly/AntiKB/Others"));
                 return;
             }
 
@@ -69,24 +69,24 @@ public class ReportCommand implements SimpleCommand {
                     milliCounter = playerMilliCounterHashMap.get(player.getUsername());
                     milliCounter.stop();
                     if (milliCounter.get() <= 60000) {
-                        player.sendMessage(miniMessage.parse(String.format(
+                        player.sendMessage(miniMessage.deserialize(String.format(
                                 Main.PREFIX + "<color:#929CCB>Please wait %s second(s) to use the report command again.", (int) ((60000 - milliCounter.get()) / 1000))));
                         return;
                     }
                 }
                 milliCounter.start();
 
-                player.sendMessage(miniMessage.parse(String.format(
+                player.sendMessage(miniMessage.deserialize(String.format(
                         Main.PREFIX + "<color:#63ff00>%s successfully reported for %s!", reportedName, reason)));
 
                 for (Player staff : Main.getInstance().server.getAllPlayers()) {
                     if (staff.hasPermission("sayanreport.notify")) {
-                        staff.sendMessage(miniMessage.parse("<color:#ff6a00>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"));
-                        staff.sendMessage(miniMessage.parse("<color:#63ff00>Reporter: <color:#929CCB>" + player.getUsername()));
-                        staff.sendMessage(miniMessage.parse("<color:#63ff00>Reported: <color:#929CCB>" + reportedName));
-                        staff.sendMessage(miniMessage.parse("<color:#63ff00>Reason: <color:#929CCB>" + reason.toUpperCase()));
-                        staff.sendMessage(miniMessage.parse("<color:#63ff00>Server: <color:#929CCB>" + serverName));
-                        staff.sendMessage(miniMessage.parse("<color:#ff6a00>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"));
+                        staff.sendMessage(miniMessage.deserialize("<color:#ff6a00>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"));
+                        staff.sendMessage(miniMessage.deserialize("<color:#63ff00>Reporter: <color:#929CCB>" + player.getUsername()));
+                        staff.sendMessage(miniMessage.deserialize("<color:#63ff00>Reported: <color:#929CCB>" + reportedName));
+                        staff.sendMessage(miniMessage.deserialize("<color:#63ff00>Reason: <color:#929CCB>" + reason.toUpperCase()));
+                        staff.sendMessage(miniMessage.deserialize("<color:#63ff00>Server: <color:#929CCB>" + serverName));
+                        staff.sendMessage(miniMessage.deserialize("<color:#ff6a00>▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"));
                     }
                 }
 
@@ -94,12 +94,12 @@ public class ReportCommand implements SimpleCommand {
                 return;
             }
 
-            player.sendMessage(miniMessage.parse(Main.PREFIX + "<color:#ff6a00>Please provide report reason."));
-            player.sendMessage(miniMessage.parse(Main.PREFIX + "<color:#929CCB>Valid reasons:"));
-            player.sendMessage(miniMessage.parse(Main.PREFIX + "<color:#929CCB>TpKill/Killfarm/Killaura/Scaffold/Reach/CrossTeam/Fly/AntiKB/Others"));
+            player.sendMessage(miniMessage.deserialize(Main.PREFIX + "<color:#ff6a00>Please provide report reason."));
+            player.sendMessage(miniMessage.deserialize(Main.PREFIX + "<color:#929CCB>Valid reasons:"));
+            player.sendMessage(miniMessage.deserialize(Main.PREFIX + "<color:#929CCB>TpKill/Killfarm/Killaura/Scaffold/Reach/CrossTeam/Fly/AntiKB/Others"));
 
         }
-        player.sendMessage(miniMessage.parse(Main.PREFIX + "<color:#ff6a00>/Report <Player> <Reason>"));
+        player.sendMessage(miniMessage.deserialize(Main.PREFIX + "<color:#ff6a00>/Report <Player> <Reason>"));
     }
 
     @Override
