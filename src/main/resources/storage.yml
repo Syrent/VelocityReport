@@ -1,0 +1,9 @@
+type: SQLite
+mysql:
+    address: localhost
+    port: 3306
+    database: velocityreport
+    username: root
+    password: ""
+    ssl: false
+    pooling_size: 3
