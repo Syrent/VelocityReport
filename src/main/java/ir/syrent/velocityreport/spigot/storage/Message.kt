@@ -10,6 +10,7 @@ enum class Message(val path: String) {
     SUCCESSFUL_PREFIX("general.successful_prefix"),
     WARN_PREFIX("general.warn_prefix"),
     ERROR_PREFIX("general.error_prefix"),
+    RELOAD("general.reload"),
     ONLY_PLAYERS("general.only_players"),
     VALID_PARAMS("general.valid_parameters"),
     UNKNOWN_MESSAGE("general.unknown_message"),
@@ -18,5 +19,7 @@ enum class Message(val path: String) {
     REPORT_USE("command.report.use"),
     NO_TARGET("command.report.no_target"),
     REPORT_COOLDOWN("command.report.cooldown"),
+    INVALID_REASON("command.report.invalid_reason"),
+    BOOK_REASON("book.reason"),
     EMPTY("");
 }

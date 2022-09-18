@@ -1,5 +1,6 @@
 package ir.syrent.velocityreport.spigot.storage
 
+import ir.syrent.velocityreport.report.Reason
 import ir.syrent.velocityreport.spigot.Ruom
 import ir.syrent.velocityreport.spigot.configuration.YamlConfig
 import ir.syrent.velocityreport.utils.TextReplacement
@@ -13,8 +14,12 @@ object Settings {
     private lateinit var languageConfig: FileConfiguration
 
     private val messages = mutableMapOf<Message, String>()
+    val bookHeader = mutableListOf<String>()
+    val bookFooter = mutableListOf<String>()
 
     lateinit var defaultLanguage: String
+    var customReason = false
+    var reasons = mutableListOf<Reason>()
     var cooldown = 0
 
     init {
@@ -26,10 +31,23 @@ object Settings {
         settingsConfig = settings.config
 
         defaultLanguage = settingsConfig.getString("default_language") ?: "en_US"
+        customReason = settingsConfig.getBoolean("report.custom_reason")
         cooldown = settingsConfig.getInt("report.cooldown", 60)
 
         language = YamlConfig(Ruom.getPlugin().dataFolder, "languages/$defaultLanguage.yml")
         languageConfig = language.config
+
+        reasons.apply {
+            this.clear()
+            val reasons = settingsConfig.getConfigurationSection("report.reasons") ?: return@apply
+            for (reason in reasons.getKeys(false)) {
+                val reasonConfig = reasons.getConfigurationSection(reason) ?: return@apply
+                this.add(Reason(reason, reasonConfig.getBoolean("enabled"), reasonConfig.getString("displayname", "Unknown")!!, reasonConfig.getString("description", "")!!))
+            }
+        }
+
+        bookHeader.addAll(languageConfig.getStringList("book.header"))
+        bookFooter.addAll(languageConfig.getStringList("book.footer"))
 
         messages.apply {
             this.clear()
@@ -50,8 +68,8 @@ object Settings {
     }
 
 
-    fun formatMessage(message: Message, vararg replacements: TextReplacement): String {
-        var formattedMessage = getMessage(message)
+    fun formatMessage(message: String, vararg replacements: TextReplacement): String {
+        var formattedMessage = message
             .replace("\$prefix", getMessage(Message.PREFIX))
             .replace("\$successful_prefix", getMessage(Message.SUCCESSFUL_PREFIX))
             .replace("\$warn_prefix", getMessage(Message.WARN_PREFIX))
@@ -60,6 +78,19 @@ object Settings {
             formattedMessage = formattedMessage.replace("\$${replacement.from}", replacement.to)
         }
         return formattedMessage
+    }
+
+    fun formatMessage(message: Message, vararg replacements: TextReplacement): String {
+        return formatMessage(getMessage(message), *replacements)
+    }
+
+    fun formatMessage(messages: List<String>, vararg replacements: TextReplacement): List<String> {
+        val messageList = mutableListOf<String>()
+        for (message in messages) {
+            messageList.add(formatMessage(message, *replacements))
+        }
+
+        return messageList
     }
 
     private fun getMessage(message: Message): String {

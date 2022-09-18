@@ -1,13 +1,9 @@
-package ir.syrent.velocityreport.adventure;
+package ir.syrent.velocityreport.spigot.adventure;
 
 import ir.syrent.velocityreport.spigot.Ruom;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 
-import java.util.regex.Pattern;
-
 public class AdventureApi {
-
-    public static final Pattern escapeTokenPattern = Pattern.compile("((?<start><)(?<token>[^<>]+(:(?<inner>['\"]?([^'\"](\\\\['\"])?)+['\"]?))*)(?<end>>))+?");
 
     private static BukkitAudiences adventure;
 

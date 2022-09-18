@@ -5,8 +5,10 @@ import com.google.gson.JsonObject
 import ir.syrent.velocityreport.bridge.Bridge
 import ir.syrent.velocityreport.spigot.Ruom
 import ir.syrent.velocityreport.spigot.VelocityReportSpigot
+import ir.syrent.velocityreport.utils.Utils
 import me.mohamad82.ruom.utils.GsonUtils
 import org.bukkit.entity.Player
+import java.util.UUID
 
 class BukkitBridgeManager(
     val bridge: Bridge,
@@ -16,6 +18,14 @@ class BukkitBridgeManager(
     fun sendGetAllPlayersNameRequest(sender: Player) {
         val messageJson = JsonObject()
         messageJson.addProperty("type", "PlayerList")
+
+        sendPluginMessage(sender, messageJson)
+    }
+
+    fun sendReportsNotification(sender: Player, count: Int) {
+        val messageJson = JsonObject()
+        messageJson.addProperty("type", "ReportsNotification")
+        messageJson.addProperty("count", count)
 
         sendPluginMessage(sender, messageJson)
     }
@@ -37,6 +47,15 @@ class BukkitBridgeManager(
                     for (playerName in playerListSplit) {
                         plugin.networkPlayers.add(playerName)
                     }
+                }
+            }
+            "Server" -> {
+                plugin.networkPlayersServer[UUID.fromString(messageJson["uuid"].asString)] = messageJson["server"].asString
+            }
+            "ReportsNotification" -> {
+                plugin.reportsCount = messageJson["count"].asInt
+                for (player in Ruom.getOnlinePlayers()) {
+                    Utils.sendReportsNotification(player)
                 }
             }
             else -> {

@@ -1,4 +1,4 @@
-package ir.syrent.velocityreport.adventure;
+package ir.syrent.velocityreport.spigot.adventure;
 
 import ir.syrent.velocityreport.spigot.Ruom;
 import net.kyori.adventure.text.Component;

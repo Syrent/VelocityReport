@@ -1,9 +1,14 @@
 package ir.syrent.velocityreport.report
 
 import com.velocitypowered.api.proxy.Player
+import ir.syrent.velocityreport.spigot.VelocityReportSpigot
+import ir.syrent.velocityreport.spigot.storage.Database
+import net.kyori.adventure.text.minimessage.MiniMessage
 import java.util.UUID
+import java.util.concurrent.CompletableFuture
 
 data class Report(
+    val server: String,
     val reporterID: UUID,
     val reporterName: String,
     val reportedName: String,
@@ -32,7 +37,18 @@ data class Report(
         stage = ReportStage.DONE
     }
 
-    fun update() {
-        // TODO: Update report in database
+    fun update(): CompletableFuture<Boolean> {
+        val future = CompletableFuture<Boolean>()
+        Database.saveReport(
+            Report(
+                VelocityReportSpigot.instance.networkPlayersServer[reporterID] ?: "Unknown",
+                reporterID,
+                reporterName,
+                reportedName,
+                System.currentTimeMillis(),
+                MiniMessage.miniMessage().stripTags(reason)
+            )
+        ).whenComplete { _, _ -> future.complete(true) }
+        return future
     }
 }

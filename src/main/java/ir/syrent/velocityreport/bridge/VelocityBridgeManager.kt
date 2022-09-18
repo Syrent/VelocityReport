@@ -2,7 +2,7 @@ package ir.syrent.velocityreport.bridge
 
 import com.google.common.io.ByteStreams
 import com.google.gson.JsonObject
-import ir.syrent.velocityreport.report.Report
+import com.velocitypowered.api.proxy.Player
 import me.mohamad82.ruom.VRuom
 import me.mohamad82.ruom.utils.GsonUtils
 import me.mohamad82.ruom.utils.MilliCounter
@@ -14,19 +14,11 @@ class VelocityBridgeManager(
     private val cooldowns: MutableMap<UUID, MilliCounter>,
 ) {
 
-    private fun sendReport(report: Report) {
+    fun sendServer(player: Player) {
         val messageJson = JsonObject()
-        messageJson.addProperty("type", "Report")
-        messageJson.addProperty("report_id", report.reportID.toString())
-        messageJson.addProperty("reporter_id", report.reporterID.toString())
-        messageJson.addProperty("reporter_name", report.reporterName)
-        messageJson.addProperty("reported_name", report.reportedName)
-        messageJson.addProperty("date", report.date)
-        messageJson.addProperty("reason", report.reason)
-        messageJson.addProperty("stage", report.stage.name)
-        messageJson.addProperty("moderator_id", report.moderatorUUID.toString())
-        messageJson.addProperty("moderator_name", report.moderatorName)
-
+        messageJson.addProperty("type", "Server")
+        messageJson.addProperty("uuid", player.uniqueId.toString())
+        messageJson.addProperty("server", player.currentServer.get().serverInfo.name)
 
         sendPluginMessage(messageJson)
     }
@@ -50,6 +42,14 @@ class VelocityBridgeManager(
         sendPluginMessage(messageJson)
     }
 
+    fun sendNotificationRequest(count: Int) {
+        val messageJson = JsonObject()
+        messageJson.addProperty("type", "ReportsNotification")
+        messageJson.addProperty("count", count)
+
+        sendPluginMessage(messageJson)
+    }
+
     private fun sendPluginMessage(messageJson: JsonObject) {
         val byteArrayInputStream = ByteStreams.newDataOutput()
         byteArrayInputStream.writeUTF(GsonUtils.get().toJson(messageJson))
@@ -59,7 +59,7 @@ class VelocityBridgeManager(
 
     fun handleMessage(messageJson: JsonObject) {
         when (messageJson["type"].asString) {
-            "Report" -> {
+            "Server" -> {
                 val allowedCooldown = messageJson["cooldown"].asInt
                 val reporterUUID = UUID.fromString(messageJson["reporter_id"].asString)
                 val cooldownCounter = cooldowns[reporterUUID]!!
@@ -74,6 +74,9 @@ class VelocityBridgeManager(
             }
             "PlayerList" -> {
                 sendAllPlayersName()
+            }
+            "ReportsNotification" -> {
+                sendNotificationRequest(messageJson["count"].asInt)
             }
             else -> {
                 VRuom.warn("Unsupported message type: ${messageJson["type"].asString}")

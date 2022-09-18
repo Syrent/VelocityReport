@@ -10,6 +10,9 @@ import com.velocitypowered.api.proxy.messages.ChannelMessageSource;
 import ir.syrent.velocityreport.bridge.VelocityBridgeManager;
 import ir.syrent.velocityreport.bridge.VelocityAdapter;
 import ir.syrent.velocityreport.bridge.VelocityBridge;
+import ir.syrent.velocityreport.listener.DisconnectListener;
+import ir.syrent.velocityreport.listener.PostLoginListener;
+import ir.syrent.velocityreport.listener.ServerConnectedListener;
 import me.mohamad82.ruom.VRUoMPlugin;
 import me.mohamad82.ruom.messaging.VelocityMessagingEvent;
 import me.mohamad82.ruom.utils.MilliCounter;
@@ -42,11 +45,12 @@ public class VelocityReport extends VRUoMPlugin {
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
         initializeMessagingChannels();
+        initializeListeners();
     }
 
     private void initializeMessagingChannels() {
-        VelocityAdapter adapter = new VelocityAdapter();
         VelocityBridge bridge = new VelocityBridge();
+        VelocityAdapter adapter = new VelocityAdapter();
         bridgeManager = new VelocityBridgeManager(bridge, adapter, cooldowns);
         new VelocityMessagingEvent(bridge) {
             @Override
@@ -54,6 +58,12 @@ public class VelocityReport extends VRUoMPlugin {
                 bridgeManager.handleMessage(jsonObject);
             }
         };
+    }
+
+    private void initializeListeners() {
+        new PostLoginListener(this);
+        new DisconnectListener(this);
+        new ServerConnectedListener(this);
     }
 
     public VelocityBridgeManager getBridgeManager() {

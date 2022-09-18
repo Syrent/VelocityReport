@@ -1,18 +1,22 @@
 package ir.syrent.velocityreport.spigot.command.report
 
-import com.velocitypowered.api.proxy.Player
-import ir.syrent.velocityreport.adventure.ComponentUtils
 import ir.syrent.velocityreport.report.Report
-import ir.syrent.velocityreport.spigot.Ruom
 import ir.syrent.velocityreport.spigot.VelocityReportSpigot
+import ir.syrent.velocityreport.spigot.adventure.ComponentUtils
 import ir.syrent.velocityreport.spigot.command.library.PluginCommand
 import ir.syrent.velocityreport.spigot.storage.Database
 import ir.syrent.velocityreport.spigot.storage.Message
 import ir.syrent.velocityreport.spigot.storage.Settings
+import ir.syrent.velocityreport.utils.TextReplacement
+import ir.syrent.velocityreport.utils.component
+import ir.syrent.velocityreport.utils.openBook
 import ir.syrent.velocityreport.utils.sendMessage
+import me.mohamad82.ruom.utils.MilliCounter
 import net.kyori.adventure.inventory.Book
-import org.bukkit.Bukkit
+import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
+import kotlin.math.roundToInt
 
 class ReportCommand(
     private val plugin: VelocityReportSpigot
@@ -30,48 +34,80 @@ class ReportCommand(
             return
         }
 
-        if (!plugin.networkPlayers.map { it.lowercase() }.contains(args[1].lowercase())) {
+        val target = plugin.networkPlayers.findLast { it.lowercase() == args[0].lowercase() }
+
+        if (target == null) {
             sender.sendMessage(Message.NO_TARGET)
             return
         }
 
-        sender.sendMessage(Message.REPORT_USE)
+        if (args.size == 1) {
+            val title = ComponentUtils.parse("VelocityReport")
 
-        sender.openBook(Book.book(
-            ComponentUtils.parse("<gradient:dark_red:red>Report</gradient>"),
-            ComponentUtils.parse("<gradient:dark_red:red>Report System</gradient>"),
-            ComponentUtils.parse(
-                "Report Reason:" +
-                        "\n" +
-                        "\n" +
-                        "Killaura" +
-                        "\n" +
-                        "Killaura" +
-                        "\n" +
-                        "Killaura" +
-                        "\n" +
-                        "Killaura" +
-                        "\n" +
-                        "Killaura" +
-                        "\n" +
-                        "Killaura" +
-                        "\n" +
-                        "Killaura"
-            ),
-        ))
-        /*Database.saveReport(
-            Report(
-                sender.uniqueId,
-                sender.name,
-                plugin.networkPlayers.first { it.lowercase() == args[1].lowercase() },
-                System.currentTimeMillis()
-            )
-        )*/
+            val page = StringBuilder()
+            page.append(Settings.formatMessage(Settings.bookHeader).joinToString("\n")).append("\n")
+            val enabledReasons = Settings.reasons.filter { it.enabled }
+            for (reason in enabledReasons) {
+                page.append(Settings.formatMessage(
+                    Message.BOOK_REASON,
+                    TextReplacement("player", target),
+                    TextReplacement("id", reason.id),
+                    TextReplacement("name", reason.displayName),
+                    TextReplacement("description", reason.description)
+                ).replace("\\n", "\n")).append("\n")
+            }
+            page.append(Settings.formatMessage(Settings.bookFooter).joinToString("\n"))
+
+            sender.openBook(Book.book(title, title, page.toString().component()))
+        } else {
+            val reasons = Settings.reasons.filter { it.enabled }
+            val reason = args.subList(1, args.size).joinToString(" ").lowercase()
+            val formattedReason = reasons.findLast { it.id.lowercase() == reason.lowercase() }?.displayName ?: reason
+
+            if (!Settings.customReason && !reasons.map { it.id.lowercase() }.contains(reason.lowercase())) {
+                sender.sendMessage(Message.INVALID_REASON, TextReplacement("reason", formattedReason))
+                return
+            }
+
+                Report(
+                    plugin.networkPlayersServer[sender.uniqueId] ?: "Unknown",
+                    sender.uniqueId,
+                    sender.name,
+                    target,
+                    System.currentTimeMillis(),
+                    MiniMessage.miniMessage().stripTags(formattedReason)
+                ).update().whenComplete {_, _ ->
+                    if (plugin.cooldowns.containsKey(sender.uniqueId)) {
+                        val cooldownCounter = plugin.cooldowns[sender.uniqueId]!!
+                        cooldownCounter.stop()
+                        val elapsedCooldown = cooldownCounter.get() / 1000
+                        val allowedCooldown = Settings.cooldown
+
+                        if (elapsedCooldown < allowedCooldown) {
+                            sender.sendMessage(Message.REPORT_COOLDOWN, TextReplacement("time", ((allowedCooldown - elapsedCooldown).roundToInt() + 1).toString()))
+                            return@whenComplete
+                        }
+
+                        val newCooldownCounter = MilliCounter()
+                        newCooldownCounter.start()
+                        plugin.cooldowns[sender.uniqueId] = newCooldownCounter
+                    }
+                    sender.sendMessage(Message.REPORT_USE, TextReplacement("player", target), TextReplacement("reason", formattedReason))
+                    Database.getReportsCount().whenComplete {count, _ ->
+                        plugin.bridgeManager!!.sendReportsNotification(sender, count)
+                    }
+                }
+        }
     }
 
     override fun tabComplete(sender: CommandSender, args: List<String>): List<String> {
-        if (args.size == 1) {
-            return plugin.networkPlayers.filter { it.startsWith(args[0], true) }
+        when (args.size) {
+            1 -> {
+                return plugin.networkPlayers.filter { it.startsWith(args[0], true) }
+            }
+            2 -> {
+                return Settings.reasons.filter { it.enabled && it.id.startsWith(args[1], true) }.map { it.id }
+            }
         }
 
         return emptyList()

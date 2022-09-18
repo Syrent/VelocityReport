@@ -1,3 +1,33 @@
 default_language: en_US
 report:
     cooldown: 60
+    custom_reason: false
+    reasons:
+        killaura:
+            enabled: true
+            displayname: "<blue>Killaura"
+            description: "Killaura is a cheat that allows you to attack players without looking at them."
+        reach:
+            enabled: true
+            displayname: "<blue>Reach"
+            description: "Reach is a cheat that allows you to attack players from a long distance."
+        speed:
+            enabled: true
+            displayname: "<blue>Speed"
+            description: "Speed is a cheat that allows you to move faster than normal."
+        scaffold:
+            enabled: true
+            displayname: "<blue>Scaffold"
+            description: "Scaffold is a cheat that allows you to place blocks under you."
+        fly:
+            enabled: true
+            displayname: "<blue>Fly"
+            description: "Fly is a cheat that allows you to fly in the air."
+        aimbot:
+            enabled: true
+            displayname: "<blue>Aimbot"
+            description: "Aimbot is a cheat that allows you to aim at players automatically."
+        esp:
+            enabled: true
+            displayname: "<blue>ESP"
+            description: "ESP is a cheat that allows you to see players through walls."

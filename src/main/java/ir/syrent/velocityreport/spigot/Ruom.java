@@ -1,6 +1,6 @@
 package ir.syrent.velocityreport.spigot;
 
-import ir.syrent.velocityreport.adventure.AdventureApi;
+import ir.syrent.velocityreport.spigot.adventure.AdventureApi;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
