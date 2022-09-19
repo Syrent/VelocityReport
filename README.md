@@ -1,7 +1,7 @@
 # VelocityReport
 Minecraft Report plugin for [Velocity](https://github.com/PaperMC/Velocity) servers with amazing features.  
 **⚠️ Notice: Installing plugin on Velocity is optional. If you don't want to link report data between servers you can simply install plugin on all back-end (Spigot, Paper, etc...) servers**   
-**⚠️ Notice: If you want to use `velocity_support` feature you should use MySQL as database method. otherwise report data will NOT sync between servers.**
+**⚠️ Notice: If you want to use `velocity_support` feature you have to use MySQL as database method. otherwise report data will NOT sync between servers.**
 
 ## Commands:
 [] = Optional
