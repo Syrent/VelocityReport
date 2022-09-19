@@ -31,10 +31,13 @@ class VelocityReportSpigot : RUoMPlugin() {
         dataFolder.mkdir()
 
         initializeInstances()
-        initializePluginChannels()
         fetchData()
         registerCommands()
         registerListeners()
+
+        if (Settings.velocitySupport) {
+            initializePluginChannels()
+        }
     }
 
     private fun initializeInstances() {
@@ -49,7 +52,9 @@ class VelocityReportSpigot : RUoMPlugin() {
             reportsCount = count
             Ruom.getOnlinePlayers().let {
                 if (it.isNotEmpty()) {
-                    bridgeManager?.sendGetAllPlayersNameRequest(it.iterator().next())
+                    if (Settings.velocitySupport) {
+                        bridgeManager?.sendGetAllPlayersNameRequest(it.iterator().next())
+                    }
                     it.map { player -> Utils.sendReportsActionbar(player) }
                 }
             }

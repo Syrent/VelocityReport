@@ -2,6 +2,7 @@ package ir.syrent.velocityreport.spigot.command.report
 
 import ir.syrent.velocityreport.report.Report
 import ir.syrent.velocityreport.report.ReportStage
+import ir.syrent.velocityreport.spigot.Ruom
 import ir.syrent.velocityreport.spigot.VelocityReportSpigot
 import ir.syrent.velocityreport.spigot.adventure.ComponentUtils
 import ir.syrent.velocityreport.spigot.command.library.PluginCommand
@@ -100,7 +101,11 @@ class ReportCommand(
                 plugin.cooldowns[sender.uniqueId] = newCooldownCounter
                 sender.sendMessage(Message.REPORT_USE, TextReplacement("player", target), TextReplacement("reason", formattedReason))
                 Database.getReportsCount(ReportStage.ACTIVE).whenComplete { count, _ ->
-                    plugin.bridgeManager!!.sendReportsActionbar(sender, count)
+                    if (Settings.velocitySupport) {
+                        plugin.bridgeManager!!.sendReportsActionbar(sender, count)
+                    } else {
+                        plugin.reportsCount = count
+                    }
                 }
             }
         }
@@ -109,7 +114,8 @@ class ReportCommand(
     override fun tabComplete(sender: CommandSender, args: List<String>): List<String> {
         when (args.size) {
             1 -> {
-                return plugin.networkPlayers.filter { it.startsWith(args[0], true) }
+                return if (Settings.velocitySupport) plugin.networkPlayers.filter { it.startsWith(args[0], true) }
+                else Ruom.getOnlinePlayers().map { it.name }
             }
             2 -> {
                 return Settings.reasons.filter { it.enabled && it.id.startsWith(args[1], true) }.map { it.id }
