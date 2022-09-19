@@ -115,7 +115,7 @@ class ReportCommand(
         when (args.size) {
             1 -> {
                 return if (Settings.velocitySupport) plugin.networkPlayers.filter { it.startsWith(args[0], true) }
-                else Ruom.getOnlinePlayers().map { it.name }
+                else Ruom.getOnlinePlayers().map { it.name }.filter { it.startsWith(args[0], true) }
             }
             2 -> {
                 return Settings.reasons.filter { it.enabled && it.id.startsWith(args[1], true) }.map { it.id }
