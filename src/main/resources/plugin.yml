@@ -10,7 +10,6 @@ commands:
   report:
     aliases:
       - velocityreport
-      - sayanreport
     description: Report a player
   reportadmin:
     aliases:
