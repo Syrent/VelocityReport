@@ -100,13 +100,6 @@ class ReportCommand(
                 newCooldownCounter.start()
                 plugin.cooldowns[sender.uniqueId] = newCooldownCounter
                 sender.sendMessage(Message.REPORT_USE, TextReplacement("player", target), TextReplacement("reason", formattedReason))
-                Database.getReportsCount(ReportStage.ACTIVE).whenComplete { count, _ ->
-                    if (Settings.velocitySupport) {
-                        plugin.bridgeManager!!.sendReportsActionbar(sender, count)
-                    } else {
-                        plugin.reportsCount = count
-                    }
-                }
             }
         }
     }
