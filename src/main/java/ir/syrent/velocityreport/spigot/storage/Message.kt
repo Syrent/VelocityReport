@@ -1,0 +1,33 @@
+package ir.syrent.velocityreport.spigot.storage
+
+enum class Message(val path: String) {
+    RAW_PREFIX("general.raw_prefix"),
+    PREFIX("general.prefix"),
+    CONSOLE_PREFIX("general.console_prefix"),
+    SUCCESSFUL_PREFIX("general.successful_prefix"),
+    WARN_PREFIX("general.warn_prefix"),
+    ERROR_PREFIX("general.error_prefix"),
+    ONLY_PLAYERS("general.only_players"),
+    VALID_PARAMS("general.valid_parameters"),
+    UNKNOWN_MESSAGE("general.unknown_message"),
+    NO_PERMISSION("command.no_permission"),
+    REPORT_USAGE("command.report.usage"),
+    REPORT_USE("command.report.use"),
+    NO_TARGET("command.report.no_target"),
+    REPORT_COOLDOWN("command.report.cooldown"),
+    REPORT_PREVENT_SELF("command.report.prevent_self"),
+    REPORTADMIN_USAGE("command.reportadmin.usage"),
+    REPORTADMIN_RELOAD_USE("command.reportadmin.reload.use"),
+    REPORTADMIN_REPORTS_RECEIVE("command.reportadmin.reports.receive"),
+    REPORTADMIN_REPORTS_FORMAT("command.reportadmin.reports.book.format"),
+    REPORTADMIN_ACCEPT_USAGE("command.reportadmin.accept.usage"),
+    REPORTADMIN_ACCEPT_USE("command.reportadmin.accept.use"),
+    REPORTADMIN_ACCEPT_ALREADY_ACCEPTED("command.reportadmin.accept.already_accepted"),
+    REPORTADMIN_MYREPORTS_RECEIVE("command.reportadmin.myreports.receive"),
+    REPORTADMIN_MYREPORTS_USE("command.reportadmin.myreports.use"),
+    REPORTADMIN_MYREPORTS_BOOK_FORMAT("command.reportadmin.myreports.book.format"),
+    INVALID_REASON("command.report.invalid_reason"),
+    REPORT_ACTIONBAR("report.actionbar"),
+    BOOK_REASON("command.report.book.reason"),
+    EMPTY("");
+}

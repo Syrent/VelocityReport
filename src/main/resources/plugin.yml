@@ -1,0 +1,19 @@
+name: VelocityReport
+version: '${version}'
+main: ir.syrent.velocityreport.spigot.VelocityReportSpigot
+api-version: 1.13
+prefix: VelocityReport
+authors: [ Syrent ]
+description: Report plugin for velocity servers
+website: syrent.ir
+commands:
+  report:
+    aliases:
+      - velocityreport
+      - sayanreport
+    description: Report a player
+  reportadmin:
+    aliases:
+      - ra
+      - reporta
+    description: Report admin commands
