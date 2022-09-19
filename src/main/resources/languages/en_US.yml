@@ -54,4 +54,4 @@ command:
                 format: "<click:run_command:'/reportadmin done $id'><hover:show_text:'<blue>Reporter: <aqua>$reporter</aqua>\nReported: <aqua>$reported</aqua>\nServer: <aqua>$server</aqua>\n\nReason: <aqua>$reason</aqua>\n\n <yellow>Click to mark as done!'><gold>● <dark_blue>$reported</hover></click>"
 
 report:
-    actionbar: "<gold>⚠ <gradient:dark_purple:blue>There are <gold>$reports</gold> reports!"
+    actionbar: "<dark_red>⚠ <gradient:gold:yellow>There are <aqua>$reports</aqua> reports!"
