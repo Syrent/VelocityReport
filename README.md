@@ -4,10 +4,9 @@ Minecraft Report plugin for [Velocity](https://github.com/PaperMC/Velocity) serv
 **⚠️ Notice: If you want to use `velocity_support` feature you have to use MySQL as database method. otherwise report data will NOT sync between servers.**
 
 ## Commands:
-[] = Optional
 | Command | Permission| Description |
 | --- | --- | --- |
-| report <player> [reason] | velocityreport.report | Report a player |
+| report [player] [reason] | velocityreport.report | Report a player |
 | reportadmin reports | velocityreport.admin.reports | See all active reports |
 | reportadmin myreports | velocityreport.admin.myreports | See all pending reports that you accepted |
 | reportadmin accept [id] | velocityreport.admin.accept | Accept report |
