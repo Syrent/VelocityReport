@@ -20,6 +20,7 @@ object Settings {
     val myReportsBookHeader = mutableListOf<String>()
 
     lateinit var defaultLanguage: String
+    var velocitySupport = false
     var staffActionbar = true
     var preventSelfReport = true
     var customReason = false
@@ -35,6 +36,7 @@ object Settings {
         settingsConfig = settings.config
 
         defaultLanguage = settingsConfig.getString("default_language") ?: "en_US"
+        velocitySupport = settingsConfig.getBoolean("velocity_support")
         staffActionbar = settingsConfig.getBoolean("report.staff_actionbar")
         preventSelfReport = settingsConfig.getBoolean("report.prevent_self")
         customReason = settingsConfig.getBoolean("report.custom_reason")
@@ -52,9 +54,13 @@ object Settings {
             }
         }
 
+        reportsBookHeader.clear()
         reportsBookHeader.addAll(languageConfig.getStringList("command.reportadmin.reports.book.header"))
+        myReportsBookHeader.clear()
         myReportsBookHeader.addAll(languageConfig.getStringList("command.reportadmin.myreports.book.header"))
+        bookHeader.clear()
         bookHeader.addAll(languageConfig.getStringList("command.report.book.header"))
+        bookFooter.clear()
         bookFooter.addAll(languageConfig.getStringList("command.report.book.footer"))
 
         messages.apply {

@@ -15,19 +15,19 @@ class DoneSubcommand : SubCommand("done", "velocityreport.admin.done", true) {
         sender as Player
 
         if (args.isEmpty()) {
-            sender.sendMessage(Message.REPORTADMIN_ACCEPT_USAGE)
+            sender.sendMessage(Message.REPORTADMIN_DONE_USAGE)
             return
         }
 
         Database.getReportByID(args[0], ReportStage.PENDING).whenComplete { report, _ ->
             if (report == null) {
-                sender.sendMessage(Message.REPORTADMIN_ACCEPT_ALREADY_ACCEPTED, TextReplacement("id", args[0]))
+                sender.sendMessage(Message.REPORTADMIN_DONE_ALREADY_DONE, TextReplacement("id", args[0]))
                 return@whenComplete
             }
 
             report.done()
             report.update().whenComplete { _, _ ->
-                sender.sendMessage(Message.REPORTADMIN_MYREPORTS_USE, TextReplacement("id", report.reportID.toString()))
+                sender.sendMessage(Message.REPORTADMIN_DONE_USE, TextReplacement("id", report.reportID.toString()))
             }
         }
     }
