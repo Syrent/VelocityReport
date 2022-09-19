@@ -168,3 +168,50 @@ command:
 report:
     actionbar: "<gold>⚠ <gradient:dark_purple:blue>There are <gold>$reports</gold> reports!"
 ```
+
+### API
+You can get all reports data from Database using external database queries.  
+But there is some static functions provided in `Database.kt` class that you can use to easily access to reports data.  
+   
+**Available methods**   
+```kotlin
+Database#saveReport(Report)
+Database#getReports(ReportStage)
+Database#getReportsByModeratorID(UUID, ReportStage)
+Database#getReportByID(String, ReportStage)
+Database#getReportsCount(ReportStage)
+```
+   
+**Report Stages**   
+```
+ACTIVE
+PENDING
+DONE
+```
+   
+**Create new report**   
+```kotlin
+data class Report(
+    val server: String,
+    val reporterID: UUID,
+    val reporterName: String,
+    val reportedName: String,
+    val date: Long,
+    val reason: String,
+)
+```   
+*Configurable fields:*    
+```kotlin
+var reportID = UUID.randomUUID()
+var stage = ReportStage.ACTIVE
+var moderatorUUID: UUID? = null
+var moderatorName: String? = null
+```   
+*Report methods:*   
+```kotlin
+Report#setModerator(Player)
+Report#active
+Report#pending
+Report#done
+Report#update
+```
