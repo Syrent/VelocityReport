@@ -22,7 +22,7 @@ class PostLoginListener(
         VRuom.runAsync({
             plugin.bridgeManager.sendAllPlayersName()
             plugin.bridgeManager.sendServer(player)
-        }, 1, TimeUnit.SECONDS)
+        }, 5, TimeUnit.SECONDS)
         val cooldownCounter = MilliCounter()
         cooldownCounter.start()
         plugin.cooldowns[player.uniqueId] = cooldownCounter

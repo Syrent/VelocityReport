@@ -15,10 +15,17 @@ class VelocityBridgeManager(
 ) {
 
     fun sendServer(player: Player) {
+        val serverName = player.currentServer.let {
+            if (it.isPresent) {
+                it.get().serverInfo.name
+            } else {
+                "Unknown"
+            }
+        }
         val messageJson = JsonObject()
         messageJson.addProperty("type", "Server")
         messageJson.addProperty("uuid", player.uniqueId.toString())
-        messageJson.addProperty("server", player.currentServer.get().serverInfo.name)
+        messageJson.addProperty("server", serverName)
 
         sendPluginMessage(messageJson)
     }
