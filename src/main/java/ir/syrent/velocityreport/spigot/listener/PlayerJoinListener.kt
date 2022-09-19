@@ -2,8 +2,7 @@ package ir.syrent.velocityreport.spigot.listener
 
 import ir.syrent.velocityreport.spigot.Ruom
 import ir.syrent.velocityreport.spigot.VelocityReportSpigot
-import ir.syrent.velocityreport.spigot.adventure.AdventureApi
-import ir.syrent.velocityreport.utils.component
+import ir.syrent.velocityreport.utils.Utils
 import me.mohamad82.ruom.utils.MilliCounter
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -26,11 +25,7 @@ class PlayerJoinListener(
         commandCooldownCounter.start()
         plugin.cooldowns[player.uniqueId] = commandCooldownCounter
 
-        if (player.hasPermission("velocityreport.admin.notify")) {
-            Ruom.runSync({
-                AdventureApi.get().player(player).sendActionBar("<gold>⚠ <gradient:dark_purple:blue>There are <gold>${plugin.reportsCount}</gold> reports!".component())
-            }, 0, 20)
-        }
+        Utils.sendReportsActionbar(player)
     }
 
 }

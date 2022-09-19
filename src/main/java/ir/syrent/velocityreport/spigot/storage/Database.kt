@@ -4,12 +4,14 @@ import ir.syrent.velocityreport.database.Priority
 import ir.syrent.velocityreport.database.Query
 import ir.syrent.velocityreport.database.mysql.MySQLCredentials
 import ir.syrent.velocityreport.report.Report
+import ir.syrent.velocityreport.report.ReportStage
 import ir.syrent.velocityreport.spigot.Ruom
 import ir.syrent.velocityreport.spigot.configuration.YamlConfig
 import ir.syrent.velocityreport.spigot.database.MySQLDatabase
 import ir.syrent.velocityreport.spigot.database.sqlite.SQLiteDatabase
 import org.bukkit.configuration.ConfigurationSection
 import java.io.File
+import java.util.*
 import java.util.concurrent.CompletableFuture
 
 object Database {
@@ -64,21 +66,124 @@ object Database {
                         .setStatementValue(10, report.stage.name))
                 future.complete(true)
             } else {
+                Ruom.broadcast("Update: ${report.reportID}")
+                Ruom.broadcast("ReportModeratorName: ${report.moderatorName}")
                 database!!.queueQuery(
                     Query.query("UPDATE velocityreport_reports SET stage = ?, moderator_id = ?, moderator_name = ? WHERE report_id = ?;")
-                        .setStatementValue(1, report.moderatorUUID.toString())
-                        .setStatementValue(2, report.moderatorName ?: "Unknown")
-                        .setStatementValue(3, report.reportID.toString()))
+                        .setStatementValue(1, report.stage.name)
+                        .setStatementValue(2, report.moderatorUUID.toString())
+                        .setStatementValue(3, report.moderatorName ?: "Unknown")
+                        .setStatementValue(4, report.reportID.toString()))
                 future.complete(true)
             }
         }
         return future
     }
 
-    fun getReportsCount(): CompletableFuture<Int> {
+    fun getReports(stage: ReportStage): CompletableFuture<List<Report>> {
+        val reports = mutableListOf<Report>()
+        val future = CompletableFuture<List<Report>>()
+        database!!.queueQuery(
+            Query.query("SELECT * FROM velocityreport_reports WHERE stage = ? LIMIT 24;")
+                .setStatementValue(1, stage.name)).completableFuture.whenComplete { result, _ ->
+            while (result.next()) {
+                reports.add(
+                    Report(
+                        result.getString("server"),
+                        UUID.fromString(result.getString("reporter_id")),
+                        result.getString("reporter_name"),
+                        result.getString("reported_name"),
+                        result.getLong("date"),
+                        result.getString("reason"),
+                    ).apply {
+                        this.reportID = UUID.fromString(result.getString("report_id"))
+                        this.stage = ReportStage.valueOf(result.getString("stage"))
+                        this.moderatorUUID = result.getString("moderator_id").let {
+                            if (it != "null") {
+                                UUID.fromString(it)
+                            }
+                            else null
+                        }
+                        this.moderatorName = result.getString("moderator_name")
+                    }
+                )
+            }
+            future.complete(reports)
+        }
+        return future
+    }
+
+    fun getReportsByModeratorID(id: UUID, stage: ReportStage): CompletableFuture<List<Report>> {
+        val reports = mutableListOf<Report>()
+        val future = CompletableFuture<List<Report>>()
+        database!!.queueQuery(
+            Query.query("SELECT * FROM velocityreport_reports WHERE moderator_id = ? AND stage = ? LIMIT 24;")
+                .setStatementValue(1, id.toString()).setStatementValue(2, stage.name)).completableFuture.whenComplete { result, _ ->
+            while (result.next()) {
+                reports.add(
+                    Report(
+                        result.getString("server"),
+                        UUID.fromString(result.getString("reporter_id")),
+                        result.getString("reporter_name"),
+                        result.getString("reported_name"),
+                        result.getLong("date"),
+                        result.getString("reason"),
+                    ).apply {
+                        this.reportID = UUID.fromString(result.getString("report_id"))
+                        this.stage = ReportStage.valueOf(result.getString("stage"))
+                        this.moderatorUUID = result.getString("moderator_id").let {
+                            if (it != "null") {
+                                UUID.fromString(it)
+                            }
+                            else null
+                        }
+                        this.moderatorName = result.getString("moderator_name")
+                    }
+                )
+            }
+            future.complete(reports)
+        }
+        return future
+    }
+
+    fun getReportByID(id: String, stage: ReportStage): CompletableFuture<Report> {
+        val future = CompletableFuture<Report>()
+        database!!.queueQuery(
+            Query.query("SELECT * FROM velocityreport_reports WHERE report_id = ? AND stage = ?;")
+                .setStatementValue(1, id).setStatementValue(2, stage.name)).completableFuture.whenComplete { result, _ ->
+            if (result.next()) {
+                future.complete(
+                    Report(
+                        result.getString("server"),
+                        UUID.fromString(result.getString("reporter_id")),
+                        result.getString("reporter_name"),
+                        result.getString("reported_name"),
+                        result.getLong("date"),
+                        result.getString("reason"),
+                    ).apply {
+                        this.reportID = UUID.fromString(result.getString("report_id"))
+                        this.stage = ReportStage.valueOf(result.getString("stage"))
+                        this.moderatorUUID = result.getString("moderator_id").let {
+                            if (it != "null") {
+                                UUID.fromString(it)
+                            }
+                            else null
+                        }
+                        this.moderatorName = result.getString("moderator_name")
+                    }
+                )
+            } else {
+                future.complete(null)
+            }
+        }
+        return future
+    }
+
+    fun getReportsCount(stage: ReportStage): CompletableFuture<Int> {
         val future = CompletableFuture<Int>()
         database!!.queueQuery(
-            Query.query("SELECT report_id FROM velocityreport_reports;")).completableFuture.whenComplete { result, _ ->
+            Query.query("SELECT report_id FROM velocityreport_reports WHERE stage = ?;")
+                .setStatementValue(1, stage.name)).completableFuture.whenComplete { result, _ ->
             var count = 0
             while (result.next()) {
                 count++

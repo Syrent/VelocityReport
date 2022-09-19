@@ -17,6 +17,10 @@ fun Player.sendMessage(message: Message, vararg replacements: TextReplacement) {
     AdventureApi.get().sender(this).sendMessage(Settings.formatMessage(message, *replacements).component())
 }
 
+fun Player.sendActionbar(message: Message, vararg replacements: TextReplacement) {
+    AdventureApi.get().sender(this).sendActionBar(Settings.formatMessage(message, *replacements).component())
+}
+
 fun Player.openBook(book: Book) {
     this.playSound(this.location, XSound.ITEM_BOOK_PAGE_TURN.parseSound()!!, 1f, 1f)
     AdventureApi.get().sender(this).openBook(book)

@@ -8,7 +8,7 @@ import ir.syrent.velocityreport.spigot.VelocityReportSpigot
 import ir.syrent.velocityreport.utils.Utils
 import me.mohamad82.ruom.utils.GsonUtils
 import org.bukkit.entity.Player
-import java.util.UUID
+import java.util.*
 
 class BukkitBridgeManager(
     val bridge: Bridge,
@@ -22,9 +22,9 @@ class BukkitBridgeManager(
         sendPluginMessage(sender, messageJson)
     }
 
-    fun sendReportsNotification(sender: Player, count: Int) {
+    fun sendReportsActionbar(sender: Player, count: Int) {
         val messageJson = JsonObject()
-        messageJson.addProperty("type", "ReportsNotification")
+        messageJson.addProperty("type", "ReportsActionbar")
         messageJson.addProperty("count", count)
 
         sendPluginMessage(sender, messageJson)
@@ -52,10 +52,10 @@ class BukkitBridgeManager(
             "Server" -> {
                 plugin.networkPlayersServer[UUID.fromString(messageJson["uuid"].asString)] = messageJson["server"].asString
             }
-            "ReportsNotification" -> {
+            "ReportsActionbar" -> {
                 plugin.reportsCount = messageJson["count"].asInt
                 for (player in Ruom.getOnlinePlayers()) {
-                    Utils.sendReportsNotification(player)
+                    Utils.sendReportsActionbar(player)
                 }
             }
             else -> {

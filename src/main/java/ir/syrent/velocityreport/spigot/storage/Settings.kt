@@ -16,8 +16,12 @@ object Settings {
     private val messages = mutableMapOf<Message, String>()
     val bookHeader = mutableListOf<String>()
     val bookFooter = mutableListOf<String>()
+    val reportsBookHeader = mutableListOf<String>()
+    val myReportsBookHeader = mutableListOf<String>()
 
     lateinit var defaultLanguage: String
+    var staffActionbar = true
+    var preventSelfReport = true
     var customReason = false
     var reasons = mutableListOf<Reason>()
     var cooldown = 0
@@ -31,6 +35,8 @@ object Settings {
         settingsConfig = settings.config
 
         defaultLanguage = settingsConfig.getString("default_language") ?: "en_US"
+        staffActionbar = settingsConfig.getBoolean("report.staff_actionbar")
+        preventSelfReport = settingsConfig.getBoolean("report.prevent_self")
         customReason = settingsConfig.getBoolean("report.custom_reason")
         cooldown = settingsConfig.getInt("report.cooldown", 60)
 
@@ -46,8 +52,10 @@ object Settings {
             }
         }
 
-        bookHeader.addAll(languageConfig.getStringList("book.header"))
-        bookFooter.addAll(languageConfig.getStringList("book.footer"))
+        reportsBookHeader.addAll(languageConfig.getStringList("command.reportadmin.reports.book.header"))
+        myReportsBookHeader.addAll(languageConfig.getStringList("command.reportadmin.myreports.book.header"))
+        bookHeader.addAll(languageConfig.getStringList("command.report.book.header"))
+        bookFooter.addAll(languageConfig.getStringList("command.report.book.footer"))
 
         messages.apply {
             this.clear()
@@ -97,7 +105,7 @@ object Settings {
         return messages[message] ?: messages[Message.UNKNOWN_MESSAGE]?.replace(
             "\$error_prefix",
             messages[Message.ERROR_PREFIX] ?: ""
-        ) ?: "Unknown message $message"
+        ) ?: "Unknown message ($message)"
     }
 
     fun getConsolePrefix(): String {

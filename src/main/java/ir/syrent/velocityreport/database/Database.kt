@@ -6,7 +6,7 @@ import kotlin.collections.ArrayList
 
 abstract class Database protected constructor() {
     @JvmField
-    protected val queue: MutableMap<Priority, MutableList<Query>> = HashMap()
+    protected val queue: MutableMap<Priority, MutableList<Query>> = EnumMap(Priority::class.java)
     @JvmField
     protected var failAttemptRemoval = 2
 

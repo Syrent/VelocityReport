@@ -1,6 +1,7 @@
 package ir.syrent.velocityreport.spigot.command.report
 
 import ir.syrent.velocityreport.report.Report
+import ir.syrent.velocityreport.report.ReportStage
 import ir.syrent.velocityreport.spigot.VelocityReportSpigot
 import ir.syrent.velocityreport.spigot.adventure.ComponentUtils
 import ir.syrent.velocityreport.spigot.command.library.PluginCommand
@@ -41,6 +42,11 @@ class ReportCommand(
             return
         }
 
+        if (target == sender.name && Settings.preventSelfReport) {
+            sender.sendMessage(Message.REPORT_PREVENT_SELF)
+            return
+        }
+
         if (args.size == 1) {
             val title = ComponentUtils.parse("VelocityReport")
 
@@ -69,34 +75,34 @@ class ReportCommand(
                 return
             }
 
-                Report(
-                    plugin.networkPlayersServer[sender.uniqueId] ?: "Unknown",
-                    sender.uniqueId,
-                    sender.name,
-                    target,
-                    System.currentTimeMillis(),
-                    MiniMessage.miniMessage().stripTags(formattedReason)
-                ).update().whenComplete {_, _ ->
-                    if (plugin.cooldowns.containsKey(sender.uniqueId)) {
-                        val cooldownCounter = plugin.cooldowns[sender.uniqueId]!!
-                        cooldownCounter.stop()
-                        val elapsedCooldown = cooldownCounter.get() / 1000
-                        val allowedCooldown = Settings.cooldown
+            if (plugin.cooldowns.containsKey(sender.uniqueId) && !sender.hasPermission("velocityreport.bypass.cooldown")) {
+                val cooldownCounter = plugin.cooldowns[sender.uniqueId]!!
+                cooldownCounter.stop()
+                val elapsedCooldown = cooldownCounter.get() / 1000
+                val allowedCooldown = Settings.cooldown
 
-                        if (elapsedCooldown < allowedCooldown) {
-                            sender.sendMessage(Message.REPORT_COOLDOWN, TextReplacement("time", ((allowedCooldown - elapsedCooldown).roundToInt() + 1).toString()))
-                            return@whenComplete
-                        }
-
-                        val newCooldownCounter = MilliCounter()
-                        newCooldownCounter.start()
-                        plugin.cooldowns[sender.uniqueId] = newCooldownCounter
-                    }
-                    sender.sendMessage(Message.REPORT_USE, TextReplacement("player", target), TextReplacement("reason", formattedReason))
-                    Database.getReportsCount().whenComplete {count, _ ->
-                        plugin.bridgeManager!!.sendReportsNotification(sender, count)
-                    }
+                if (elapsedCooldown < allowedCooldown) {
+                    sender.sendMessage(Message.REPORT_COOLDOWN, TextReplacement("time", ((allowedCooldown - elapsedCooldown).roundToInt() + 1).toString()))
+                    return
                 }
+            }
+
+            Report(
+                plugin.networkPlayersServer[sender.uniqueId] ?: "Unknown",
+                sender.uniqueId,
+                sender.name,
+                target,
+                System.currentTimeMillis(),
+                MiniMessage.miniMessage().stripTags(formattedReason)
+            ).update().whenComplete {_, _ ->
+                val newCooldownCounter = MilliCounter()
+                newCooldownCounter.start()
+                plugin.cooldowns[sender.uniqueId] = newCooldownCounter
+                sender.sendMessage(Message.REPORT_USE, TextReplacement("player", target), TextReplacement("reason", formattedReason))
+                Database.getReportsCount(ReportStage.ACTIVE).whenComplete { count, _ ->
+                    plugin.bridgeManager!!.sendReportsActionbar(sender, count)
+                }
+            }
         }
     }
 

@@ -12,3 +12,8 @@ commands:
       - velocityreport
       - sayanreport
     description: Report a player
+  reportadmin:
+    aliases:
+      - ra
+      - reporta
+    description: Report admin commands

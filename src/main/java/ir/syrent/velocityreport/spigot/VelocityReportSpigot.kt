@@ -1,10 +1,12 @@
 package ir.syrent.velocityreport.spigot
 
 import com.google.gson.JsonObject
+import ir.syrent.velocityreport.report.ReportStage
 import ir.syrent.velocityreport.spigot.adventure.AdventureApi
 import ir.syrent.velocityreport.spigot.bridge.BukkitBridge
 import ir.syrent.velocityreport.spigot.bridge.BukkitBridgeManager
 import ir.syrent.velocityreport.spigot.command.report.ReportCommand
+import ir.syrent.velocityreport.spigot.command.reportadmin.ReportAdminCommand
 import ir.syrent.velocityreport.spigot.listener.PlayerJoinListener
 import ir.syrent.velocityreport.spigot.listener.PlayerQuitListener
 import ir.syrent.velocityreport.spigot.messaging.BukkitMessagingEvent
@@ -43,12 +45,12 @@ class VelocityReportSpigot : RUoMPlugin() {
     }
 
     private fun fetchData() {
-        Database.getReportsCount().whenComplete { count, _ ->
+        Database.getReportsCount(ReportStage.ACTIVE).whenComplete { count, _ ->
             reportsCount = count
             Ruom.getOnlinePlayers().let {
                 if (it.isNotEmpty()) {
                     bridgeManager?.sendGetAllPlayersNameRequest(it.iterator().next())
-                    it.map { player -> Utils.sendReportsNotification(player) }
+                    it.map { player -> Utils.sendReportsActionbar(player) }
                 }
             }
         }
@@ -56,6 +58,7 @@ class VelocityReportSpigot : RUoMPlugin() {
 
     private fun registerCommands() {
         ReportCommand(this)
+        ReportAdminCommand()
     }
 
     private fun registerListeners() {

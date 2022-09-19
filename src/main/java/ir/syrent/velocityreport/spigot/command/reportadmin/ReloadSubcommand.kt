@@ -10,6 +10,6 @@ class ReloadSubcommand : SubCommand("reload", "velocityreport.admin.reload", fal
 
     override fun onExecute(sender: CommandSender, args: List<String>) {
         Settings.load()
-        sender.sendMessage(Message.RELOAD)
+        sender.sendMessage(Message.REPORTADMIN_RELOAD_USE)
     }
 }

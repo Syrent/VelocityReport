@@ -1,6 +1,8 @@
 default_language: en_US
 report:
     cooldown: 60
+    staff_actionbar: true
+    prevent_self: true
     custom_reason: false
     reasons:
         killaura:
