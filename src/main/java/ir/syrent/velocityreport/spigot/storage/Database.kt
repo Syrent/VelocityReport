@@ -66,8 +66,6 @@ object Database {
                         .setStatementValue(10, report.stage.name))
                 future.complete(true)
             } else {
-                Ruom.broadcast("Update: ${report.reportID}")
-                Ruom.broadcast("ReportModeratorName: ${report.moderatorName}")
                 database!!.queueQuery(
                     Query.query("UPDATE velocityreport_reports SET stage = ?, moderator_id = ?, moderator_name = ? WHERE report_id = ?;")
                         .setStatementValue(1, report.stage.name)
