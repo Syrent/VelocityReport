@@ -1,5 +1,5 @@
 default_language: en_US
-velocity_support: true
+velocity_support: false
 report:
     cooldown: 60
     staff_actionbar: true
