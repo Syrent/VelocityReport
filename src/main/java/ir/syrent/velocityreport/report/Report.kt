@@ -4,7 +4,6 @@ import ir.syrent.velocityreport.spigot.Ruom
 import ir.syrent.velocityreport.spigot.VelocityReportSpigot
 import ir.syrent.velocityreport.spigot.storage.Database
 import ir.syrent.velocityreport.spigot.storage.Settings
-import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.*
 import java.util.concurrent.CompletableFuture
