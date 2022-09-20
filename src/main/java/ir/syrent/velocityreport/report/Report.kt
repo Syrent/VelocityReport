@@ -4,7 +4,6 @@ import ir.syrent.velocityreport.spigot.Ruom
 import ir.syrent.velocityreport.spigot.VelocityReportSpigot
 import ir.syrent.velocityreport.spigot.storage.Database
 import ir.syrent.velocityreport.spigot.storage.Settings
-import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.*
 import java.util.concurrent.CompletableFuture
@@ -17,7 +16,7 @@ data class Report(
     val date: Long,
     val reason: String,
 ) {
-    var reportID = UUID.randomUUID()
+    var reportID: UUID = UUID.randomUUID()
     var stage = ReportStage.ACTIVE
     var moderatorUUID: UUID? = null
     var moderatorName: String? = null
