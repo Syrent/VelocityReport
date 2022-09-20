@@ -24,6 +24,43 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+      
+      - uses: SpraxDev/Action-SpigotMC@v4
+        with:
+          # A comma-separated list of Spigot version that should be compiled
+          # These values are later given to the BuildTools.jar as '--rev' argument
+          #
+          # Example: latest, 1.19.2, 1.8.8
+          versions: latest # Optional
+
+          # Should sources be generated?
+          # If enabled, BuildTools is provided the '--generate-source' argument
+          generateSrc: false # Optional
+
+          # Should the documentation be generated?
+          # If enabled, BuildTools is provided the '--generate-docs' argument
+          generateDoc: false # Optional
+
+          # Should we disable the BuildTools's Java-Version-Check?
+          # If enabled, BuildTools is provided the '--disable-java-check' argument
+          disableJavaCheck: false # Optional
+
+          # Should we use the SpecialSource-Plugin to deobfuscate Mojang-NMS?
+          # If enabled, BuildTools will install the SpecialSource-Plugin and 'remapped'-Version of Spigot without obfuscation
+          remapped: true # Optional
+
+          # Disables the check for existing files in the local maven repository
+          # Normally, a version is skipped if it is already installed
+          # in the local maven repository to speed up build time
+          forceRun: false # Optional
+
+          # The amount of builds allowed to run at the same time
+          # Set to '-1' to use system's cpu core count
+          threads: -1 # Optional
+
+          # You can choose between different BuildTools to be used by this action
+          # Available: SpigotMC
+          buildToolProvider: SpigotMC # Optional
 
       - name: Compile Minecraft Spigot (via BuildTools)
         uses: SpraxDev/Action-SpigotMC@v4.1.0
