@@ -17,7 +17,7 @@ data class Report(
     val date: Long,
     val reason: String,
 ) {
-    var reportID = UUID.randomUUID()
+    var reportID: UUID = UUID.randomUUID()
     var stage = ReportStage.ACTIVE
     var moderatorUUID: UUID? = null
     var moderatorName: String? = null
