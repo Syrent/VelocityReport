@@ -13,6 +13,9 @@ import ir.syrent.velocityreport.bridge.VelocityBridgeManager;
 import ir.syrent.velocityreport.listener.DisconnectListener;
 import ir.syrent.velocityreport.listener.PostLoginListener;
 import ir.syrent.velocityreport.listener.ServerConnectedListener;
+import ir.syrent.velocityreport.spigot.Ruom;
+import ir.syrent.velocityreport.spigot.storage.Database;
+import ir.syrent.velocityreport.spigot.storage.Settings;
 import me.mohamad82.ruom.VRUoMPlugin;
 import me.mohamad82.ruom.messaging.VelocityMessagingEvent;
 import me.mohamad82.ruom.utils.MilliCounter;
@@ -46,6 +49,15 @@ public class VelocityReport extends VRUoMPlugin {
     public void onProxyInitialization(ProxyInitializeEvent event) {
         initializeMessagingChannels();
         initializeListeners();
+        sendWarningMessage();
+    }
+
+    private void sendWarningMessage() {
+        if (Settings.INSTANCE.getVelocitySupport() && Database.INSTANCE.getType() == Database.DBType.SQLITE) {
+            Ruom.warn("You are using SQLite database, this is not recommended for Velocity servers.");
+            Ruom.warn("Please change database method to MySQL in `storage.yml` file.");
+            Ruom.warn("Otherwise, Data will not be sync between your servers.");
+        }
     }
 
     private void initializeMessagingChannels() {

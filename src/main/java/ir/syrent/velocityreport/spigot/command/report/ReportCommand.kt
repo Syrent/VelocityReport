@@ -36,7 +36,11 @@ class ReportCommand(
             return
         }
 
-        val target = plugin.networkPlayers.findLast { it.lowercase() == args[0].lowercase() }
+        var target = plugin.server.getPlayerExact(args[0])?.name
+
+        if (Settings.velocitySupport) {
+            target = plugin.networkPlayers.findLast { it.lowercase() == args[0].lowercase() }
+        }
 
         if (target == null) {
             sender.sendMessage(Message.NO_TARGET)
