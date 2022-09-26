@@ -9,7 +9,7 @@ import org.bukkit.entity.Player
 object Utils {
     fun sendReportsActionbar(player: Player) {
         val reportsCount = VelocityReportSpigot.instance.reportsCount
-        if (reportsCount < 1) return
+        if (!Settings.staffActionbarSendZero && reportsCount < 1) return
 
         if (Settings.staffActionbarEnabled && player.hasPermission("velocityreport.admin.notify")) {
             Ruom.runSync({
