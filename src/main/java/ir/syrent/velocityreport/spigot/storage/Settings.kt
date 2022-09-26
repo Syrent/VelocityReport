@@ -21,7 +21,8 @@ object Settings {
 
     lateinit var defaultLanguage: String
     var velocitySupport = false
-    var staffActionbar = true
+    var staffActionbarEnabled = true
+    var staffActionbarSendZero = false
     var preventSelfReport = true
     var customReason = false
     var reasons = mutableListOf<Reason>()
@@ -37,7 +38,8 @@ object Settings {
 
         defaultLanguage = settingsConfig.getString("default_language") ?: "en_US"
         velocitySupport = settingsConfig.getBoolean("velocity_support")
-        staffActionbar = settingsConfig.getBoolean("report.staff_actionbar")
+        staffActionbarEnabled = settingsConfig.getBoolean("report.staff_actionbar.enabled")
+        staffActionbarSendZero = settingsConfig.getBoolean("report.staff_actionbar.send_zero")
         preventSelfReport = settingsConfig.getBoolean("report.prevent_self")
         customReason = settingsConfig.getBoolean("report.custom_reason")
         cooldown = settingsConfig.getInt("report.cooldown", 60)
