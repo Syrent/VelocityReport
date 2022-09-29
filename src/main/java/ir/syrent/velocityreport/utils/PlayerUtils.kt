@@ -22,6 +22,8 @@ fun Player.sendActionbar(message: Message, vararg replacements: TextReplacement)
 }
 
 fun Player.openBook(book: Book) {
-    this.playSound(this.location, XSound.ITEM_BOOK_PAGE_TURN.parseSound()!!, 1f, 1f)
+    if (ServerVersion.supports(16)) {
+        this.playSound(this.location, XSound.ITEM_BOOK_PAGE_TURN.parseSound()!!, 1f, 1f)
+    }
     AdventureApi.get().sender(this).openBook(book)
 }
