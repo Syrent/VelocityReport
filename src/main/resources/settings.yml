@@ -2,7 +2,9 @@ default_language: en_US
 velocity_support: false
 report:
     cooldown: 60
-    staff_actionbar: true
+    staff_actionbar:
+        enabled: true
+        send_zero: false
     prevent_self: true
     custom_reason: false
     reasons:

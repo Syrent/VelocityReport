@@ -11,7 +11,9 @@ import ir.syrent.velocityreport.spigot.listener.PlayerJoinListener
 import ir.syrent.velocityreport.spigot.listener.PlayerQuitListener
 import ir.syrent.velocityreport.spigot.messaging.BukkitMessagingEvent
 import ir.syrent.velocityreport.spigot.storage.Database
+import ir.syrent.velocityreport.spigot.storage.Database.type
 import ir.syrent.velocityreport.spigot.storage.Settings
+import ir.syrent.velocityreport.spigot.storage.Settings.velocitySupport
 import ir.syrent.velocityreport.utils.Utils
 import me.mohamad82.ruom.utils.MilliCounter
 import org.bukkit.entity.Player
@@ -31,12 +33,21 @@ class VelocityReportSpigot : RUoMPlugin() {
         dataFolder.mkdir()
 
         initializeInstances()
+        sendWarningMessage()
         fetchData()
         registerCommands()
         registerListeners()
 
-        if (Settings.velocitySupport) {
+        if (velocitySupport) {
             initializePluginChannels()
+        }
+    }
+
+    private fun sendWarningMessage() {
+        if (velocitySupport && type === Database.DBType.SQLITE) {
+            Ruom.warn("You are using SQLite database, this is not recommended for Velocity servers.")
+            Ruom.warn("Please change database method to MySQL in `storage.yml` file.")
+            Ruom.warn("Otherwise, Data will not be sync between your servers.")
         }
     }
 
@@ -48,17 +59,25 @@ class VelocityReportSpigot : RUoMPlugin() {
     }
 
     private fun fetchData() {
-        Database.getReportsCount(ReportStage.ACTIVE).whenComplete { count, _ ->
-            reportsCount = count
-            Ruom.getOnlinePlayers().let {
-                if (it.isNotEmpty()) {
-                    if (Settings.velocitySupport) {
-                        bridgeManager?.sendGetAllPlayersNameRequest(it.iterator().next())
+        var awaited = false
+        Ruom.runSync({
+            if (awaited) return@runSync
+            awaited = true
+
+            Database.getReportsCount(ReportStage.ACTIVE).whenComplete { count, _ ->
+                reportsCount = count
+                Ruom.getOnlinePlayers().let {
+                    if (it.isNotEmpty()) {
+                        if (velocitySupport) {
+                            bridgeManager?.sendGetAllPlayersNameRequest(it.iterator().next())
+                        }
+                        it.map { player -> Utils.sendReportsActionbar(player) }
                     }
-                    it.map { player -> Utils.sendReportsActionbar(player) }
                 }
+
+                awaited = false
             }
-        }
+        }, 0, 100)
     }
 
     private fun registerCommands() {

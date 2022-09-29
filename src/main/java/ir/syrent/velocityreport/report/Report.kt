@@ -1,9 +1,6 @@
 package ir.syrent.velocityreport.report
 
-import ir.syrent.velocityreport.spigot.Ruom
-import ir.syrent.velocityreport.spigot.VelocityReportSpigot
 import ir.syrent.velocityreport.spigot.storage.Database
-import ir.syrent.velocityreport.spigot.storage.Settings
 import org.bukkit.entity.Player
 import java.util.*
 import java.util.concurrent.CompletableFuture
@@ -41,16 +38,7 @@ data class Report(
     fun update(): CompletableFuture<Boolean> {
         val future = CompletableFuture<Boolean>()
         Database.saveReport(this).whenComplete { _, _ ->
-            Database.getReportsCount(ReportStage.ACTIVE).whenComplete { count, _ ->
-                if (Settings.velocitySupport) {
-                    if (Ruom.getOnlinePlayers().isNotEmpty()) {
-                        VelocityReportSpigot.instance.bridgeManager!!.sendReportsActionbar(Ruom.getOnlinePlayers().iterator().next(), count)
-                    }
-                } else {
-                    VelocityReportSpigot.instance.reportsCount = count
-                }
-                future.complete(true)
-            }
+            future.complete(true)
         }
         return future
     }

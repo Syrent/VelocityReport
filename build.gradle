@@ -71,9 +71,9 @@ processResources {
 }
 
 shadowJar {
-    minimize()
     relocate('me.mohamad82.ruom', 'ir.syrent.velocityreport.ruom')
     relocate('com.cryptomorin.xseries', 'ir.syrent.velocityreport.xseries')
+    relocate('net.kyori.adventure', 'ir.syrent.velocityreport.adventure')
     archiveFileName = findProperty("plugin-name") + " v" + findProperty("version") + ".jar"
 }
 

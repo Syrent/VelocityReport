@@ -22,14 +22,6 @@ class BukkitBridgeManager(
         sendPluginMessage(sender, messageJson)
     }
 
-    fun sendReportsActionbar(sender: Player, count: Int) {
-        val messageJson = JsonObject()
-        messageJson.addProperty("type", "ReportsActionbar")
-        messageJson.addProperty("count", count)
-
-        sendPluginMessage(sender, messageJson)
-    }
-
     private fun sendPluginMessage(sender: Player, messageJson: JsonObject) {
         val byteArrayInputStream = ByteStreams.newDataOutput()
         byteArrayInputStream.writeUTF(GsonUtils.get().toJson(messageJson))
@@ -51,12 +43,6 @@ class BukkitBridgeManager(
             }
             "Server" -> {
                 plugin.networkPlayersServer[UUID.fromString(messageJson["uuid"].asString)] = messageJson["server"].asString
-            }
-            "ReportsActionbar" -> {
-                plugin.reportsCount = messageJson["count"].asInt
-                for (player in Ruom.getOnlinePlayers()) {
-                    Utils.sendReportsActionbar(player)
-                }
             }
             else -> {
                 Ruom.warn("Unsupported plugin message received from internal channel: $type")
