@@ -1,6 +1,7 @@
 package ir.syrent.velocityreport.spigot.listener
 
 import ir.syrent.velocityreport.spigot.VelocityReportSpigot
+import ir.syrent.velocityreport.utils.Utils
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerQuitEvent
@@ -12,6 +13,7 @@ class PlayerQuitListener(
     @EventHandler
     private fun onPlayerQuit(event: PlayerQuitEvent) {
         val player = event.player
+        Utils.actionbarPlayers.remove(player)
         plugin.cooldowns.remove(player.uniqueId)
     }
 }

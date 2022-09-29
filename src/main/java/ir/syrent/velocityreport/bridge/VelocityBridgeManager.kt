@@ -49,14 +49,6 @@ class VelocityBridgeManager(
         sendPluginMessage(messageJson)
     }
 
-    fun sendReportsActionbarRequest(count: Int) {
-        val messageJson = JsonObject()
-        messageJson.addProperty("type", "ReportsActionbar")
-        messageJson.addProperty("count", count)
-
-        sendPluginMessage(messageJson)
-    }
-
     private fun sendPluginMessage(messageJson: JsonObject) {
         val byteArrayInputStream = ByteStreams.newDataOutput()
         byteArrayInputStream.writeUTF(GsonUtils.get().toJson(messageJson))
@@ -81,9 +73,6 @@ class VelocityBridgeManager(
             }
             "PlayerList" -> {
                 sendAllPlayersName()
-            }
-            "ReportsActionbar" -> {
-                sendReportsActionbarRequest(messageJson["count"].asInt)
             }
             else -> {
                 VRuom.warn("Unsupported message type: ${messageJson["type"].asString}")

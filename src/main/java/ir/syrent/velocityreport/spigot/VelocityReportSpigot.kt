@@ -48,17 +48,25 @@ class VelocityReportSpigot : RUoMPlugin() {
     }
 
     private fun fetchData() {
-        Database.getReportsCount(ReportStage.ACTIVE).whenComplete { count, _ ->
-            reportsCount = count
-            Ruom.getOnlinePlayers().let {
-                if (it.isNotEmpty()) {
-                    if (Settings.velocitySupport) {
-                        bridgeManager?.sendGetAllPlayersNameRequest(it.iterator().next())
+        var awaited = false
+        Ruom.runSync({
+            if (awaited) return@runSync
+            awaited = true
+
+            Database.getReportsCount(ReportStage.ACTIVE).whenComplete { count, _ ->
+                reportsCount = count
+                Ruom.getOnlinePlayers().let {
+                    if (it.isNotEmpty()) {
+                        if (Settings.velocitySupport) {
+                            bridgeManager?.sendGetAllPlayersNameRequest(it.iterator().next())
+                        }
+                        it.map { player -> Utils.sendReportsActionbar(player) }
                     }
-                    it.map { player -> Utils.sendReportsActionbar(player) }
                 }
+
+                awaited = false
             }
-        }
+        }, 0, 100)
     }
 
     private fun registerCommands() {
