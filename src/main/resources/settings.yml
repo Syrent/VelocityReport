@@ -3,8 +3,10 @@ velocity_support: false
 sounds:
     command: "ENTITY_EXPERIENCE_ORB_PICKUP"
     book: "ITEM_BOOK_PAGE_TURN"
+    new_report: "ENTITY_EXPERIENCE_ORB_PICKUP"
 report:
     cooldown: 60
+    send_new_report_message: true
     staff_actionbar:
         enabled: true
         send_zero: false
