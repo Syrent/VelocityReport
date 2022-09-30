@@ -13,6 +13,7 @@ import ir.syrent.velocityreport.utils.openBook
 import ir.syrent.velocityreport.utils.sendMessage
 import me.mohamad82.ruom.utils.MilliCounter
 import net.kyori.adventure.inventory.Book
+import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
@@ -52,22 +53,46 @@ class ReportCommand(
 
         if (args.size == 1) {
             val title = ComponentUtils.parse("VelocityReport")
+            var pageLines = 14
+
+            val pages = mutableListOf<Component>()
+            val header = Settings.bookHeader
+            val footer = Settings.bookFooter
+            var lineCount = 0
+
+            pageLines -= header.size
+            pageLines -= footer.size
 
             val page = StringBuilder()
-            page.append(Settings.formatMessage(Settings.bookHeader).joinToString("\n")).append("\n")
+
+            page.append(Settings.formatMessage(header).joinToString("\n")).append("\n")
             val enabledReasons = Settings.reasons.filter { it.enabled }
             for (reason in enabledReasons) {
+                if (lineCount == pageLines) {
+                    pages.add(page.toString().component())
+                    page.clear()
+                    page.append(Settings.formatMessage(header).joinToString("\n")).append("\n")
+                    lineCount = 0
+                }
+
                 page.append(Settings.formatMessage(
-                    Message.BOOK_REASON,
+                    Message.REPORTADMIN_MYREPORTS_BOOK_FORMAT,
                     TextReplacement("player", target),
                     TextReplacement("id", reason.id),
                     TextReplacement("name", reason.displayName),
                     TextReplacement("description", reason.description)
                 ).replace("\\n", "\n")).append("\n")
-            }
-            page.append(Settings.formatMessage(Settings.bookFooter).joinToString("\n"))
 
-            sender.openBook(Book.book(title, title, page.toString().component()))
+                if (lineCount == pageLines) {
+                    page.append(Settings.formatMessage(header).joinToString("\n"))
+                }
+
+                lineCount++
+            }
+            page.append(Settings.formatMessage(header).joinToString("\n"))
+            pages.add(page.toString().component())
+
+            sender.openBook(Book.book(title, title, pages))
         } else {
             val reasons = Settings.reasons.filter { it.enabled }
             val reason = args.subList(1, args.size).joinToString(" ").lowercase()
