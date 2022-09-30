@@ -186,6 +186,7 @@ Database#getReportsCount(ReportStage)
 ACTIVE
 PENDING
 DONE
+CUSTOM
 ```
    
 **Create new report**   
