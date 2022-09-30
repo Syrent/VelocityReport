@@ -48,10 +48,10 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'com.zaxxer:HikariCP:4.0.3'
     compileOnly 'com.velocitypowered:velocity-api:3.1.0'
     compileOnly 'org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT'
 
+    implementation 'com.zaxxer:HikariCP:4.0.3'
     implementation 'net.kyori:adventure-api:4.11.0'
     implementation 'me.mohamad82:ruom-velocity:4.2.10'
     implementation 'com.github.cryptomorin:XSeries:9.1.0'
@@ -71,6 +71,7 @@ processResources {
 }
 
 shadowJar {
+    minimize()
     relocate('me.mohamad82.ruom', 'ir.syrent.velocityreport.ruom')
     relocate('com.cryptomorin.xseries', 'ir.syrent.velocityreport.xseries')
     relocate('net.kyori.adventure', 'ir.syrent.velocityreport.adventure')
