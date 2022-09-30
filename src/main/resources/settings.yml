@@ -1,5 +1,8 @@
 default_language: en_US
 velocity_support: false
+sounds:
+    command: "ENTITY_EXPERIENCE_ORB_PICKUP"
+    book: "ITEM_BOOK_PAGE_TURN"
 report:
     cooldown: 60
     staff_actionbar:

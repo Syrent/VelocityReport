@@ -1,9 +1,11 @@
 package ir.syrent.velocityreport.spigot.storage
 
+import com.cryptomorin.xseries.XSound
 import ir.syrent.velocityreport.report.Reason
 import ir.syrent.velocityreport.spigot.Ruom
 import ir.syrent.velocityreport.spigot.configuration.YamlConfig
 import ir.syrent.velocityreport.utils.TextReplacement
+import org.bukkit.Sound
 import org.bukkit.configuration.file.FileConfiguration
 
 object Settings {
@@ -21,6 +23,10 @@ object Settings {
 
     lateinit var defaultLanguage: String
     var velocitySupport = false
+
+    lateinit var commandSound: Sound
+    lateinit var bookSound: Sound
+
     var staffActionbarEnabled = true
     var staffActionbarSendZero = false
     var preventSelfReport = true
@@ -38,6 +44,10 @@ object Settings {
 
         defaultLanguage = settingsConfig.getString("default_language") ?: "en_US"
         velocitySupport = settingsConfig.getBoolean("velocity_support")
+
+        commandSound = XSound.valueOf(settingsConfig.getString("sounds.command") ?: "ENTITY_EXPERIENCE_ORB_PICKUP").parseSound()!!
+        bookSound = XSound.valueOf(settingsConfig.getString("sounds.book") ?: "ENTITY_EXPERIENCE_ORB_PICKUP").parseSound()!!
+
         staffActionbarEnabled = settingsConfig.getBoolean("report.staff_actionbar.enabled")
         staffActionbarSendZero = settingsConfig.getBoolean("report.staff_actionbar.send_zero")
         preventSelfReport = settingsConfig.getBoolean("report.prevent_self")
