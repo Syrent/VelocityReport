@@ -42,6 +42,7 @@ class MyReportsSubcommand : SubCommand("myreports", "velocityreport.admin.myrepo
                     page.append(Settings.formatMessage(header).joinToString("\n")).append("\n")
                     lineCount = 0
                 }
+                
                 page.append(
                     Settings.formatMessage(
                     Message.REPORTADMIN_MYREPORTS_BOOK_FORMAT,
