@@ -1,6 +1,10 @@
 package ir.syrent.velocityreport.report
 
+import ir.syrent.velocityreport.spigot.Ruom
+import ir.syrent.velocityreport.spigot.VelocityReportSpigot
 import ir.syrent.velocityreport.spigot.storage.Database
+import ir.syrent.velocityreport.spigot.storage.Settings
+import ir.syrent.velocityreport.utils.Utils
 import org.bukkit.entity.Player
 import java.util.*
 import java.util.concurrent.CompletableFuture
@@ -17,6 +21,14 @@ data class Report(
     var stage = ReportStage.ACTIVE
     var moderatorUUID: UUID? = null
     var moderatorName: String? = null
+
+    init {
+        if (Settings.velocitySupport) {
+            VelocityReportSpigot.instance.bridgeManager?.sendNewReportRequest(Ruom.getOnlinePlayers().iterator().next(), this)
+        } else {
+            Utils.sendNewReportMessage(reporterName, reportedName, server, reason)
+        }
+    }
 
     fun setModerator(player: Player) {
         moderatorUUID = player.uniqueId

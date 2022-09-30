@@ -49,6 +49,17 @@ class VelocityBridgeManager(
         sendPluginMessage(messageJson)
     }
 
+    fun sendNewReport(reporter: String, reported: String, server: String, reason: String) {
+        val messageJson = JsonObject()
+        messageJson.addProperty("type", "NewReport")
+        messageJson.addProperty("reporter", reporter)
+        messageJson.addProperty("reported", reported)
+        messageJson.addProperty("server", server)
+        messageJson.addProperty("reason", reason)
+
+        sendPluginMessage(messageJson)
+    }
+
     private fun sendPluginMessage(messageJson: JsonObject) {
         val byteArrayInputStream = ByteStreams.newDataOutput()
         byteArrayInputStream.writeUTF(GsonUtils.get().toJson(messageJson))
@@ -73,6 +84,14 @@ class VelocityBridgeManager(
             }
             "PlayerList" -> {
                 sendAllPlayersName()
+            }
+            "NewReport" -> {
+                sendNewReport(
+                    messageJson["reporter"].asString,
+                    messageJson["reported"].asString,
+                    messageJson["server"].asString,
+                    messageJson["reason"].asString
+                )
             }
             else -> {
                 VRuom.warn("Unsupported message type: ${messageJson["type"].asString}")

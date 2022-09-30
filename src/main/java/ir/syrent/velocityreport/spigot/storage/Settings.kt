@@ -26,6 +26,7 @@ object Settings {
 
     lateinit var commandSound: Sound
     lateinit var bookSound: Sound
+    lateinit var newReportSound: Sound
 
     var staffActionbarEnabled = true
     var staffActionbarSendZero = false
@@ -47,6 +48,7 @@ object Settings {
 
         commandSound = XSound.valueOf(settingsConfig.getString("sounds.command") ?: "ENTITY_EXPERIENCE_ORB_PICKUP").parseSound()!!
         bookSound = XSound.valueOf(settingsConfig.getString("sounds.book") ?: "ENTITY_EXPERIENCE_ORB_PICKUP").parseSound()!!
+        newReportSound = XSound.valueOf(settingsConfig.getString("sounds.new_report") ?: "ENTITY_EXPERIENCE_ORB_PICKUP").parseSound()!!
 
         staffActionbarEnabled = settingsConfig.getBoolean("report.staff_actionbar.enabled")
         staffActionbarSendZero = settingsConfig.getBoolean("report.staff_actionbar.send_zero")

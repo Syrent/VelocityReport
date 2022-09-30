@@ -32,5 +32,6 @@ enum class Message(val path: String) {
     INVALID_REASON("command.report.invalid_reason"),
     REPORT_ACTIONBAR("report.actionbar"),
     BOOK_REASON("command.report.book.reason"),
+    REPORT_MESSAGE("report.message"),
     EMPTY("");
 }
