@@ -93,11 +93,21 @@ java {
 }
 
 tasks.withType(JavaCompile).configureEach {
+    options.deprecation = true
     options.encoding = 'UTF-8'
-    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
-        options.release = targetJavaVersion
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
+    kotlinOptions {
+        jvmTarget = "8"
+        freeCompilerArgs += ["-Xjvm-default=all"]
     }
 }
+
+compileJava.options.encoding = 'UTF-8'
+compileJava.dependsOn clean
+
+build.dependsOn shadowJar
 
 tasks.withType(Jar) {
     destinationDirectory = file("$rootDir/bin/")
