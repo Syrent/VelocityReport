@@ -3,7 +3,7 @@ plugins {
     id 'maven-publish'
     id 'org.jetbrains.kotlin.jvm' version '1.7.10'
     id 'com.github.johnrengelman.shadow' version '7.1.0'
-    id 'org.jetbrains.gradle.plugin.idea-ext' version '1.0.1'
+    id 'org.jetbrains.gradle.plugin.idea-ext' version '1.1.6'
 }
 
 group = 'ir.syrent.velocityreport'
