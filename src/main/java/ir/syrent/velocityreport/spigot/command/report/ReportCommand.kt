@@ -122,7 +122,7 @@ class ReportCommand(
                 target,
                 System.currentTimeMillis(),
                 MiniMessage.miniMessage().stripTags(formattedReason)
-            ).update().whenComplete {_, _ ->
+            ).update(true).whenComplete {_, _ ->
                 val newCooldownCounter = MilliCounter()
                 newCooldownCounter.start()
                 plugin.cooldowns[sender.uniqueId] = newCooldownCounter

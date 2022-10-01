@@ -12,6 +12,19 @@ report:
         send_zero: false
     prevent_self: true
     custom_reason: false
+    auto_done:
+        enabled: true
+        time: 3600
+        call_update_event: false
+    commands:
+        active:
+            enabled: false
+            commands:
+                - "give $moderator diamond 1"
+        done:
+            enabled: false
+            commands:
+                - "give %player% diamond 1"
     reasons:
         killaura:
             enabled: true
@@ -41,3 +54,18 @@ report:
             enabled: true
             displayname: "<blue>ESP"
             description: "ESP is a cheat that allows you to see players through walls."
+discord:
+    enabled: false
+    webhook_url: ""
+    embed:
+        color: "#ff0000"
+        author: "Report System"
+        author_icon_url: "https://i.imgur.com/8ZQ9Z0I.png"
+        author_url: "https://i.imgur.com/8ZQ9Z0I.png"
+        title: "New Report"
+        title_url: "https://i.imgur.com/8ZQ9Z0I.png"
+        description: "**$reporter** reported **$reported** for **$reason** *($server)*"
+        image_url: "http://cravatar.eu/avatar/%name%/64.png"
+        thumbnail_url: "http://cravatar.eu/avatar/%name%/64.png"
+        footer: "Report System"
+        footer_icon_url: "https://i.imgur.com/8ZQ9Z0I.png"

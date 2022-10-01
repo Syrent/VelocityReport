@@ -9,6 +9,8 @@ import ir.syrent.velocityreport.spigot.command.report.ReportCommand
 import ir.syrent.velocityreport.spigot.command.reportadmin.ReportAdminCommand
 import ir.syrent.velocityreport.spigot.listener.PlayerJoinListener
 import ir.syrent.velocityreport.spigot.listener.PlayerQuitListener
+import ir.syrent.velocityreport.spigot.listener.PreReportListener
+import ir.syrent.velocityreport.spigot.listener.PreReportUpdateListener
 import ir.syrent.velocityreport.spigot.messaging.BukkitMessagingEvent
 import ir.syrent.velocityreport.spigot.storage.Database
 import ir.syrent.velocityreport.spigot.storage.Database.type
@@ -41,6 +43,8 @@ class VelocityReportSpigot : RUoMPlugin() {
         if (velocitySupport) {
             initializePluginChannels()
         }
+
+        if (Settings.autoDoneEnabled) autoDoneOldReportsRunnable()
     }
 
     private fun sendWarningMessage() {
@@ -80,6 +84,24 @@ class VelocityReportSpigot : RUoMPlugin() {
         }, 0, 100)
     }
 
+    private fun autoDoneOldReportsRunnable() {
+        var awaited = false
+        Ruom.runSync({
+            if (awaited) return@runSync
+            awaited = true
+
+            Database.getReports(ReportStage.ACTIVE).whenComplete { reports, _ ->
+                for (report in reports) {
+                    if (System.currentTimeMillis() > (report.date + Settings.autoDoneTime * 20)) {
+                        report.done()
+                        report.update(Settings.autoDoneCallUpdateEvent)
+                    }
+                }
+                awaited = false
+            }
+        }, 0, Settings.autoDoneTime * 20)
+    }
+
     private fun registerCommands() {
         ReportCommand(this)
         ReportAdminCommand()
@@ -88,6 +110,9 @@ class VelocityReportSpigot : RUoMPlugin() {
     private fun registerListeners() {
         PlayerJoinListener(this)
         PlayerQuitListener(this)
+
+        PreReportListener()
+        PreReportUpdateListener()
     }
 
     private fun initializePluginChannels() {

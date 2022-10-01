@@ -1,0 +1,48 @@
+package ir.syrent.velocityreport.spigot.listener
+
+import club.minnced.discord.webhook.send.WebhookEmbed
+import club.minnced.discord.webhook.send.WebhookEmbedBuilder
+import ir.syrent.velocityreport.spigot.Ruom
+import ir.syrent.velocityreport.spigot.VelocityReportSpigot
+import ir.syrent.velocityreport.spigot.event.PreReportEvent
+import ir.syrent.velocityreport.spigot.storage.Settings
+import ir.syrent.velocityreport.utils.Utils
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
+import java.time.Instant
+
+class PreReportListener : Listener {
+
+    init {
+        Ruom.registerListener(this)
+    }
+
+    @EventHandler
+    private fun onPreReport(event: PreReportEvent) {
+        if (event.isCancelled) return
+
+        if (Settings.velocitySupport) {
+            VelocityReportSpigot.instance.bridgeManager?.sendNewReportRequest(Ruom.getOnlinePlayers().iterator().next(), event.report)
+        } else {
+            Utils.sendNewReportMessage(event.report.reporterName, event.report.reportedName, event.report.server, event.report.reason)
+        }
+
+        val embed = WebhookEmbedBuilder()
+            .setColor(Integer.parseInt(Settings.discordEmbedColor.replaceFirst("#", ""), 16))
+            .setAuthor(WebhookEmbed.EmbedAuthor(Settings.discordEmbedAuthor, Settings.discordEmbedAuthorIconURL, Settings.discordEmbedAuthorURL))
+            .setTitle(WebhookEmbed.EmbedTitle(Settings.discordEmbedTitle, Settings.discordEmbedTitleURL))
+            .setDescription(
+                Settings.discordEmbedDescription
+                    .replace("\$reporter", event.report.reporterName)
+                    .replace("\$reported", event.report.reportedName)
+                    .replace("\$reason", event.report.reason)
+                    .replace("\$server", event.report.reason)
+            )
+            .setImageUrl(Settings.discordEmbedImageURL)
+            .setThumbnailUrl(Settings.discordEmbedThumbnailURL)
+            .setTimestamp(Instant.ofEpochMilli(System.currentTimeMillis()))
+            .setFooter(WebhookEmbed.EmbedFooter(Settings.discordEmbedFooter, Settings.discordEmbedFooterIconURL))
+            .build()
+        Settings.webhookClient?.send(embed)
+    }
+}

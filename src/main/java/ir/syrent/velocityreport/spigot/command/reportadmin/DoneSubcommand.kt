@@ -26,7 +26,7 @@ class DoneSubcommand : SubCommand("done", "velocityreport.admin.done", true) {
             }
 
             report.done()
-            report.update().whenComplete { _, _ ->
+            report.update(true).whenComplete { _, _ ->
                 sender.sendMessage(Message.REPORTADMIN_DONE_USE, TextReplacement("id", report.reportID.toString()))
             }
         }
