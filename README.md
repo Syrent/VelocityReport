@@ -4,7 +4,7 @@ More information can be found at [Why VelocityReport](https://github.com/Syrent/
 
 # Compiling
 Compilation requires JDK 8 and up.   
-To compile the plugin, run `./gradlew shadowJar` from the terminal.   
+To compile the plugin, run `./gradlew build` from the terminal.   
 Once the plugin compiles, grab the jar from `/bin` folder.   
 
 # Links
