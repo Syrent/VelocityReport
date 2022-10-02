@@ -3,9 +3,9 @@ VelocityReport aims to be the best report plugin out there.
 More information can be found at [Why VelocityReport](https://github.com/Syrent/VelocityReport/wiki/Why-VelocityReport%3F)? [wiki page](https://github.com/Syrent/VelocityReport/wiki).
 
 # Compiling
-Compilation requires JDK 8 and up.
-To compile the plugin, run ./gradlew shadowJar from the terminal.
-Once the plugin compiles, grab the jar from /bin folder.
+Compilation requires JDK 8 and up.   
+To compile the plugin, run `./gradlew shadowJar` from the terminal.   
+Once the plugin compiles, grab the jar from `/bin` folder.   
 
 # Links
 The precompiled JAR can be downloaded for free from:
