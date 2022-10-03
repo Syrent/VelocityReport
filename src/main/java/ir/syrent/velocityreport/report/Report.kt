@@ -2,8 +2,8 @@ package ir.syrent.velocityreport.report
 
 import ir.syrent.velocityreport.spigot.VelocityReportSpigot
 import ir.syrent.velocityreport.spigot.event.PostReportEvent
-import ir.syrent.velocityreport.spigot.event.PreReportEvent
 import ir.syrent.velocityreport.spigot.event.PostReportUpdateEvent
+import ir.syrent.velocityreport.spigot.event.PreReportEvent
 import ir.syrent.velocityreport.spigot.event.PreReportUpdateEvent
 import ir.syrent.velocityreport.spigot.storage.Database
 import org.bukkit.entity.Player
@@ -26,11 +26,13 @@ data class Report(
     var moderatorName: String? = null
 
     init {
-        val preReportEvent = PreReportEvent(this)
+        var report = this
+        val preReportEvent = PreReportEvent(report)
         VelocityReportSpigot.instance.server.pluginManager.callEvent(preReportEvent)
+        report = preReportEvent.report
 
         if (!preReportEvent.isCancelled) {
-            val postReportEvent = PostReportEvent(this)
+            val postReportEvent = PostReportEvent(report)
             VelocityReportSpigot.instance.server.pluginManager.callEvent(postReportEvent)
         }
     }
@@ -55,20 +57,23 @@ data class Report(
     fun update(callEvent: Boolean): CompletableFuture<Boolean> {
         val future = CompletableFuture<Boolean>()
 
+        var report = this
         if (callEvent) {
-            val preReportUpdateEvent = PreReportUpdateEvent(prevReportData, this)
+            val preReportUpdateEvent = PreReportUpdateEvent(prevReportData, report)
             VelocityReportSpigot.instance.server.pluginManager.callEvent(preReportUpdateEvent)
 
             if (preReportUpdateEvent.isCancelled) {
                 future.complete(false)
                 return future
             }
+
+            report = preReportUpdateEvent.newReport
         }
 
-        Database.saveReport(this).whenComplete { _, _ ->
-            val postReportUpdateEvent = PostReportUpdateEvent(prevReportData, this)
+        Database.saveReport(report).whenComplete { _, _ ->
+            val postReportUpdateEvent = PostReportUpdateEvent(prevReportData, report)
             VelocityReportSpigot.instance.server.pluginManager.callEvent(postReportUpdateEvent)
-            prevReportData = this
+            prevReportData = report
 
             future.complete(true)
         }

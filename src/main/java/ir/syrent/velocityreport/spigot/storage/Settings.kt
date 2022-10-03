@@ -116,14 +116,25 @@ object Settings {
             }
         }
 
-        reportsBookHeader.clear()
-        reportsBookHeader.addAll(languageConfig.getStringList("command.reportadmin.reports.book.header"))
-        myReportsBookHeader.clear()
-        myReportsBookHeader.addAll(languageConfig.getStringList("command.reportadmin.myreports.book.header"))
-        bookHeader.clear()
-        bookHeader.addAll(languageConfig.getStringList("command.report.book.header"))
-        bookFooter.clear()
-        bookFooter.addAll(languageConfig.getStringList("command.report.book.footer"))
+        reportsBookHeader.apply {
+            this.clear()
+            this.addAll(languageConfig.getStringList("command.reportadmin.reports.book.header"))
+        }
+
+        myReportsBookHeader.apply {
+            this.clear()
+            this.addAll(languageConfig.getStringList("command.reportadmin.myreports.book.header"))
+        }
+
+        bookHeader.apply {
+            this.clear()
+            this.addAll(languageConfig.getStringList("command.report.book.header"))
+        }
+
+        bookFooter.apply {
+            this.clear()
+            this.addAll(languageConfig.getStringList("command.report.book.footer"))
+        }
 
         messages.apply {
             this.clear()
@@ -138,15 +149,17 @@ object Settings {
         }
 
         webhookClient?.close()
-        val discordWebhookBuilder = WebhookClientBuilder(discordWebhookURL)
-        discordWebhookBuilder.setThreadFactory {
-            val thread = Thread(it)
-            thread.name = "VelocityReport Discord Webhook"
-            thread.isDaemon = true
-            thread
+        if (discordEnabled) {
+            val discordWebhookBuilder = WebhookClientBuilder(discordWebhookURL)
+            discordWebhookBuilder.setThreadFactory {
+                val thread = Thread(it)
+                thread.name = "VelocityReport Discord Webhook"
+                thread.isDaemon = true
+                thread
+            }
+            discordWebhookBuilder.setWait(true)
+            webhookClient = discordWebhookBuilder.build()
         }
-        discordWebhookBuilder.setWait(true)
-        webhookClient = discordWebhookBuilder.build()
 
         settings.saveConfig()
         settings.reloadConfig()

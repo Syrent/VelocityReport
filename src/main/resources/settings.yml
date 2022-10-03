@@ -17,7 +17,7 @@ report:
         time: 3600
         call_update_event: false
     commands:
-        active:
+        accept:
             enabled: false
             commands:
                 - "give $moderator diamond 1"
