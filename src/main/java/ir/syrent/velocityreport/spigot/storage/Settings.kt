@@ -1,5 +1,7 @@
 package ir.syrent.velocityreport.spigot.storage
 
+import club.minnced.discord.webhook.WebhookClient
+import club.minnced.discord.webhook.WebhookClientBuilder
 import com.cryptomorin.xseries.XSound
 import ir.syrent.velocityreport.report.Reason
 import ir.syrent.velocityreport.spigot.Ruom
@@ -28,12 +30,36 @@ object Settings {
     lateinit var bookSound: Sound
     lateinit var newReportSound: Sound
 
+    var cooldown = 60
     var staffActionbarEnabled = true
     var staffActionbarSendZero = false
     var preventSelfReport = true
     var customReason = false
     var reasons = mutableListOf<Reason>()
-    var cooldown = 0
+    var autoDoneEnabled = true
+    var autoDoneTime = 3600
+    var autoDoneCallUpdateEvent = false
+
+    var acceptCommandsEnabled = false
+    var acceptCommands = mutableListOf<String>()
+    var doneCommandsEnabled = false
+    var doneCommands = mutableListOf<String>()
+
+    var webhookClient: WebhookClient? = null
+
+    private var discordEnabled = false
+    lateinit var discordWebhookURL: String
+    lateinit var discordEmbedColor: String
+    lateinit var discordEmbedAuthor: String
+    lateinit var discordEmbedAuthorIconURL: String
+    lateinit var discordEmbedAuthorURL: String
+    lateinit var discordEmbedTitle: String
+    lateinit var discordEmbedTitleURL: String
+    lateinit var discordEmbedDescription: String
+    lateinit var discordEmbedImageURL: String
+    lateinit var discordEmbedThumbnailURL: String
+    lateinit var discordEmbedFooter: String
+    lateinit var discordEmbedFooterIconURL: String
 
     init {
         load()
@@ -50,11 +76,33 @@ object Settings {
         bookSound = XSound.valueOf(settingsConfig.getString("sounds.book") ?: "ENTITY_EXPERIENCE_ORB_PICKUP").parseSound()!!
         newReportSound = XSound.valueOf(settingsConfig.getString("sounds.new_report") ?: "ENTITY_EXPERIENCE_ORB_PICKUP").parseSound()!!
 
+        cooldown = settingsConfig.getInt("report.cooldown")
         staffActionbarEnabled = settingsConfig.getBoolean("report.staff_actionbar.enabled")
         staffActionbarSendZero = settingsConfig.getBoolean("report.staff_actionbar.send_zero")
         preventSelfReport = settingsConfig.getBoolean("report.prevent_self")
         customReason = settingsConfig.getBoolean("report.custom_reason")
-        cooldown = settingsConfig.getInt("report.cooldown", 60)
+        autoDoneEnabled = settingsConfig.getBoolean("report.auto_done.enabled")
+        autoDoneTime = settingsConfig.getInt("report.auto_done.time")
+        autoDoneCallUpdateEvent = settingsConfig.getBoolean("report.auto_done.call_update_event")
+
+        acceptCommandsEnabled = settingsConfig.getBoolean("report.commands.accept.enabled")
+        acceptCommands = settingsConfig.getStringList("report.commands.accept.commands")
+        doneCommandsEnabled = settingsConfig.getBoolean("report.commands.done.enabled")
+        doneCommands = settingsConfig.getStringList("report.commands.done.commands")
+
+        discordEnabled = settingsConfig.getBoolean("discord.enabled")
+        discordWebhookURL = settingsConfig.getString("discord.webhook_url")!!
+        discordEmbedColor = settingsConfig.getString("discord.embed.color")!!
+        discordEmbedAuthor = settingsConfig.getString("discord.embed.author")!!
+        discordEmbedAuthorIconURL = settingsConfig.getString("discord.embed.author_icon_url")!!
+        discordEmbedAuthorURL = settingsConfig.getString("discord.embed.author_url")!!
+        discordEmbedTitle = settingsConfig.getString("discord.embed.title")!!
+        discordEmbedTitleURL = settingsConfig.getString("discord.embed.title_url")!!
+        discordEmbedDescription = settingsConfig.getString("discord.embed.description")!!
+        discordEmbedImageURL = settingsConfig.getString("discord.embed.image_url")!!
+        discordEmbedThumbnailURL = settingsConfig.getString("discord.embed.thumbnail_url")!!
+        discordEmbedFooter = settingsConfig.getString("discord.embed.footer")!!
+        discordEmbedFooterIconURL = settingsConfig.getString("discord.embed.footer_icon_url")!!
 
         language = YamlConfig(Ruom.getPlugin().dataFolder, "languages/$defaultLanguage.yml")
         languageConfig = language.config
@@ -68,14 +116,25 @@ object Settings {
             }
         }
 
-        reportsBookHeader.clear()
-        reportsBookHeader.addAll(languageConfig.getStringList("command.reportadmin.reports.book.header"))
-        myReportsBookHeader.clear()
-        myReportsBookHeader.addAll(languageConfig.getStringList("command.reportadmin.myreports.book.header"))
-        bookHeader.clear()
-        bookHeader.addAll(languageConfig.getStringList("command.report.book.header"))
-        bookFooter.clear()
-        bookFooter.addAll(languageConfig.getStringList("command.report.book.footer"))
+        reportsBookHeader.apply {
+            this.clear()
+            this.addAll(languageConfig.getStringList("command.reportadmin.reports.book.header"))
+        }
+
+        myReportsBookHeader.apply {
+            this.clear()
+            this.addAll(languageConfig.getStringList("command.reportadmin.myreports.book.header"))
+        }
+
+        bookHeader.apply {
+            this.clear()
+            this.addAll(languageConfig.getStringList("command.report.book.header"))
+        }
+
+        bookFooter.apply {
+            this.clear()
+            this.addAll(languageConfig.getStringList("command.report.book.footer"))
+        }
 
         messages.apply {
             this.clear()
@@ -87,6 +146,19 @@ object Settings {
 
                 this[message] = languageConfig.getString(message.path) ?: languageConfig.getString(Message.UNKNOWN_MESSAGE.path) ?: "Cannot find message: ${message.name}"
             }
+        }
+
+        webhookClient?.close()
+        if (discordEnabled) {
+            val discordWebhookBuilder = WebhookClientBuilder(discordWebhookURL)
+            discordWebhookBuilder.setThreadFactory {
+                val thread = Thread(it)
+                thread.name = "VelocityReport Discord Webhook"
+                thread.isDaemon = true
+                thread
+            }
+            discordWebhookBuilder.setWait(true)
+            webhookClient = discordWebhookBuilder.build()
         }
 
         settings.saveConfig()

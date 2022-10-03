@@ -13,7 +13,11 @@ repositories {
     mavenLocal()
     mavenCentral()
 
-    // Velocity-API
+    maven {
+        url = uri('https://repo.maven.apache.org/maven2/')
+    }
+
+    // Velocity-API / PaperLib
     maven {
         name 'papermc'
         url 'https://repo.papermc.io/repository/maven-public/'
@@ -52,9 +56,12 @@ dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT'
 
     implementation 'com.zaxxer:HikariCP:4.0.3'
-    implementation 'net.kyori:adventure-api:4.11.0'
+    implementation 'io.papermc:paperlib:1.0.7'
     implementation 'me.mohamad82:ruom-velocity:4.2.10'
+    implementation 'club.minnced:discord-webhooks:0.8.2'
     implementation 'com.github.cryptomorin:XSeries:9.1.0'
+
+    implementation 'net.kyori:adventure-api:4.11.0'
     implementation 'net.kyori:adventure-platform-bukkit:4.1.2'
     implementation 'net.kyori:adventure-text-minimessage:4.11.0'
 
@@ -72,9 +79,11 @@ processResources {
 
 shadowJar {
     minimize()
+
     relocate('me.mohamad82.ruom', 'ir.syrent.velocityreport.ruom')
     relocate('com.cryptomorin.xseries', 'ir.syrent.velocityreport.xseries')
-    relocate('net.kyori.adventure', 'ir.syrent.velocityreport.adventure')
+    relocate('net.kyori.adventure', 'ir.syrent.velocityreport.kyori.adventure')
+
     archiveFileName = findProperty("plugin-name") + " v" + findProperty("version") + ".jar"
 }
 
@@ -129,10 +138,28 @@ def generateTemplates = tasks.register('generateTemplates', Copy) { task ->
     task.into templateDest
     task.expand props
 }
-
 sourceSets.main.java.srcDir(generateTemplates.map { it.outputs })
-
 rootProject.idea.project.settings.taskTriggers.afterSync generateTemplates
+
+publishing {
+    repositories {
+        maven {
+            url = "https://repo.repsy.io/mvn/syrent/velocityreport"
+            credentials {
+                username = project.findProperty("gpr.user")
+                password = project.findProperty("gpr.key")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) { publication ->
+            groupId 'ir.syrent'
+            artifactId 'velocityreport'
+            project.shadow.component(publication)
+        }
+    }
+}
+
 compileKotlin {
     kotlinOptions {
         jvmTarget = "1.8"

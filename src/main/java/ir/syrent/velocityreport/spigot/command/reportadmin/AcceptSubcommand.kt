@@ -27,7 +27,7 @@ class AcceptSubcommand : SubCommand("accept", "velocityreport.admin.accept", tru
 
             report.setModerator(sender)
             report.pending()
-            report.update().whenComplete { _, _ ->
+            report.update(true).whenComplete { _, _ ->
                 sender.sendMessage(Message.REPORTADMIN_ACCEPT_USE, TextReplacement("id", report.reportID.toString()))
             }
         }

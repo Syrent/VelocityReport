@@ -1,5 +1,6 @@
 package ir.syrent.velocityreport.bridge
 
+import com.google.common.annotations.Beta
 import com.google.common.io.ByteStreams
 import com.google.gson.JsonObject
 import com.velocitypowered.api.proxy.Player
@@ -49,7 +50,7 @@ class VelocityBridgeManager(
         sendPluginMessage(messageJson)
     }
 
-    fun sendNewReport(reporter: String, reported: String, server: String, reason: String) {
+    private fun sendNewReport(reporter: String, reported: String, server: String, reason: String) {
         val messageJson = JsonObject()
         messageJson.addProperty("type", "NewReport")
         messageJson.addProperty("reporter", reporter)
@@ -60,6 +61,7 @@ class VelocityBridgeManager(
         sendPluginMessage(messageJson)
     }
 
+    @Beta
     private fun sendPluginMessage(messageJson: JsonObject) {
         val byteArrayInputStream = ByteStreams.newDataOutput()
         byteArrayInputStream.writeUTF(GsonUtils.get().toJson(messageJson))

@@ -53,9 +53,6 @@ class BukkitBridgeManager(
                     }
                 }
             }
-            "Server" -> {
-                plugin.networkPlayersServer[UUID.fromString(messageJson["uuid"].asString)] = messageJson["server"].asString
-            }
             "NewReport" -> {
                 Utils.sendNewReportMessage(
                     messageJson["reporter"].asString,
@@ -63,6 +60,9 @@ class BukkitBridgeManager(
                     messageJson["server"].asString,
                     messageJson["reason"].asString
                 )
+            }
+            "Server" -> {
+                plugin.networkPlayersServer[UUID.fromString(messageJson["uuid"].asString)] = messageJson["server"].asString
             }
             else -> {
                 Ruom.warn("Unsupported plugin message received from internal channel: $type")
