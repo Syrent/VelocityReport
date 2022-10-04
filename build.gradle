@@ -141,25 +141,6 @@ def generateTemplates = tasks.register('generateTemplates', Copy) { task ->
 sourceSets.main.java.srcDir(generateTemplates.map { it.outputs })
 rootProject.idea.project.settings.taskTriggers.afterSync generateTemplates
 
-publishing {
-    repositories {
-        maven {
-            url = "https://repo.repsy.io/mvn/syrent/velocityreport"
-            credentials {
-                username = project.findProperty("gpr.user")
-                password = project.findProperty("gpr.key")
-            }
-        }
-    }
-    publications {
-        gpr(MavenPublication) { publication ->
-            groupId 'ir.syrent'
-            artifactId 'velocityreport'
-            project.shadow.component(publication)
-        }
-    }
-}
-
 compileKotlin {
     kotlinOptions {
         jvmTarget = "1.8"
