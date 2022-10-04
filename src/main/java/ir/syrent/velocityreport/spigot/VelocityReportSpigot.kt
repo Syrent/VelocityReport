@@ -16,11 +16,13 @@ import ir.syrent.velocityreport.spigot.messaging.BukkitMessagingEvent
 import ir.syrent.velocityreport.spigot.storage.Database
 import ir.syrent.velocityreport.spigot.storage.Database.type
 import ir.syrent.velocityreport.spigot.storage.Settings
+import ir.syrent.velocityreport.spigot.storage.Settings.bstats
 import ir.syrent.velocityreport.spigot.storage.Settings.velocitySupport
 import ir.syrent.velocityreport.utils.ServerVersion
 import ir.syrent.velocityreport.utils.Utils
 import ir.syrent.velocityreport.utils.component
 import me.mohamad82.ruom.utils.MilliCounter
+import org.bstats.bukkit.Metrics
 import org.bukkit.entity.Player
 import java.util.*
 
@@ -46,6 +48,10 @@ class VelocityReportSpigot : RUoMPlugin() {
 
         if (velocitySupport) {
             initializePluginChannels()
+        }
+
+        if (bstats) {
+            enableMetrics()
         }
 
         if (Settings.autoDoneEnabled) autoDoneOldReportsRunnable()
@@ -76,6 +82,11 @@ class VelocityReportSpigot : RUoMPlugin() {
             Ruom.warn("Please consider updating your server to 1.16.5 or higher.")
         }
         PaperLib.suggestPaper(this)
+    }
+
+    fun enableMetrics() {
+        val pluginID = 16576
+        Metrics(this, pluginID)
     }
 
     private fun initializeInstances() {
