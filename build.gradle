@@ -52,12 +52,12 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'org.bstats:bstats-bukkit:3.0.0'
     compileOnly 'com.velocitypowered:velocity-api:3.1.1'
     compileOnly 'org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT'
 
     implementation 'com.zaxxer:HikariCP:4.0.3'
     implementation 'io.papermc:paperlib:1.0.7'
+    implementation 'org.bstats:bstats-bukkit:3.0.0'
     implementation 'me.mohamad82:ruom-velocity:4.2.10'
     implementation 'club.minnced:discord-webhooks:0.8.2'
     implementation 'com.github.cryptomorin:XSeries:9.1.0'
