@@ -25,6 +25,7 @@ object Settings {
 
     lateinit var defaultLanguage: String
     var velocitySupport = false
+    var bstats = true
 
     lateinit var commandSound: Sound
     lateinit var bookSound: Sound
@@ -71,6 +72,7 @@ object Settings {
 
         defaultLanguage = settingsConfig.getString("default_language") ?: "en_US"
         velocitySupport = settingsConfig.getBoolean("velocity_support")
+        bstats = settingsConfig.getBoolean("bstats")
 
         commandSound = XSound.valueOf(settingsConfig.getString("sounds.command") ?: "ENTITY_EXPERIENCE_ORB_PICKUP").parseSound()!!
         bookSound = XSound.valueOf(settingsConfig.getString("sounds.book") ?: "ENTITY_EXPERIENCE_ORB_PICKUP").parseSound()!!
