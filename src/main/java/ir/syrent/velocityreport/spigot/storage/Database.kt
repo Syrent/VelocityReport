@@ -93,6 +93,7 @@ object Database {
                         result.getString("reported_name"),
                         result.getLong("date"),
                         result.getString("reason"),
+                        false
                     ).apply {
                         this.reportID = UUID.fromString(result.getString("report_id"))
                         this.stage = ReportStage.valueOf(result.getString("stage"))
@@ -126,6 +127,7 @@ object Database {
                         result.getString("reported_name"),
                         result.getLong("date"),
                         result.getString("reason"),
+                        false
                     ).apply {
                         this.reportID = UUID.fromString(result.getString("report_id"))
                         this.stage = ReportStage.valueOf(result.getString("stage"))
@@ -158,6 +160,7 @@ object Database {
                         result.getString("reported_name"),
                         result.getLong("date"),
                         result.getString("reason"),
+                        false
                     ).apply {
                         this.reportID = UUID.fromString(result.getString("report_id"))
                         this.stage = ReportStage.valueOf(result.getString("stage"))

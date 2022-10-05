@@ -121,7 +121,8 @@ class ReportCommand(
                 sender.name,
                 target,
                 System.currentTimeMillis(),
-                MiniMessage.miniMessage().stripTags(formattedReason)
+                MiniMessage.miniMessage().stripTags(formattedReason),
+                true
             ).update(true).whenComplete {_, _ ->
                 val newCooldownCounter = MilliCounter()
                 newCooldownCounter.start()
