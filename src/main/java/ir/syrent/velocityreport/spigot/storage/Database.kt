@@ -6,6 +6,7 @@ import ir.syrent.velocityreport.database.mysql.MySQLCredentials
 import ir.syrent.velocityreport.report.Report
 import ir.syrent.velocityreport.report.ReportStage
 import ir.syrent.velocityreport.spigot.Ruom
+import ir.syrent.velocityreport.spigot.adventure.AdventureApi
 import ir.syrent.velocityreport.spigot.configuration.YamlConfig
 import ir.syrent.velocityreport.spigot.database.MySQLDatabase
 import ir.syrent.velocityreport.spigot.database.sqlite.SQLiteDatabase
@@ -38,8 +39,14 @@ object Database {
             database = SQLiteDatabase(File(Ruom.getPlugin().dataFolder, "storage.db"))
         }
 
-        database!!.connect()
-        database!!.queueQuery(Query.query("CREATE TABLE IF NOT EXISTS velocityreport_reports (report_id VARCHAR(64), reporter_id VARCHAR(64), reporter_name VARCHAR(16), reported_name VARCHAR(16), date BIGINT, reason VARCHAR(128), moderator_id VARCHAR(64), server VARCHAR(64), moderator_name VARCHAR(16), stage VARCHAR(64), PRIMARY KEY (report_id));"), Priority.HIGHEST)
+
+        try {
+            Ruom.log("Successfully connected to ${type.name} database.")
+            database!!.connect()
+            database!!.queueQuery(Query.query("CREATE TABLE IF NOT EXISTS velocityreport_reports (report_id VARCHAR(64), reporter_id VARCHAR(64), reporter_name VARCHAR(16), reported_name VARCHAR(16), date BIGINT, reason VARCHAR(128), moderator_id VARCHAR(64), server VARCHAR(64), moderator_name VARCHAR(16), stage VARCHAR(64), PRIMARY KEY (report_id));"), Priority.HIGHEST)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     fun shutdown() {
