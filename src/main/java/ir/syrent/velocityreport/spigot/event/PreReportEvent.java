@@ -14,7 +14,6 @@ public class PreReportEvent extends Event implements Cancellable {
     private static final HandlerList HANDLERS = new HandlerList();
 
     public PreReportEvent(Report report) {
-        super(true);
         this.report = report;
     }
 

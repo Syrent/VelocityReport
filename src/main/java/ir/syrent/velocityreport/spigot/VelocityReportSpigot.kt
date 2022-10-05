@@ -133,7 +133,7 @@ class VelocityReportSpigot : RUoMPlugin() {
                 }
                 awaited = false
             }
-        }, 0, 200)
+        }, 0, Settings.autoDoneTime * 60 * 20)
     }
 
     private fun registerCommands() {

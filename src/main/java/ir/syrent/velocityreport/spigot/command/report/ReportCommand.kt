@@ -76,7 +76,7 @@ class ReportCommand(
                 }
 
                 page.append(Settings.formatMessage(
-                    Message.REPORTADMIN_MYREPORTS_BOOK_FORMAT,
+                    Message.BOOK_REASON,
                     TextReplacement("player", target),
                     TextReplacement("id", reason.id),
                     TextReplacement("name", reason.displayName),
@@ -84,12 +84,12 @@ class ReportCommand(
                 ).replace("\\n", "\n")).append("\n")
 
                 if (lineCount == pageLines) {
-                    page.append(Settings.formatMessage(header).joinToString("\n"))
+                    page.append(Settings.formatMessage(footer).joinToString("\n"))
                 }
 
                 lineCount++
             }
-            page.append(Settings.formatMessage(header).joinToString("\n"))
+            page.append(Settings.formatMessage(footer).joinToString("\n"))
             pages.add(page.toString().component())
 
             sender.openBook(Book.book(title, title, pages))
@@ -121,7 +121,8 @@ class ReportCommand(
                 sender.name,
                 target,
                 System.currentTimeMillis(),
-                MiniMessage.miniMessage().stripTags(formattedReason)
+                MiniMessage.miniMessage().stripTags(formattedReason),
+                true
             ).update(true).whenComplete {_, _ ->
                 val newCooldownCounter = MilliCounter()
                 newCooldownCounter.start()

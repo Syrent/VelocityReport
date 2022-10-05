@@ -13,7 +13,6 @@ public class PostReportUpdateEvent extends Event {
 
 
     public PostReportUpdateEvent(Report prevReport, Report newReport) {
-        super(true);
         this.prevReport = prevReport;
         this.newReport = newReport;
     }

@@ -17,6 +17,7 @@ data class Report(
     val reportedName: String,
     val date: Long,
     val reason: String,
+    val callEvent: Boolean
 ) {
     private var prevReportData = this
 
@@ -26,14 +27,16 @@ data class Report(
     var moderatorName: String? = null
 
     init {
-        var report = this
-        val preReportEvent = PreReportEvent(report)
-        VelocityReportSpigot.instance.server.pluginManager.callEvent(preReportEvent)
-        report = preReportEvent.report
+        if (callEvent) {
+            var report = this
+            val preReportEvent = PreReportEvent(report)
+            VelocityReportSpigot.instance.server.pluginManager.callEvent(preReportEvent)
+            report = preReportEvent.report
 
-        if (!preReportEvent.isCancelled) {
-            val postReportEvent = PostReportEvent(report)
-            VelocityReportSpigot.instance.server.pluginManager.callEvent(postReportEvent)
+            if (!preReportEvent.isCancelled) {
+                val postReportEvent = PostReportEvent(report)
+                VelocityReportSpigot.instance.server.pluginManager.callEvent(postReportEvent)
+            }
         }
     }
 
