@@ -84,12 +84,12 @@ class ReportCommand(
                 ).replace("\\n", "\n")).append("\n")
 
                 if (lineCount == pageLines) {
-                    page.append(Settings.formatMessage(header).joinToString("\n"))
+                    page.append(Settings.formatMessage(footer).joinToString("\n"))
                 }
 
                 lineCount++
             }
-            page.append(Settings.formatMessage(header).joinToString("\n"))
+            page.append(Settings.formatMessage(footer).joinToString("\n"))
             pages.add(page.toString().component())
 
             sender.openBook(Book.book(title, title, pages))
