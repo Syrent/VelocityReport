@@ -11,7 +11,7 @@ Once the plugin compiles, grab the jar from `/bin` folder.
 The precompiled JAR can be downloaded for free from:
 
 * GitHub releases: https://github.com/Syrent/VelocityReport/releases
-* Modrith (Recommended): https://modrinth.com/plugin/velocityreport
+* Modrinth (Recommended): https://modrinth.com/plugin/velocityreport
 * Spigot: https://www.spigotmc.org/resources/velocityreport-1-8-1-19-2-mysql-sqlite.105378/
 * Polymart: https://polymart.org/resource/velocityreport-1-8-1-19-2.2896
 * Paper's forum: https://forums.papermc.io/threads/velocityreport-report-system-for-velocity-servers.515/
