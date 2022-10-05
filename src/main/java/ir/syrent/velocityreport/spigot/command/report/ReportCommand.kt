@@ -76,7 +76,7 @@ class ReportCommand(
                 }
 
                 page.append(Settings.formatMessage(
-                    Message.REPORTADMIN_MYREPORTS_BOOK_FORMAT,
+                    Message.BOOK_REASON,
                     TextReplacement("player", target),
                     TextReplacement("id", reason.id),
                     TextReplacement("name", reason.displayName),

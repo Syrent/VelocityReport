@@ -12,7 +12,6 @@ public class PostReportEvent extends Event {
     private static final HandlerList HANDLERS = new HandlerList();
 
     public PostReportEvent(Report report) {
-        super(true);
         this.report = report;
     }
 
