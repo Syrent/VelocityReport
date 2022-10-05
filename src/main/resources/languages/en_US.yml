@@ -55,4 +55,4 @@ command:
 
 report:
     actionbar: "<dark_red>⚠ <gradient:gold:yellow>There are <aqua>$reports</aqua> reports!"
-    message: "<click:run_command:'/reportadmin reports'><hover:show_text:'<blue>Server: <aqua>$server</aqua>\nReason: <aqua>$reason</aqua>\n\n<yellow>Click to see all reports!'><gold>● <blue>$reporter</dark_blue> reported <blue>$reported</dark_blue></hover></click>"
+    message: "<click:run_command:'/reportadmin reports'><hover:show_text:'<blue>Server: <aqua>$server</aqua>\nReason: <aqua>$reason</aqua>\n\n<yellow>Click to see all reports!'><gold>● <blue>$reporter</blue> reported <blue>$reported</blue></hover></click>"
