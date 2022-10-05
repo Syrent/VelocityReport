@@ -18,7 +18,6 @@ The precompiled JAR can be downloaded for free from:
 
 Other links:
 
-* Discord support for buyers: https://discord.gg/xZyYGU4EG4
 * Wiki: https://github.com/Syrent/VelocityReport/wiki
 
 # Contributing
