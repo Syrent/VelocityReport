@@ -74,9 +74,9 @@ object Settings {
         velocitySupport = settingsConfig.getBoolean("velocity_support")
         bstats = settingsConfig.getBoolean("bstats")
 
-        commandSound = XSound.valueOf(settingsConfig.getString("sounds.command") ?: "ENTITY_EXPERIENCE_ORB_PICKUP").parseSound()!!
-        bookSound = XSound.valueOf(settingsConfig.getString("sounds.book") ?: "ENTITY_EXPERIENCE_ORB_PICKUP").parseSound()!!
-        newReportSound = XSound.valueOf(settingsConfig.getString("sounds.new_report") ?: "ENTITY_EXPERIENCE_ORB_PICKUP").parseSound()!!
+        commandSound = XSound.valueOf(settingsConfig.getString("sounds.command")!!).parseSound() ?: Sound.valueOf("CLICK")
+        bookSound = XSound.valueOf(settingsConfig.getString("sounds.book")!!).parseSound() ?: Sound.valueOf("CLICK")
+        newReportSound = XSound.valueOf(settingsConfig.getString("sounds.new_report")!!).parseSound() ?: Sound.valueOf("CLICK")
 
         cooldown = settingsConfig.getInt("report.cooldown")
         staffActionbarEnabled = settingsConfig.getBoolean("report.staff_actionbar.enabled")
