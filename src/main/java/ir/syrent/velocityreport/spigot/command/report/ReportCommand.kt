@@ -35,99 +35,171 @@ class ReportCommand(
             return
         }
 
-        var target = plugin.server.getPlayerExact(args[0])?.name
+        //           1          2        3
+        // Report <player> <category> <reason>
+        if (args.size <= 3) {
+            var target = plugin.server.getPlayerExact(args[0])?.name
 
-        if (Settings.velocitySupport) {
-            target = plugin.networkPlayers.findLast { it.lowercase() == args[0].lowercase() }
-        }
+            if (Settings.velocitySupport) {
+                target = plugin.networkPlayers.findLast { it.lowercase() == args[0].lowercase() }
+            }
 
-        if (target == null) {
-            sender.sendMessage(Message.NO_TARGET)
-            return
-        }
+            if (target == null) {
+                sender.sendMessage(Message.NO_TARGET)
+                return
+            }
 
-        if (target == sender.name && Settings.preventSelfReport) {
-            sender.sendMessage(Message.REPORT_PREVENT_SELF)
-            return
-        }
+            if (target == sender.name && Settings.preventSelfReport) {
+                sender.sendMessage(Message.REPORT_PREVENT_SELF)
+                return
+            }
 
-        if (args.size == 1) {
             val title = ComponentUtils.parse("VelocityReport")
+
             var pageLines = 14
 
-            val pages = mutableListOf<Component>()
             val header = Settings.bookHeader
             val footer = Settings.bookFooter
-            var lineCount = 0
 
             pageLines -= header.size
             pageLines -= footer.size
 
-            val page = StringBuilder()
 
-            page.append(Settings.formatMessage(header).joinToString("\n")).append("\n")
-            val enabledReasons = Settings.reasons.filter { it.enabled }
-            for (reason in enabledReasons) {
-                if (lineCount == pageLines) {
-                    pages.add(page.toString().component())
-                    page.clear()
+            when (args.size) {
+                1 -> {
+                    val pages = mutableListOf<Component>()
+                    var lineCount = 0
+
+                    val page = StringBuilder()
+
                     page.append(Settings.formatMessage(header).joinToString("\n")).append("\n")
-                    lineCount = 0
-                }
+                    val enabledCategories = Settings.categories.filter { it.enabled }
+                    for (category in enabledCategories) {
+                        if (lineCount == pageLines) {
+                            pages.add(page.toString().component())
+                            page.clear()
+                            page.append(Settings.formatMessage(header).joinToString("\n")).append("\n")
+                            lineCount = 0
+                        }
 
-                page.append(Settings.formatMessage(
-                    Message.BOOK_REASON,
-                    TextReplacement("player", target),
-                    TextReplacement("id", reason.id),
-                    TextReplacement("name", reason.displayName),
-                    TextReplacement("description", reason.description)
-                ).replace("\\n", "\n")).append("\n")
+                        page.append(
+                            Settings.formatMessage(
+                                Message.BOOK_CATEGORY,
+                                TextReplacement("player", target),
+                                TextReplacement("category", category.id),
+                                TextReplacement("name", category.displayName)
+                            ).replace("\\n", "\n")
+                        ).append("\n")
 
-                if (lineCount == pageLines) {
+                        if (lineCount == pageLines) {
+                            page.append(Settings.formatMessage(footer).joinToString("\n"))
+                        }
+
+                        lineCount++
+                    }
                     page.append(Settings.formatMessage(footer).joinToString("\n"))
+                    pages.add(page.toString().component())
+
+                    sender.openBook(Book.book(title, title, pages))
+                }
+                2 -> {
+                    val enabledReasons =
+                        Settings.categories.findLast { it.id == args[1] }?.reasons?.filter { it.enabled } ?: run {
+                            sender.sendMessage(Message.INVALID_CATEGORY, TextReplacement("category", args[1]))
+                            return
+                        }
+                    val pages = mutableListOf<Component>()
+                    var lineCount = 0
+
+                    val page = StringBuilder()
+
+                    page.append(Settings.formatMessage(header).joinToString("\n")).append("\n")
+                    for (reason in enabledReasons) {
+                        if (lineCount == pageLines) {
+                            pages.add(page.toString().component())
+                            page.clear()
+                            page.append(Settings.formatMessage(header).joinToString("\n")).append("\n")
+                            lineCount = 0
+                        }
+
+                        page.append(
+                            Settings.formatMessage(
+                                Message.BOOK_REASON,
+                                TextReplacement("player", target),
+                                TextReplacement("reason", reason.id),
+                                TextReplacement("category", reason.category),
+                                TextReplacement("name", reason.displayName),
+                                TextReplacement("description", reason.description)
+                            ).replace("\\n", "\n")
+                        ).append("\n")
+
+                        if (lineCount == pageLines) {
+                            page.append(Settings.formatMessage(footer).joinToString("\n"))
+                        }
+
+                        lineCount++
+                    }
+                    page.append(Settings.formatMessage(footer).joinToString("\n"))
+                    pages.add(page.toString().component())
+
+                    sender.openBook(Book.book(title, title, pages))
                 }
 
-                lineCount++
-            }
-            page.append(Settings.formatMessage(footer).joinToString("\n"))
-            pages.add(page.toString().component())
+                3 -> {
+                    val reasons = Settings.categories.findLast { it.id == args[1] }?.reasons?.filter { it.enabled } ?: run {
+                        sender.sendMessage(Message.INVALID_CATEGORY, TextReplacement("category", args[1]))
+                        return
+                    }
+                    val reason = args.subList(2, args.size).joinToString(" ").lowercase()
+                    val formattedReason =
+                        reasons.findLast { it.id.lowercase() == reason.lowercase() }?.displayName ?: reason
 
-            sender.openBook(Book.book(title, title, pages))
-        } else {
-            val reasons = Settings.reasons.filter { it.enabled }
-            val reason = args.subList(1, args.size).joinToString(" ").lowercase()
-            val formattedReason = reasons.findLast { it.id.lowercase() == reason.lowercase() }?.displayName ?: reason
+                    if (!Settings.customReason && !reasons.map { it.id.lowercase() }.contains(reason.lowercase())) {
+                        sender.sendMessage(Message.INVALID_REASON, TextReplacement("reason", formattedReason))
+                        return
+                    }
 
-            if (!Settings.customReason && !reasons.map { it.id.lowercase() }.contains(reason.lowercase())) {
-                sender.sendMessage(Message.INVALID_REASON, TextReplacement("reason", formattedReason))
-                return
-            }
+                    if (plugin.cooldowns.containsKey(sender.uniqueId) && !sender.hasPermission("velocityreport.bypass.cooldown")) {
+                        val cooldownCounter = plugin.cooldowns[sender.uniqueId]!!
+                        cooldownCounter.stop()
+                        val elapsedCooldown = cooldownCounter.get() / 1000
+                        val allowedCooldown = Settings.cooldown
 
-            if (plugin.cooldowns.containsKey(sender.uniqueId) && !sender.hasPermission("velocityreport.bypass.cooldown")) {
-                val cooldownCounter = plugin.cooldowns[sender.uniqueId]!!
-                cooldownCounter.stop()
-                val elapsedCooldown = cooldownCounter.get() / 1000
-                val allowedCooldown = Settings.cooldown
+                        if (elapsedCooldown < allowedCooldown) {
+                            sender.sendMessage(
+                                Message.REPORT_COOLDOWN,
+                                TextReplacement(
+                                    "time",
+                                    ((allowedCooldown - elapsedCooldown).roundToInt() + 1).toString()
+                                )
+                            )
+                            return
+                        }
+                    }
 
-                if (elapsedCooldown < allowedCooldown) {
-                    sender.sendMessage(Message.REPORT_COOLDOWN, TextReplacement("time", ((allowedCooldown - elapsedCooldown).roundToInt() + 1).toString()))
-                    return
+                    Report(
+                        plugin.networkPlayersServer[sender.uniqueId] ?: "Unknown",
+                        sender.uniqueId,
+                        sender.name,
+                        target,
+                        System.currentTimeMillis(),
+                        MiniMessage.miniMessage().stripTags(formattedReason),
+                        true
+                    ).update(true).whenComplete { _, _ ->
+                        val newCooldownCounter = MilliCounter()
+                        newCooldownCounter.start()
+                        plugin.cooldowns[sender.uniqueId] = newCooldownCounter
+                        sender.sendMessage(
+                            Message.REPORT_USE,
+                            TextReplacement("player", target),
+                            TextReplacement("reason", formattedReason)
+                        )
+                    }
                 }
-            }
 
-            Report(
-                plugin.networkPlayersServer[sender.uniqueId] ?: "Unknown",
-                sender.uniqueId,
-                sender.name,
-                target,
-                System.currentTimeMillis(),
-                MiniMessage.miniMessage().stripTags(formattedReason),
-                true
-            ).update(true).whenComplete {_, _ ->
-                val newCooldownCounter = MilliCounter()
-                newCooldownCounter.start()
-                plugin.cooldowns[sender.uniqueId] = newCooldownCounter
-                sender.sendMessage(Message.REPORT_USE, TextReplacement("player", target), TextReplacement("reason", formattedReason))
+                else -> {
+                    sender.sendMessage(Message.REPORT_USAGE)
+                }
             }
         }
     }
@@ -139,7 +211,10 @@ class ReportCommand(
                 else Ruom.getOnlinePlayers().map { it.name }.filter { it.startsWith(args[0], true) }
             }
             2 -> {
-                return Settings.reasons.filter { it.enabled && it.id.startsWith(args[1], true) }.map { it.id }
+                return Settings.categories.filter { it.enabled && it.id.startsWith(args[1], true) }.map { it.id }
+            }
+            3 -> {
+                return Settings.categories.findLast { it.id.startsWith(args[1], true) }?.reasons?.filter { it.enabled && it.id.startsWith(args[2], true) }?.map { it.id } ?: emptyList()
             }
         }
 

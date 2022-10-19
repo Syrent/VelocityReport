@@ -1,9 +1,8 @@
 package ir.syrent.velocityreport.report
 
-data class Reason(
+data class Category(
     val id: String,
-    val category: String,
     val enabled: Boolean,
     val displayName: String,
-    val description: String
+    val reasons: List<Reason>
 )

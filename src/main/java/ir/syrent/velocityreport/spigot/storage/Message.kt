@@ -29,8 +29,10 @@ enum class Message(val path: String) {
     REPORTADMIN_MYREPORTS_RECEIVE("command.reportadmin.myreports.receive"),
     REPORTADMIN_MYREPORTS_USE("command.reportadmin.myreports.use"),
     REPORTADMIN_MYREPORTS_BOOK_FORMAT("command.reportadmin.myreports.book.format"),
-    INVALID_REASON("command.report.invalid_reason"),
+    INVALID_REASON("command.report.invalid.reason"),
+    INVALID_CATEGORY("command.report.invalid.category"),
     REPORT_ACTIONBAR("report.actionbar"),
+    BOOK_CATEGORY("command.report.book.category"),
     BOOK_REASON("command.report.book.reason"),
     REPORT_MESSAGE("report.message"),
     EMPTY("");

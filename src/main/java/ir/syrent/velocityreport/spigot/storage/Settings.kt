@@ -3,14 +3,21 @@ package ir.syrent.velocityreport.spigot.storage
 import club.minnced.discord.webhook.WebhookClient
 import club.minnced.discord.webhook.WebhookClientBuilder
 import com.cryptomorin.xseries.XSound
+import ir.syrent.velocityreport.report.Category
 import ir.syrent.velocityreport.report.Reason
 import ir.syrent.velocityreport.spigot.Ruom
 import ir.syrent.velocityreport.spigot.configuration.YamlConfig
 import ir.syrent.velocityreport.utils.TextReplacement
 import org.bukkit.Sound
 import org.bukkit.configuration.file.FileConfiguration
+import java.io.File
+import java.nio.file.Files
+import java.time.LocalDate
 
 object Settings {
+
+    const val latestSettingsConfigVersion = 4
+    const val latestLanguageConfigVersion = 4
 
     lateinit var settings: YamlConfig
     lateinit var language: YamlConfig
@@ -23,6 +30,8 @@ object Settings {
     val reportsBookHeader = mutableListOf<String>()
     val myReportsBookHeader = mutableListOf<String>()
 
+    var settingsConfigVersion = 1
+    var languageConfigVersion = 1
     lateinit var defaultLanguage: String
     var velocitySupport = false
     var bstats = true
@@ -36,7 +45,7 @@ object Settings {
     var staffActionbarSendZero = false
     var preventSelfReport = true
     var customReason = false
-    var reasons = mutableListOf<Reason>()
+    var categories = mutableListOf<Category>()
     var autoDoneEnabled = true
     var autoDoneTime = 3600
     var autoDoneCallUpdateEvent = false
@@ -67,8 +76,21 @@ object Settings {
     }
 
     fun load() {
+
         settings = YamlConfig(Ruom.getPlugin().dataFolder, "settings.yml")
         settingsConfig = settings.config
+
+        settingsConfigVersion = settingsConfig.getInt("config_version", 1)
+
+        if (settingsConfigVersion < latestSettingsConfigVersion) {
+            val settingsFile = File(Ruom.getPlugin().dataFolder, "settings.yml")
+            val backupFile = File(Ruom.getPlugin().dataFolder, "settings.yml-bak-${LocalDate.now()}")
+            if (backupFile.exists()) backupFile.delete()
+            Files.copy(settingsFile.toPath(), backupFile.toPath())
+            settingsFile.delete()
+            settings = YamlConfig(Ruom.getPlugin().dataFolder, "settings.yml")
+            settingsConfig = settings.config
+        }
 
         defaultLanguage = settingsConfig.getString("default_language") ?: "en_US"
         velocitySupport = settingsConfig.getBoolean("velocity_support")
@@ -109,12 +131,39 @@ object Settings {
         language = YamlConfig(Ruom.getPlugin().dataFolder, "languages/$defaultLanguage.yml")
         languageConfig = language.config
 
-        reasons.apply {
+        languageConfigVersion = languageConfig.getInt("config_version", 1)
+
+        if (languageConfigVersion < latestLanguageConfigVersion) {
+            val languageFile = File(Ruom.getPlugin().dataFolder, "languages/$defaultLanguage.yml")
+            val backupFile = File(Ruom.getPlugin().dataFolder, "languages/$defaultLanguage.yml-bak-${LocalDate.now()}")
+            if (backupFile.exists()) backupFile.delete()
+            Files.copy(languageFile.toPath(), backupFile.toPath())
+            languageFile.delete()
+            language = YamlConfig(Ruom.getPlugin().dataFolder, "languages/$defaultLanguage.yml")
+            languageConfig = language.config
+        }
+
+        categories.apply {
             this.clear()
-            val reasons = settingsConfig.getConfigurationSection("report.reasons") ?: return@apply
-            for (reason in reasons.getKeys(false)) {
-                val reasonConfig = reasons.getConfigurationSection(reason) ?: return@apply
-                this.add(Reason(reason, reasonConfig.getBoolean("enabled"), reasonConfig.getString("displayname", "Unknown")!!, reasonConfig.getString("description", "")!!))
+            val categories = settingsConfig.getConfigurationSection("report.categories") ?: return@apply
+            for (category in categories.getKeys(false)) {
+                val categoryConfig = categories.getConfigurationSection(category) ?: continue
+                this.add(
+                    Category(
+                        category,
+                        categoryConfig.getBoolean("enabled"),
+                        categoryConfig.getString("displayname") ?: "Unknown displayname for $category",
+                        let {
+                            val reasons = mutableListOf<Reason>()
+                            val categoryReasons = categoryConfig.getConfigurationSection("reasons") ?: return@let mutableListOf()
+                            for (reason in categoryReasons.getKeys(false)) {
+                                val reasonConfig = categoryReasons.getConfigurationSection(reason) ?: continue
+                                reasons.add(Reason(reason, category, reasonConfig.getBoolean("enabled"), reasonConfig.getString("displayname") ?: "Unknown displayname for $reason", reasonConfig.getString("description") ?: ""))
+                            }
+                            reasons
+                        }
+                    )
+                )
             }
         }
 
