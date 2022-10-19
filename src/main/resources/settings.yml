@@ -37,55 +37,55 @@ report:
             reasons:
                 killaura:
                     enabled: true
-                    displayname: "<dark_red>Killaura"
+                    displayname: "<red>Killaura"
                     description: "Killaura is a cheat that allows you to attack players without looking at them."
                 criticals:
                     enabled: true
-                    displayname: "<dark_red>Criticals"
+                    displayname: "<red>Criticals"
                     description: "Criticals is a cheat that allows you to get a critical hit on every single attack without risking extra knock-back by jumping."
                 reach:
                     enabled: true
-                    displayname: "<dark_red>Reach"
+                    displayname: "<red>Reach"
                     description: "Reach is a cheat that allows you to attack players from a long distance."
                 aimbot:
                     enabled: true
-                    displayname: "<dark_red>Aimbot"
+                    displayname: "<red>Aimbot"
                     description: "Aimbot is a cheat that allows you to aim at players automatically."
-                antiafk:
-                    enabled: true
-                    displayname: "<dark_red>AntiAFK"
-                    description: "AntiAFK is a cheat that makes the player move around randomly, so that server cannot detect when the user is AFK."
         movement:
             enabled: true
             displayname: "<dark_red>Movement"
             reasons:
                 speed:
                     enabled: true
-                    displayname: "<dark_red>Speed"
+                    displayname: "<red>Speed"
                     description: "Speed is a cheat that allows you to move faster than normal."
                 fly:
                     enabled: true
-                    displayname: "<dark_red>Fly"
+                    displayname: "<red>Fly"
                     description: "Fly is a cheat that allows you to fly in the air."
                 scaffold:
                     enabled: true
-                    displayname: "<dark_red>Scaffold"
+                    displayname: "<red>Scaffold"
                     description: "Scaffold is a cheat that allows you to place blocks under you."
+                antiafk:
+                    enabled: true
+                    displayname: "<red>AntiAFK"
+                    description: "AntiAFK is a cheat that makes the player move around randomly, so that server cannot detect when the user is AFK."
         blocks:
             enabled: true
             displayname: "<dark_red>Blocks"
             reasons:
                 automine:
                     enabled: true
-                    displayname: "<dark_red>AutoMine"
+                    displayname: "<red>AutoMine"
                     description: "Automatically mines the block that crosshair is pointing at."
                 fastbreak:
                     enabled: true
-                    displayname: "<dark_red>FastBreak"
+                    displayname: "<red>FastBreak"
                     description: "It makes breaking blocks faster. It automatically breaks blocks for you."
                 fastplace:
                     enabled: true
-                    displayname: "<dark_red>FastPlace"
+                    displayname: "<red>FastPlace"
                     description: "It makes place blocks faster. It automatically place blocks for you."
         other:
             enabled: true
@@ -93,15 +93,15 @@ report:
             reasons:
                 spam:
                     enabled: true
-                    displayname: "<dark_red>Spam"
+                    displayname: "<red>Spam"
                     description: "Spam is a cheat that cause client to spam messages in chat."
                 esp:
                     enabled: true
-                    displayname: "<dark_red>ESP"
+                    displayname: "<red>ESP"
                     description: "ESP is a cheat that allows you to see players through walls."
                 other:
                     enabled: true
-                    displayname: "<dark_red>Other"
+                    displayname: "<red>Other"
                     description: "Other reasons."
 discord:
     enabled: false
