@@ -147,10 +147,11 @@ class ReportCommand(
 
                 3 -> {
                     val reasons = Settings.categories.findLast { it.id == args[1] }?.reasons?.filter { it.enabled } ?: run {
-                        sender.sendMessage(Message.INVALID_CATEGORY, TextReplacement("category", args[1]))
-                        return
-                    }
-                    val reason = args.subList(2, args.size).joinToString(" ").lowercase()
+                        if (!Settings.customReason) {
+                            sender.sendMessage(Message.INVALID_CATEGORY, TextReplacement("category", args[1]))
+                        }
+                    }.let { emptyList() }
+                    val reason = args.subList(if (Settings.customReason) 1 else 2, args.size).joinToString(" ").lowercase()
                     val formattedReason =
                         reasons.findLast { it.id.lowercase() == reason.lowercase() }?.displayName ?: reason
 
