@@ -66,7 +66,7 @@ class VelocityReportSpigot : RUoMPlugin() {
        sendConsoleMessage("<dark_red>   \\_/ \\___|_|\\___/ \\___|_|\\__|\\__, |_| \\_\\___| .__/ \\___/|_|   \\__|")
        sendConsoleMessage("<dark_red>                               |___/          |_|                   v${Ruom.getServer().pluginManager.getPlugin("VelocityReport")?.description?.version ?: " Unknown"}")
        sendConsoleMessage(" ")
-       sendConsoleMessage("<white>Wiki: <blue><u>https://github.com/Syrent/VelocityReport/wiki</u></blue>")
+       sendConsoleMessage("<white>Wiki: <red><u>https://github.com/Syrent/VelocityReport/wiki</u></blue>")
        sendConsoleMessage(" ")
     }
 

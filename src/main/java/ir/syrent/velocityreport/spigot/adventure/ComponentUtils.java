@@ -27,15 +27,15 @@ public class ComponentUtils {
 
     public static String parseComponentColors(String msg) {
         return msg.replace("&0", "<black>")
-                .replace("&1", "<dark_blue>")
+                .replace("&1", "<red>")
                 .replace("&2", "<dark_green>")
-                .replace("&3", "dark_blue")
+                .replace("&3", "red")
                 .replace("&4", "<dark_red>")
                 .replace("&5", "<dark_purple>")
                 .replace("&6", "<gold>")
                 .replace("&7", "<gray>")
                 .replace("&8", "<dark_gray>")
-                .replace("&9", "<blue>")
+                .replace("&9", "<red>")
                 .replace("&a", "<green>")
                 .replace("&b", "<aqua>")
                 .replace("&c", "<red>")
