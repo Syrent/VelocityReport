@@ -54,7 +54,9 @@ class VelocityReportSpigot : RUoMPlugin() {
             enableMetrics()
         }
 
-        if (Settings.autoDoneEnabled) autoDoneOldReportsRunnable()
+        if (Settings.autoDoneEnabled) {
+            autoDoneOldReportsRunnable()
+        }
     }
 
     private fun sendFiglet() {

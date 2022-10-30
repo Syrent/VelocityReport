@@ -11,6 +11,7 @@ import me.mohamad82.ruom.utils.GsonUtils
 import org.bukkit.entity.Player
 import java.util.*
 
+@Suppress("UnstableApiUsage")
 class BukkitBridgeManager(
     val bridge: Bridge,
     private val plugin: VelocityReportSpigot

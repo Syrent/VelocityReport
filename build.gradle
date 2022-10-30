@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'maven-publish'
-    id 'org.jetbrains.kotlin.jvm' version '1.7.10'
+    id 'org.jetbrains.kotlin.jvm' version '1.7.20'
     id 'com.github.johnrengelman.shadow' version '7.1.0'
     id 'org.jetbrains.gradle.plugin.idea-ext' version '1.0.1'
 }
@@ -55,6 +55,8 @@ dependencies {
     compileOnly 'com.velocitypowered:velocity-api:3.1.1'
     compileOnly 'org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT'
 
+    compileOnly files('lib/VelocityVanish-3.0.0.jar')
+
     implementation 'com.zaxxer:HikariCP:4.0.3'
     implementation 'io.papermc:paperlib:1.0.7'
     implementation 'org.bstats:bstats-bukkit:3.0.0'
@@ -81,10 +83,19 @@ processResources {
 shadowJar {
     minimize()
 
+    manifest {
+        attributes["Main-Class"] = 'ir.syrent.velocityreport.VelocityReport'
+    }
+
     relocate('me.mohamad82.ruom', 'ir.syrent.velocityreport.ruom')
     relocate('com.cryptomorin.xseries', 'ir.syrent.velocityreport.xseries')
     relocate('net.kyori.adventure', 'ir.syrent.velocityreport.kyori.adventure')
     relocate('org.bstats', 'ir.syrent.velocityreport.bstats')
+
+    // @see https://youtrack.jetbrains.com/issue/KT-25709
+    exclude '**/*.kotlin_metadata'
+    exclude '**/*.kotlin_module'
+    exclude '**/*.kotlin_builtins'
 
     archiveFileName = findProperty("plugin-name") + " v" + findProperty("version") + ".jar"
 }

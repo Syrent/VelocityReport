@@ -11,6 +11,8 @@ import ir.syrent.velocityreport.utils.TextReplacement
 import ir.syrent.velocityreport.utils.component
 import ir.syrent.velocityreport.utils.openBook
 import ir.syrent.velocityreport.utils.sendMessage
+import ir.syrent.velocityvanish.spigot.VelocityVanishSpigot
+import ir.syrent.velocityvanish.velocity.VelocityVanish
 import me.mohamad82.ruom.utils.MilliCounter
 import net.kyori.adventure.inventory.Book
 import net.kyori.adventure.text.Component
@@ -38,15 +40,37 @@ class ReportCommand(
         //           1          2        3
         // Report <player> <category> <reason>
         if (args.size <= 3) {
-            var target = plugin.server.getPlayerExact(args[0])?.name
+            val targetPlayer = plugin.server.getPlayerExact(args[0])
+            var target = targetPlayer?.name
 
             if (Settings.velocitySupport) {
                 target = plugin.networkPlayers.findLast { it.lowercase() == args[0].lowercase() }
+            } else {
+                /*
+                * Support for SuperVanish/PremiumVanish/VelocityVanish and all plugins that save vanished meta on player
+                * Note: only works on backend servers, so it should only work when `velocity_support` is off
+                */
+                if (targetPlayer != null) {
+                    if (targetPlayer.getMetadata("vanished").map { it.asBoolean() }.contains(true)) {
+                        sender.sendMessage(Message.NO_TARGET)
+                        return
+                    }
+                }
             }
 
             if (target == null) {
                 sender.sendMessage(Message.NO_TARGET)
                 return
+            }
+
+            /*
+            * Prevent players from reporting vanished players if VelocityVanish installed on server
+            */
+            if (Ruom.hasPlugin("VelocityVanish")) {
+                if (VelocityVanishSpigot.instance.vanishedNames.map { it.lowercase() }.contains(target)) {
+                    sender.sendMessage(Message.NO_TARGET)
+                    return
+                }
             }
 
             if (target == sender.name && Settings.preventSelfReport) {
