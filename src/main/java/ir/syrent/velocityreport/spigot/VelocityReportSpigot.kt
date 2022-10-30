@@ -8,6 +8,7 @@ import ir.syrent.velocityreport.spigot.bridge.BukkitBridge
 import ir.syrent.velocityreport.spigot.bridge.BukkitBridgeManager
 import ir.syrent.velocityreport.spigot.command.report.ReportCommand
 import ir.syrent.velocityreport.spigot.command.reportadmin.ReportAdminCommand
+import ir.syrent.velocityreport.spigot.core.DependencyChecker
 import ir.syrent.velocityreport.spigot.listener.PlayerJoinListener
 import ir.syrent.velocityreport.spigot.listener.PlayerQuitListener
 import ir.syrent.velocityreport.spigot.listener.PreReportListener
@@ -42,6 +43,7 @@ class VelocityReportSpigot : RUoMPlugin() {
         initializeInstances()
         sendFiglet()
         sendWarningMessages()
+        registerDependencies()
         fetchData()
         registerCommands()
         registerListeners()
@@ -84,6 +86,10 @@ class VelocityReportSpigot : RUoMPlugin() {
             Ruom.warn("Please consider updating your server to 1.16.5 or higher.")
         }
         PaperLib.suggestPaper(this)
+    }
+
+    private fun registerDependencies() {
+        DependencyChecker.register("VelocityVanish")
     }
 
     fun enableMetrics() {

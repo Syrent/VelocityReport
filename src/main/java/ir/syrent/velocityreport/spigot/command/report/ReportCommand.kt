@@ -5,6 +5,7 @@ import ir.syrent.velocityreport.spigot.Ruom
 import ir.syrent.velocityreport.spigot.VelocityReportSpigot
 import ir.syrent.velocityreport.spigot.adventure.ComponentUtils
 import ir.syrent.velocityreport.spigot.command.library.PluginCommand
+import ir.syrent.velocityreport.spigot.core.DependencyChecker
 import ir.syrent.velocityreport.spigot.storage.Message
 import ir.syrent.velocityreport.spigot.storage.Settings
 import ir.syrent.velocityreport.utils.TextReplacement
@@ -66,7 +67,7 @@ class ReportCommand(
             /*
             * Prevent players from reporting vanished players if VelocityVanish installed on server
             */
-            if (Ruom.hasPlugin("VelocityVanish")) {
+            if (DependencyChecker.isRegistered("VelocityVanish")) {
                 if (VelocityVanishSpigot.instance.vanishedNames.map { it.lowercase() }.contains(target)) {
                     sender.sendMessage(Message.NO_TARGET)
                     return
