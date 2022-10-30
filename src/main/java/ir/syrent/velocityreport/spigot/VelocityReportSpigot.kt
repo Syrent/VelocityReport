@@ -8,6 +8,7 @@ import ir.syrent.velocityreport.spigot.bridge.BukkitBridge
 import ir.syrent.velocityreport.spigot.bridge.BukkitBridgeManager
 import ir.syrent.velocityreport.spigot.command.report.ReportCommand
 import ir.syrent.velocityreport.spigot.command.reportadmin.ReportAdminCommand
+import ir.syrent.velocityreport.spigot.core.DependencyChecker
 import ir.syrent.velocityreport.spigot.listener.PlayerJoinListener
 import ir.syrent.velocityreport.spigot.listener.PlayerQuitListener
 import ir.syrent.velocityreport.spigot.listener.PreReportListener
@@ -42,6 +43,7 @@ class VelocityReportSpigot : RUoMPlugin() {
         initializeInstances()
         sendFiglet()
         sendWarningMessages()
+        registerDependencies()
         fetchData()
         registerCommands()
         registerListeners()
@@ -54,19 +56,21 @@ class VelocityReportSpigot : RUoMPlugin() {
             enableMetrics()
         }
 
-        if (Settings.autoDoneEnabled) autoDoneOldReportsRunnable()
+        if (Settings.autoDoneEnabled) {
+            autoDoneOldReportsRunnable()
+        }
     }
 
     private fun sendFiglet() {
        sendConsoleMessage(" ")
-       sendConsoleMessage("<dark_red>__     __   _            _ _         ____                       _   ")
-       sendConsoleMessage("<dark_red>\\ \\   / /__| | ___   ___(_) |_ _   _|  _ \\ ___ _ __   ___  _ __| |_ ")
-       sendConsoleMessage("<dark_red> \\ \\ / / _ \\ |/ _ \\ / __| | __| | | | |_) / _ \\ '_ \\ / _ \\| '__| __|")
-       sendConsoleMessage("<dark_red>  \\ V /  __/ | (_) | (__| | |_| |_| |  _ <  __/ |_) | (_) | |  | |_ ")
-       sendConsoleMessage("<dark_red>   \\_/ \\___|_|\\___/ \\___|_|\\__|\\__, |_| \\_\\___| .__/ \\___/|_|   \\__|")
-       sendConsoleMessage("<dark_red>                               |___/          |_|                   v${Ruom.getServer().pluginManager.getPlugin("VelocityReport")?.description?.version ?: " Unknown"}")
+       sendConsoleMessage("<gold>__     __   _            _ _         ____                       _   ")
+       sendConsoleMessage("<gold>\\ \\   / /__| | ___   ___(_) |_ _   _|  _ \\ ___ _ __   ___  _ __| |_ ")
+       sendConsoleMessage("<gold> \\ \\ / / _ \\ |/ _ \\ / __| | __| | | | |_) / _ \\ '_ \\ / _ \\| '__| __|")
+       sendConsoleMessage("<gold>  \\ V /  __/ | (_) | (__| | |_| |_| |  _ <  __/ |_) | (_) | |  | |_ ")
+       sendConsoleMessage("<gold>   \\_/ \\___|_|\\___/ \\___|_|\\__|\\__, |_| \\_\\___| .__/ \\___/|_|   \\__|")
+       sendConsoleMessage("<gold>                               |___/          |_|                   v${Ruom.getServer().pluginManager.getPlugin("VelocityReport")?.description?.version ?: " Unknown"}")
        sendConsoleMessage(" ")
-       sendConsoleMessage("<white>Wiki: <red><u>https://github.com/Syrent/VelocityReport/wiki</u></blue>")
+       sendConsoleMessage("<white>Wiki: <blue><u>https://github.com/Syrent/VelocityReport/wiki</u></blue>")
        sendConsoleMessage(" ")
     }
 
@@ -82,6 +86,10 @@ class VelocityReportSpigot : RUoMPlugin() {
             Ruom.warn("Please consider updating your server to 1.16.5 or higher.")
         }
         PaperLib.suggestPaper(this)
+    }
+
+    private fun registerDependencies() {
+        DependencyChecker.register("VelocityVanish")
     }
 
     fun enableMetrics() {

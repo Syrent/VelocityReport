@@ -9,6 +9,7 @@ import me.mohamad82.ruom.utils.GsonUtils
 import me.mohamad82.ruom.utils.MilliCounter
 import java.util.*
 
+@Suppress("UnstableApiUsage")
 class VelocityBridgeManager(
     val bridge: VelocityBridge,
     private val velocityAdapter: VelocityAdapter,
@@ -61,7 +62,6 @@ class VelocityBridgeManager(
         sendPluginMessage(messageJson)
     }
 
-    @Beta
     private fun sendPluginMessage(messageJson: JsonObject) {
         val byteArrayInputStream = ByteStreams.newDataOutput()
         byteArrayInputStream.writeUTF(GsonUtils.get().toJson(messageJson))
