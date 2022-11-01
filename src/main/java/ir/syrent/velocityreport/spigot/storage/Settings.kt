@@ -6,8 +6,10 @@ import com.cryptomorin.xseries.XSound
 import ir.syrent.velocityreport.report.Category
 import ir.syrent.velocityreport.report.Reason
 import ir.syrent.velocityreport.spigot.Ruom
+import ir.syrent.velocityreport.spigot.adventure.AdventureApi
 import ir.syrent.velocityreport.spigot.configuration.YamlConfig
 import ir.syrent.velocityreport.utils.TextReplacement
+import ir.syrent.velocityreport.utils.component
 import org.bukkit.Sound
 import org.bukkit.configuration.file.FileConfiguration
 import java.io.File
@@ -33,6 +35,7 @@ object Settings {
     var settingsConfigVersion = 1
     var languageConfigVersion = 1
     lateinit var defaultLanguage: String
+    var showDependencySuggestions = true
     var velocitySupport = false
     var bstats = true
 
@@ -83,17 +86,20 @@ object Settings {
         settingsConfigVersion = settingsConfig.getInt("config_version", 1)
 
         if (settingsConfigVersion < latestSettingsConfigVersion) {
+            val backupFileName = "settings.yml-bak-${LocalDate.now()}"
             val settingsFile = File(Ruom.getPlugin().dataFolder, "settings.yml")
-            val backupFile = File(Ruom.getPlugin().dataFolder, "settings.yml-bak-${LocalDate.now()}")
+            val backupFile = File(Ruom.getPlugin().dataFolder, backupFileName)
             if (backupFile.exists()) backupFile.delete()
             Files.copy(settingsFile.toPath(), backupFile.toPath())
             settingsFile.delete()
             settings = YamlConfig(Ruom.getPlugin().dataFolder, "settings.yml")
             settingsConfig = settings.config
+            sendBackupMessage(backupFileName)
         }
 
         defaultLanguage = settingsConfig.getString("default_language") ?: "en_US"
         velocitySupport = settingsConfig.getBoolean("velocity_support")
+        showDependencySuggestions = settingsConfig.getBoolean("show_dependency_suggestions")
         bstats = settingsConfig.getBoolean("bstats")
 
         commandSound = XSound.valueOf(settingsConfig.getString("sounds.command")!!).parseSound() ?: Sound.valueOf("CLICK")
@@ -134,13 +140,15 @@ object Settings {
         languageConfigVersion = languageConfig.getInt("config_version", 1)
 
         if (languageConfigVersion < latestLanguageConfigVersion) {
+            val backupFileName = "languages/$defaultLanguage.yml-bak-${LocalDate.now()}"
             val languageFile = File(Ruom.getPlugin().dataFolder, "languages/$defaultLanguage.yml")
-            val backupFile = File(Ruom.getPlugin().dataFolder, "languages/$defaultLanguage.yml-bak-${LocalDate.now()}")
+            val backupFile = File(Ruom.getPlugin().dataFolder, backupFileName)
             if (backupFile.exists()) backupFile.delete()
             Files.copy(languageFile.toPath(), backupFile.toPath())
             languageFile.delete()
             language = YamlConfig(Ruom.getPlugin().dataFolder, "languages/$defaultLanguage.yml")
             languageConfig = language.config
+            sendBackupMessage(backupFileName)
         }
 
         categories.apply {
@@ -253,5 +261,12 @@ object Settings {
 
     fun getConsolePrefix(): String {
         return getMessage(Message.CONSOLE_PREFIX)
+    }
+
+    private fun sendBackupMessage(fileName: String) {
+        AdventureApi.get().console().sendMessage("<red>=============================================================".component())
+        AdventureApi.get().console().sendMessage("<red>Config version updated to $settingsConfigVersion. Please set your prefred values again.".component())
+        AdventureApi.get().console().sendMessage("<gray>Previous values are still accessible via $fileName in plugin folder.".component())
+        AdventureApi.get().console().sendMessage("<red>=============================================================".component())
     }
 }
