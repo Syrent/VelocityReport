@@ -5,7 +5,7 @@ import ir.syrent.velocityreport.spigot.Ruom
 import ir.syrent.velocityreport.spigot.VelocityReportSpigot
 import ir.syrent.velocityreport.spigot.adventure.ComponentUtils
 import ir.syrent.velocityreport.spigot.command.library.PluginCommand
-import ir.syrent.velocityreport.spigot.core.DependencyChecker
+import ir.syrent.velocityreport.spigot.hook.DependencyManager
 import ir.syrent.velocityreport.spigot.storage.Message
 import ir.syrent.velocityreport.spigot.storage.Settings
 import ir.syrent.velocityreport.utils.TextReplacement
@@ -13,7 +13,6 @@ import ir.syrent.velocityreport.utils.component
 import ir.syrent.velocityreport.utils.openBook
 import ir.syrent.velocityreport.utils.sendMessage
 import ir.syrent.velocityvanish.spigot.VelocityVanishSpigot
-import ir.syrent.velocityvanish.velocity.VelocityVanish
 import me.mohamad82.ruom.utils.MilliCounter
 import net.kyori.adventure.inventory.Book
 import net.kyori.adventure.text.Component
@@ -67,7 +66,7 @@ class ReportCommand(
             /*
             * Prevent players from reporting vanished players if VelocityVanish installed on server
             */
-            if (DependencyChecker.isRegistered("VelocityVanish")) {
+            if (DependencyManager.velocityVanishHook.exists) {
                 if (VelocityVanishSpigot.instance.vanishedNames.map { it.lowercase() }.contains(target)) {
                     sender.sendMessage(Message.NO_TARGET)
                     return
