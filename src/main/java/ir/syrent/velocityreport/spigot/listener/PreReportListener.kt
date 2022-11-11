@@ -37,6 +37,7 @@ class PreReportListener : Listener {
                     .replace("\$reported", event.report.reportedName)
                     .replace("\$reason", event.report.reason)
                     .replace("\$server", event.report.server)
+                    .replace("\\n", "\n")
             )
             .setImageUrl(Settings.discordEmbedImageURL)
             .setThumbnailUrl(Settings.discordEmbedThumbnailURL)
