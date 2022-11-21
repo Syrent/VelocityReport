@@ -91,6 +91,7 @@ shadowJar {
     relocate('com.cryptomorin.xseries', 'ir.syrent.velocityreport.xseries')
     relocate('net.kyori.adventure', 'ir.syrent.velocityreport.kyori.adventure')
     relocate('org.bstats', 'ir.syrent.velocityreport.bstats')
+    relocate('kotlin', 'ir.syrent.velocityreport.kotlin')
 
     // @see https://youtrack.jetbrains.com/issue/KT-25709
     exclude '**/*.kotlin_metadata'

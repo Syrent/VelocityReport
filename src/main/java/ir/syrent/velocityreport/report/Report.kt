@@ -1,5 +1,6 @@
 package ir.syrent.velocityreport.report
 
+import ir.syrent.velocityreport.spigot.Ruom
 import ir.syrent.velocityreport.spigot.VelocityReportSpigot
 import ir.syrent.velocityreport.spigot.event.PostReportEvent
 import ir.syrent.velocityreport.spigot.event.PostReportUpdateEvent
@@ -63,7 +64,9 @@ data class Report(
         var report = this
         if (callEvent) {
             val preReportUpdateEvent = PreReportUpdateEvent(prevReportData, report)
-            VelocityReportSpigot.instance.server.pluginManager.callEvent(preReportUpdateEvent)
+            Ruom.runSync {
+                VelocityReportSpigot.instance.server.pluginManager.callEvent(preReportUpdateEvent)
+            }
 
             if (preReportUpdateEvent.isCancelled) {
                 future.complete(false)
@@ -75,7 +78,9 @@ data class Report(
 
         Database.saveReport(report).whenComplete { _, _ ->
             val postReportUpdateEvent = PostReportUpdateEvent(prevReportData, report)
-            VelocityReportSpigot.instance.server.pluginManager.callEvent(postReportUpdateEvent)
+            Ruom.runSync {
+                VelocityReportSpigot.instance.server.pluginManager.callEvent(postReportUpdateEvent)
+            }
             prevReportData = report
 
             future.complete(true)
