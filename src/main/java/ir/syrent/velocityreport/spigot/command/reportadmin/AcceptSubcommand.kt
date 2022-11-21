@@ -1,6 +1,8 @@
 package ir.syrent.velocityreport.spigot.command.reportadmin
 
+import ir.syrent.velocityreport.VelocityReport
 import ir.syrent.velocityreport.report.ReportStage
+import ir.syrent.velocityreport.spigot.Ruom
 import ir.syrent.velocityreport.spigot.command.library.SubCommand
 import ir.syrent.velocityreport.spigot.storage.Database
 import ir.syrent.velocityreport.spigot.storage.Message
