@@ -5,23 +5,23 @@ body:
   - type: input
     attributes:
       label: Server backend version
-      description: Version and type of used server software where VelocityVanish is installed.
+      description: Version and type of used server software where VelocityReport is installed.
       placeholder: Spigot 1.19.2
     validations:
       required: true
   - type: input
     attributes:
       label: Server Velocity version
-      description: Version and type of used server software where VelocityVanish is installed.
+      description: Version and type of used server software where VelocityReport is installed.
       placeholder: Velocity 3.1.1 build 98
     validations:
       required: true
 
   - type: input
     attributes:
-      label: VelocityVanish version
+      label: VelocityReport version
       description: Full version in numbers, "latest" is not a version.
-      placeholder: 3.6.0
+      placeholder: 3.4.0
     validations:
       required: true
 
