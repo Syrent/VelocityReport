@@ -17,3 +17,5 @@ commands:
       - ra
       - reporta
     description: Report admin commands
+  reports:
+    description: Show active reports
