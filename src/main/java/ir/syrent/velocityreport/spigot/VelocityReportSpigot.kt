@@ -8,6 +8,7 @@ import ir.syrent.velocityreport.spigot.bridge.BukkitBridge
 import ir.syrent.velocityreport.spigot.bridge.BukkitBridgeManager
 import ir.syrent.velocityreport.spigot.command.report.ReportCommand
 import ir.syrent.velocityreport.spigot.command.reportadmin.ReportAdminCommand
+import ir.syrent.velocityreport.spigot.command.reports.ReportsCommand
 import ir.syrent.velocityreport.spigot.hook.DependencyManager
 import ir.syrent.velocityreport.spigot.listener.PlayerJoinListener
 import ir.syrent.velocityreport.spigot.listener.PlayerQuitListener
@@ -143,6 +144,7 @@ class VelocityReportSpigot : RUoMPlugin() {
     private fun registerCommands() {
         ReportCommand(this)
         ReportAdminCommand()
+        ReportsCommand()
     }
 
     private fun registerListeners() {
