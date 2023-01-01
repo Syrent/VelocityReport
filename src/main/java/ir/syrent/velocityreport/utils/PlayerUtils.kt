@@ -13,15 +13,15 @@ fun CommandSender.sendMessage(message: Message, vararg replacements: TextReplace
 
 fun Player.sendMessage(message: Message, vararg replacements: TextReplacement) {
     this.playSound(this.location, Settings.commandSound, 1f, 1f)
-    AdventureApi.get().sender(this).sendMessage(Settings.formatMessage(message, *replacements).component())
+    AdventureApi.get().sender(this).sendMessage(Settings.formatMessage(this, message, *replacements).component())
 }
 
 fun Player.sendMessageOnly(message: Message, vararg replacements: TextReplacement) {
-    AdventureApi.get().sender(this).sendMessage(Settings.formatMessage(message, *replacements).component())
+    AdventureApi.get().sender(this).sendMessage(Settings.formatMessage(this, message, *replacements).component())
 }
 
 fun Player.sendActionbar(message: Message, vararg replacements: TextReplacement) {
-    AdventureApi.get().sender(this).sendActionBar(Settings.formatMessage(message, *replacements).component())
+    AdventureApi.get().sender(this).sendActionBar(Settings.formatMessage(this, message, *replacements).component())
 }
 
 fun Player.openBook(book: Book) {

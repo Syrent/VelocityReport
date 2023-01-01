@@ -49,9 +49,15 @@ repositories {
             password = project.findProperty("gpr.key")
         }
     }
+
+    // PlaceholderAPI
+    maven {
+        url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
+    }
 }
 
 dependencies {
+    compileOnly 'me.clip:placeholderapi:2.11.2'
     compileOnly 'com.velocitypowered:velocity-api:3.1.1'
     compileOnly 'org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT'
 

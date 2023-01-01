@@ -1,5 +1,6 @@
 package ir.syrent.velocityreport.spigot.hook
 
+import ir.syrent.velocityreport.spigot.VelocityReportSpigot
 import ir.syrent.velocityvanish.spigot.VelocityVanishSpigot
 
 object DependencyManager {
@@ -14,7 +15,7 @@ object DependencyManager {
             this.register()
             velocityVanishHook = this
         }
-        PlaceholderAPIHook(VelocityVanishSpigot.instance, "PlaceholderAPI").apply {
+        PlaceholderAPIHook(VelocityReportSpigot.instance, "PlaceholderAPI").apply {
             this.register()
             placeholderAPIHook = this
         }
