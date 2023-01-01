@@ -240,7 +240,11 @@ object Settings {
     }
 
     fun formatMessage(message: Message, vararg replacements: TextReplacement): String {
-        return formatMessage(getMessage(message), *replacements)
+        var formattedMessage = formatMessage(message, *replacements)
+        if (DependencyManager.placeholderAPIHook.exists) {
+            formattedMessage = PlaceholderAPI.setPlaceholders(player, formattedMessage)
+        }
+        return formattedMessage
     }
 
     fun formatMessage(messages: List<String>, vararg replacements: TextReplacement): List<String> {
