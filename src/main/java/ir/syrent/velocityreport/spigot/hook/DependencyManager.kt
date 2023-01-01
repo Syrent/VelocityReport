@@ -1,5 +1,7 @@
 package ir.syrent.velocityreport.spigot.hook
 
+import ir.syrent.velocityvanish.spigot.VelocityVanishSpigot
+
 object DependencyManager {
 
     var velocityVanishHook: VelocityVanishHook
