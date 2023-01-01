@@ -6,7 +6,9 @@ prefix: VelocityReport
 authors: [ Syrent ]
 description: Report plugin for velocity servers
 website: syrent.ir
-softdepend: [ VelocityVanish ]
+softdepend:
+  - 'VelocityVanish'
+  - 'PlaceholderAPI'
 commands:
   report:
     aliases:

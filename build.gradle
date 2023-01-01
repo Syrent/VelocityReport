@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'maven-publish'
-    id 'org.jetbrains.kotlin.jvm' version '1.7.22'
+    id 'org.jetbrains.kotlin.jvm' version '1.8.0'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'org.jetbrains.gradle.plugin.idea-ext' version '1.1.7'
 }
@@ -58,11 +58,11 @@ dependencies {
     compileOnly files('lib/VelocityVanish-3.0.0.jar')
 
     implementation 'com.zaxxer:HikariCP:4.0.3'
-    implementation 'io.papermc:paperlib:1.0.7'
+    implementation 'io.papermc:paperlib:1.0.8'
     implementation 'org.bstats:bstats-bukkit:3.0.0'
     implementation 'me.mohamad82:ruom-velocity:4.2.14'
     implementation 'club.minnced:discord-webhooks:0.8.2'
-    implementation 'com.github.cryptomorin:XSeries:9.1.0'
+    implementation 'com.github.cryptomorin:XSeries:9.2.0'
 
     implementation 'net.kyori:adventure-api:4.12.0'
     implementation 'net.kyori:adventure-platform-bukkit:4.2.0'
