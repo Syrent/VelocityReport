@@ -4,7 +4,6 @@ import ir.syrent.velocityreport.report.ReportStage
 import ir.syrent.velocityreport.spigot.Ruom
 import ir.syrent.velocityreport.spigot.VelocityReportSpigot
 import ir.syrent.velocityreport.spigot.storage.Database
-import ir.syrent.velocityreport.spigot.storage.Settings
 import me.clip.placeholderapi.expansion.PlaceholderExpansion
 import org.bukkit.OfflinePlayer
 
@@ -12,6 +11,7 @@ class PlaceholderAPIHook constructor(plugin: VelocityReportSpigot, name: String)
 
 
     val reportsCache = mutableMapOf<ReportStage, Int>()
+
     init {
         if (exists) {
             ReportExpansion(plugin).register()
@@ -19,7 +19,7 @@ class PlaceholderAPIHook constructor(plugin: VelocityReportSpigot, name: String)
 
         Ruom.runSync({
             for (stage in ReportStage.values()) {
-                Database.getReports(ReportStage.ACTIVE).whenComplete { reports, _ ->
+                Database.getReports(stage).whenComplete { reports, _ ->
                     reportsCache[stage] = reports.size
                 }
             }
@@ -57,8 +57,8 @@ class PlaceholderAPIHook constructor(plugin: VelocityReportSpigot, name: String)
         }
 
         override fun onRequest(player: OfflinePlayer, params: String): String? {
-            if (params.startsWith("velocityreport_reports_")) {
-                val type = params.removeSuffix("velocityreport_reports_")
+            if (params.startsWith("reports_")) {
+                val type = params.substring(8)
 
                 return reportsCache[ReportStage.valueOf(type.uppercase())].toString()
             }
