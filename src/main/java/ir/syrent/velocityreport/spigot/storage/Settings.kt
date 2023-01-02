@@ -8,10 +8,13 @@ import ir.syrent.velocityreport.report.Reason
 import ir.syrent.velocityreport.spigot.Ruom
 import ir.syrent.velocityreport.spigot.adventure.AdventureApi
 import ir.syrent.velocityreport.spigot.configuration.YamlConfig
+import ir.syrent.velocityreport.spigot.hook.DependencyManager
 import ir.syrent.velocityreport.utils.TextReplacement
 import ir.syrent.velocityreport.utils.component
+import me.clip.placeholderapi.PlaceholderAPI
 import org.bukkit.Sound
 import org.bukkit.configuration.file.FileConfiguration
+import org.bukkit.entity.Player
 import java.io.File
 import java.nio.file.Files
 import java.time.LocalDate
@@ -226,6 +229,14 @@ object Settings {
         language.reloadConfig()
     }
 
+    fun formatMessage(player: Player, message: String, vararg replacements: TextReplacement): String {
+        var formattedMessage = formatMessage(message, *replacements)
+        if (DependencyManager.placeholderAPIHook.exists) {
+            formattedMessage = PlaceholderAPI.setPlaceholders(player, formattedMessage)
+        }
+        return formattedMessage
+    }
+
 
     fun formatMessage(message: String, vararg replacements: TextReplacement): String {
         var formattedMessage = message
@@ -239,12 +250,12 @@ object Settings {
         return formattedMessage
     }
 
+    fun formatMessage(player: Player, message: Message, vararg replacements: TextReplacement): String {
+        return formatMessage(getMessage(message), *replacements)
+    }
+
     fun formatMessage(message: Message, vararg replacements: TextReplacement): String {
-        var formattedMessage = formatMessage(message, *replacements)
-        if (DependencyManager.placeholderAPIHook.exists) {
-            formattedMessage = PlaceholderAPI.setPlaceholders(player, formattedMessage)
-        }
-        return formattedMessage
+        return formatMessage(getMessage(message), *replacements)
     }
 
     fun formatMessage(messages: List<String>, vararg replacements: TextReplacement): List<String> {
