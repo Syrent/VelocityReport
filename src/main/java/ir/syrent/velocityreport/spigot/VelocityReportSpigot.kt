@@ -1,6 +1,8 @@
 package ir.syrent.velocityreport.spigot
 
 import com.google.gson.JsonObject
+import com.jeff_media.updatechecker.UpdateCheckSource
+import com.jeff_media.updatechecker.UpdateChecker
 import io.papermc.lib.PaperLib
 import ir.syrent.velocityreport.report.ReportStage
 import ir.syrent.velocityreport.spigot.adventure.AdventureApi
@@ -44,6 +46,7 @@ class VelocityReportSpigot : RUoMPlugin() {
         initializeInstances()
         sendFiglet()
         sendWarningMessages()
+        checkUpdate()
         fetchData()
         registerCommands()
         registerListeners()
@@ -87,6 +90,24 @@ class VelocityReportSpigot : RUoMPlugin() {
         }
         PaperLib.suggestPaper(this)
         DependencyManager
+    }
+
+    private fun checkUpdate() {
+        Thread {
+            try {
+                UpdateChecker(this, UpdateCheckSource.SPIGOT, 105378.toString())
+                    .setDownloadLink("https://www.spigotmc.org/resources/velocityreport-1-8-1-19-3-mysql-sqlite.105378/")
+                    .checkEveryXHours(24.0)
+                    .setChangelogLink(105378.toString())
+                    .setNotifyOpsOnJoin(true)
+                    .setNotifyByPermissionOnJoin("velocityreport.updatechecker")
+                    .setTimeout(30 * 1000)
+                    .setSupportLink("https://discord.gg/xZyYGU4EG4")
+                    .checkNow()
+            } catch (_: Exception) {
+                Ruom.warn("Could not check for updates, check your connection.")
+            }
+        }.start()
     }
 
     fun enableMetrics() {
