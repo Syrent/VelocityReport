@@ -8,7 +8,7 @@ show_dependency_suggestions: true
 bstats: true
 sounds:
     command: "ENTITY_EXPERIENCE_ORB_PICKUP"
-    book: "ITEM_BOOK_PAGE_TURN"
+    book: "ENTITY_EXPERIENCE_ORB_PICKUP"
     new_report: "ENTITY_EXPERIENCE_ORB_PICKUP"
 report:
     cooldown: 60

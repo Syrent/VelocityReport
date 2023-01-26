@@ -33,7 +33,13 @@ object Utils {
                     TextReplacement("server", server),
                     TextReplacement("reason", reason)
                 )
-                player.playSound(player.location, Settings.newReportSound, 1f, 1f)
+
+
+                Settings.newReportSound.let {
+                    if (it != null) {
+                        player.playSound(player.location, it, 1f, 1f)
+                    }
+                }
             }
         }
     }
