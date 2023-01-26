@@ -42,9 +42,9 @@ object Settings {
     var velocitySupport = false
     var bstats = true
 
-    lateinit var commandSound: Sound
-    lateinit var bookSound: Sound
-    lateinit var newReportSound: Sound
+    var commandSound: Sound? = null
+    var bookSound: Sound? = null
+    var newReportSound: Sound? = null
 
     var cooldown = 60
     var staffActionbarEnabled = true
@@ -105,9 +105,9 @@ object Settings {
         showDependencySuggestions = settingsConfig.getBoolean("show_dependency_suggestions")
         bstats = settingsConfig.getBoolean("bstats")
 
-        commandSound = XSound.valueOf(settingsConfig.getString("sounds.command")!!).parseSound() ?: Sound.valueOf("CLICK")
-        bookSound = XSound.valueOf(settingsConfig.getString("sounds.book")!!).parseSound() ?: Sound.valueOf("CLICK")
-        newReportSound = XSound.valueOf(settingsConfig.getString("sounds.new_report")!!).parseSound() ?: Sound.valueOf("CLICK")
+        commandSound = XSound.valueOf(settingsConfig.getString("sounds.command")!!).parseSound()
+        bookSound = XSound.valueOf(settingsConfig.getString("sounds.book")!!).parseSound()
+        newReportSound = XSound.valueOf(settingsConfig.getString("sounds.new_report")!!).parseSound()
 
         cooldown = settingsConfig.getInt("report.cooldown")
         staffActionbarEnabled = settingsConfig.getBoolean("report.staff_actionbar.enabled")
