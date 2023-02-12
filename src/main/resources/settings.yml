@@ -3,7 +3,6 @@
 #
 config_version: 4
 default_language: en_US
-velocity_support: false
 show_dependency_suggestions: true
 bstats: true
 sounds:
