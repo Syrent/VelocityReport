@@ -109,8 +109,9 @@ shadowJar {
     relocate('net.kyori.adventure', 'ir.syrent.velocityreport.kyori.adventure')
     relocate('org.bstats', 'ir.syrent.velocityreport.bstats')
     relocate('kotlin', 'ir.syrent.velocityreport.kotlin')
-    relocate('com.jeff_media.updatechecker', 'ir.syrent.velocityvanish.updatechecker')
-    relocate('com.google.gson', 'ir.syrent.velocityvanish.google.gson')
+    relocate('com.jeff_media.updatechecker', 'ir.syrent.velocityreport.updatechecker')
+    relocate('com.google.gson', 'ir.syrent.velocityreport.google.gson')
+    relocate('com.zaxxer.hikari', 'ir.syrent.velocityreport.zaaxer.hikari')
 
     // @see https://youtrack.jetbrains.com/issue/KT-25709
     exclude '**/*.kotlin_metadata'
