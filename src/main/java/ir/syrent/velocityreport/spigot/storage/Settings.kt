@@ -39,7 +39,7 @@ object Settings {
     var languageConfigVersion = 1
     lateinit var defaultLanguage: String
     var showDependencySuggestions = true
-    var velocitySupport = false
+    var velocitySupport = true
     var bstats = true
 
     var commandSound: Sound? = null
@@ -101,7 +101,7 @@ object Settings {
         }
 
         defaultLanguage = settingsConfig.getString("default_language") ?: "en_US"
-        velocitySupport = settingsConfig.getBoolean("velocity_support")
+//        velocitySupport = settingsConfig.getBoolean("velocity_support")
         showDependencySuggestions = settingsConfig.getBoolean("show_dependency_suggestions")
         bstats = settingsConfig.getBoolean("bstats")
 
