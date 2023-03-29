@@ -40,6 +40,7 @@ object Settings {
     lateinit var defaultLanguage: String
     var showDependencySuggestions = true
     var velocitySupport = true
+    var debugMode = false
     var bstats = true
 
     var commandSound: Sound? = null
@@ -103,6 +104,8 @@ object Settings {
         defaultLanguage = settingsConfig.getString("default_language") ?: "en_US"
 //        velocitySupport = settingsConfig.getBoolean("velocity_support")
         showDependencySuggestions = settingsConfig.getBoolean("show_dependency_suggestions")
+        debugMode = settingsConfig.getBoolean("debug_mode")
+        Ruom.setDebug(debugMode)
         bstats = settingsConfig.getBoolean("bstats")
 
         commandSound = XSound.valueOf(settingsConfig.getString("sounds.command")!!).parseSound()
