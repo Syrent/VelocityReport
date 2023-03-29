@@ -23,7 +23,7 @@ class PlaceholderAPIHook constructor(plugin: VelocityReportSpigot, name: String)
                     reportsCache[stage] = reports.size
                 }
             }
-        }, 0, 5 * 20)
+        }, 0, 10 * 20)
     }
 
     override fun features(): List<String> {
