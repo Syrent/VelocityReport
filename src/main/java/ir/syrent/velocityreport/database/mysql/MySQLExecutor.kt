@@ -47,7 +47,7 @@ abstract class MySQLExecutor(
     }
 
     protected fun tick() {
-        for (priority in Priority.values().toList()) {
+        for (priority in Priority.values()) {
             val queries = queue[priority] ?: mutableListOf()
             if (queries.isEmpty()) continue
             val removedQueries = HashSet<Query>()
