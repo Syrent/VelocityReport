@@ -43,7 +43,7 @@ class ReportCommand(
             val targetPlayer = plugin.server.getPlayerExact(args[0])
             var target = targetPlayer?.name
 
-            if (Settings.velocitySupport) {
+            if (Settings.velocitySupport && plugin.networkPlayers.isNotEmpty()) {
                 target = plugin.networkPlayers.findLast { it.lowercase() == args[0].lowercase() }
             } else {
                 /*
@@ -232,7 +232,7 @@ class ReportCommand(
     override fun tabComplete(sender: CommandSender, args: List<String>): List<String> {
         when (args.size) {
             1 -> {
-                return if (Settings.velocitySupport) plugin.networkPlayers.filter { it.startsWith(args[0], true) }
+                return if (Settings.velocitySupport && plugin.networkPlayers.isNotEmpty()) plugin.networkPlayers.filter { it.startsWith(args[0], true) }
                 else Ruom.getOnlinePlayers().map { it.name }.filter { it.startsWith(args[0], true) }
             }
             2 -> {

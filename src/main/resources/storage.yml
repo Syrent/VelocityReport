@@ -6,4 +6,4 @@ mysql:
     username: root
     password: ""
     ssl: false
-    pooling_size: 3
+    pooling_size: 5

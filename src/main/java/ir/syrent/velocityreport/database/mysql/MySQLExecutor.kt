@@ -6,13 +6,13 @@ import ir.syrent.velocityreport.database.Database
 import ir.syrent.velocityreport.database.Priority
 import ir.syrent.velocityreport.database.Query
 import ir.syrent.velocityreport.database.Query.StatusCode
+import ir.syrent.velocityreport.spigot.Ruom
 import java.sql.Connection
 import java.sql.ResultSet
 import java.sql.SQLException
-import java.util.concurrent.CompletableFuture
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import java.util.concurrent.ThreadFactory
+import java.util.*
+import java.util.concurrent.*
+import kotlin.collections.HashSet
 
 abstract class MySQLExecutor(
     private val credentials: MySQLCredentials,
@@ -21,32 +21,36 @@ abstract class MySQLExecutor(
     threadFactory: ThreadFactory?
 ) : Database() {
     @JvmField
-    protected val threadPool: ExecutorService
+    protected val threadPool: ExecutorService = Executors.newCachedThreadPool(threadFactory)
     @JvmField
     protected var hikari: HikariDataSource? = null
     @JvmField
     protected var poolingUsed = 0
 
-    init {
-        threadPool = Executors.newFixedThreadPool(1.coerceAtLeast(poolingSize), threadFactory)
-    }
-
-    protected fun connect(driverClassName: String?) {
+    protected fun connect(driverClassName: String) {
         val hikariConfig = HikariConfig()
         hikariConfig.jdbcUrl = credentials.url
         hikariConfig.driverClassName = driverClassName
         hikariConfig.username = credentials.username
         hikariConfig.password = credentials.password
-        hikariConfig.maximumPoolSize = poolingSize
+        hikariConfig.minimumIdle = 3
+        hikariConfig.maximumPoolSize = poolingSize.coerceAtLeast(3)
+        hikariConfig.poolName = "${Ruom.getPlugin().name.lowercase()}-hikari-pool"
+        hikariConfig.initializationFailTimeout = -1
         hikari = HikariDataSource(hikariConfig)
+
+        Ruom.runSync({
+            for (priority in Priority.values().toList()) {
+                Ruom.debug("Query statements for ${priority.name}: ${queue[priority]?.toMutableList()!!.map { "${it.statement}:${it.statusCode}" }}")
+            }
+        }, 20, 20)
     }
 
     protected fun tick() {
-        val priorities: List<Priority> = ArrayList(listOf(*Priority.values()))
-        for (priority in priorities) {
-            val queries: MutableList<Query> = ArrayList(queue[priority] ?: emptyList())
+        for (priority in Priority.values()) {
+            val queries = queue[priority] ?: mutableListOf()
             if (queries.isEmpty()) continue
-            val removedQueries: MutableSet<Query> = HashSet()
+            val removedQueries = HashSet<Query>()
             for (query in queries) {
                 if (query.statusCode == StatusCode.FINISHED.code) removedQueries.add(query)
             }
@@ -54,7 +58,7 @@ abstract class MySQLExecutor(
             for (query in queries) {
                 if (query.hasDoneRequirements() && query.statusCode != StatusCode.RUNNING.code) {
                     query.statusCode = StatusCode.RUNNING.code
-                    executeQuery(query).whenComplete { statusCode: Int, _: Throwable? ->
+                    executeQuery(query).whenComplete { statusCode, _ ->
                         query.statusCode = statusCode
                         poolingUsed--
                     }
@@ -77,6 +81,7 @@ abstract class MySQLExecutor(
                 if (query.statement.startsWith("INSERT") ||
                     query.statement.startsWith("UPDATE") ||
                     query.statement.startsWith("DELETE") ||
+                    query.statement.startsWith("ALTER") ||
                     query.statement.startsWith("CREATE")
                 ) preparedStatement.executeUpdate() else resultSet = preparedStatement.executeQuery()
                 query.completableFuture.complete(resultSet)
@@ -116,6 +121,6 @@ abstract class MySQLExecutor(
         }
     }
 
-    protected abstract fun onQueryFail(query: Query?)
-    protected abstract fun onQueryRemoveDueToFail(query: Query?)
+    protected abstract fun onQueryFail(query: Query)
+    protected abstract fun onQueryRemoveDueToFail(query: Query)
 }
