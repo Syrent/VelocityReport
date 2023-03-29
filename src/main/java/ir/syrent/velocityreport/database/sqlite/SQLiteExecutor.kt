@@ -36,8 +36,7 @@ abstract class SQLiteExecutor protected constructor(private val dbFile: File, pr
     }
 
     protected fun tick() {
-        val priorities: List<Priority> = ArrayList(listOf(*Priority.values()))
-        for (priority in priorities) {
+        for (priority in Priority.values()) {
             val queries = queue[priority]
             if (queries!!.isEmpty()) continue
             val query = queries[0]

@@ -60,7 +60,6 @@ open class Query protected constructor(statement: String) {
 
     enum class StatusCode(val code: Int) {
         NOT_STARTED(-1), RUNNING(0), FAILED(1), FINISHED(2);
-
     }
 
     companion object {
