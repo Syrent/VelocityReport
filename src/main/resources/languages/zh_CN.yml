@@ -1,0 +1,82 @@
+config_version: 4
+general:
+  raw_prefix: '[VelocityReport]'
+  prefix: <gradient:dark_red:red>VelocityReport</gradient> <gold>|</gold>
+  console_prefix: <gray>[<gradient:dark_red:red>VelocityReport</gradient>]</gray>
+  successful_prefix: <dark_gray>[</dark_gray><dark_green><bold>✔</bold><dark_gray>]</dark_gray>
+  warn_prefix: <dark_gray>[</dark_gray><gold><bold>!</bold><dark_gray>]</dark_gray>
+  error_prefix: <dark_gray>[</dark_gray><dark_red><bold>✘</bold><dark_gray>]</dark_gray>
+  only_players: $error_prefix <gradient:dark_red:red>仅允许玩家使用该命令.
+  valid_parameters: $error_prefix <gradient:dark_red:red>请为此命令使用有效的参数. <dark_gray>($argument)
+  unknown_message: $error_prefix <gradient:dark_red:red>未知消息!
+command:
+  no_permission: $error_prefix <gradient:dark_red:red>你没有权限使用这个命令! <dark_gray>($permission)
+  report:
+    usage: '$warn_prefix <gradient:dark_red:red>用法: <gold>/report <yellow><user> [category]
+      [reason]'
+    use: $successful_prefix <gradient:dark_green:green>成功举报玩家 $player , 举报原因:<aqua>$reason<aqua>!
+    no_target: $error_prefix <gradient:dark_red:red>未找到该玩家!
+    prevent_self: $error_prefix <gradient:dark_red:red>你无法举报自己!
+    cooldown: $error_prefix <gradient:dark_red:red>冷却中, 请等待 <gold>$time</gold> 秒后再次使用!
+    invalid:
+      category: $error_prefix <gradient:dark_red:red><gold>$category</gold> 不是有效的举报类别!
+      reason: $error_prefix <gradient:dark_red:red><gold>$reason</gold> 不是有效的举报理由!
+    book:
+      header:
+      - '<dark_red>❐ <gradient:dark_red:red>举报原因:'
+      - ''
+      - ''
+      category: <click:run_command:'/report $player $category'><hover:show_text:'<yellow>点击举报!'><gold>●
+        <dark_red>$name</hover></click>
+      reason: "<click:run_command:'/report $player $category $reason'><hover:show_text:'<dark_green>描\
+        述: <gradient:gray:white>$description \n\n<yellow>点击举报!'><gold>● <red>$name</hover></click>"
+      footer:
+      - ''
+  reportadmin:
+    usage: '$warn_prefix <gradient:dark_red:red>用法: <gold>/reportadmin <yellow><args>'
+    reload:
+      use: $successful_prefix <green>插件重载成功!
+    reports:
+      receive: $warn_prefix <gradient:gold:yellow>正在从数据库接收举报数据...
+      book:
+        header:
+        - '<dark_red>❐ <gradient:dark_red:red>举报:'
+        - ''
+        format: |-
+          <click:run_command:'/reportadmin accept $id'><hover:show_text:'<red>举报人: <aqua>$reporter</aqua>
+          被举报者: <aqua>$reported</aqua>
+          所在服务器: <aqua>$server</aqua>
+
+          举报原因: <aqua>$reason</aqua>
+
+           <yellow>点击跟进处理这条举报!'><gold>● <red>$reported</hover></click>
+    accept:
+      usage: '$warn_prefix <gradien、t:dark_red:red>用法: <gold>/reportadmin accept <yellow><reportid>'
+      use: $successful_prefix <gradient:dark_green:green>已成功接手该举报! ($id)
+      already_accepted: $warn_prefix <gradient:red:gold>该举报不存在或正在处理中! ($id)
+    done:
+      usage: '$warn_prefix <gradient:dark_red:red>用法: <gold>/reportadmin done <yellow><reportid>'
+      use: $successful_prefix <gradient:dark_green:green>已成功处理该举报! ($id)
+      already_done: $warn_prefix <gradient:red:gold>该举报不存在或已被处理! ($id)
+    myreports:
+      receive: $warn_prefix <gradient:gold:yellow>正在从数据库接收处理中的举报数据...
+      use: $successful_prefix <gradient:dark_green:green>已成功处理该举报! ($id)
+      book:
+        header:
+        - '<dark_red>❐ <gradient:dark_red:red>处理中的举报:'
+        - ''
+        format: |-
+          <click:run_command:'/reportadmin done $id'><hover:show_text:'<red>举报人: <aqua>$reporter</aqua>
+          被举报者: <aqua>$reported</aqua>
+          所在服务器: <aqua>$server</aqua>
+
+          举报原因: <aqua>$reason</aqua>
+
+           <yellow>点击标记为已完成!'><gold>● <red>$reported</hover></click>
+report:
+  actionbar: <dark_red>⚠ <gradient:gold:yellow>当前共有 <aqua>$reports</aqua> 条举报未处理!
+  message: |-
+    <click:run_command:'/reportadmin reports'><hover:show_text:'<red>所在服务器: <aqua>$server</aqua>
+    举报原因: <aqua>$reason</aqua>
+
+    <yellow>点击查看未处理的举报!'><gold>● <red>$reporter</red> 举报了 <red>$reported</red></hover></click>
