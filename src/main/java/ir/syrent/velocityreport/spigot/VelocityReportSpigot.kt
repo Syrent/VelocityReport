@@ -25,7 +25,7 @@ import ir.syrent.velocityreport.spigot.storage.Settings.velocitySupport
 import ir.syrent.velocityreport.utils.ServerVersion
 import ir.syrent.velocityreport.utils.Utils
 import ir.syrent.velocityreport.utils.component
-import me.mohamad82.ruom.utils.MilliCounter
+import ir.syrent.velocityreport.utils.ruom.utils.MilliCounter
 import org.bstats.bukkit.Metrics
 import org.bukkit.entity.Player
 import java.util.*

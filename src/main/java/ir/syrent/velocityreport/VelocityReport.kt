@@ -13,10 +13,10 @@ import ir.syrent.velocityreport.bridge.VelocityBridgeManager
 import ir.syrent.velocityreport.listener.DisconnectListener
 import ir.syrent.velocityreport.listener.PostLoginListener
 import ir.syrent.velocityreport.listener.ServerConnectedListener
-import me.mohamad82.ruom.VRUoMPlugin
-import me.mohamad82.ruom.VRuom
-import me.mohamad82.ruom.messaging.VelocityMessagingEvent
-import me.mohamad82.ruom.utils.MilliCounter
+import ir.syrent.velocityreport.utils.ruom.VRUoMPlugin
+import ir.syrent.velocityreport.utils.ruom.VRuom
+import ir.syrent.velocityreport.utils.ruom.messaging.VelocityMessagingEvent
+import ir.syrent.velocityreport.utils.ruom.utils.MilliCounter
 import org.slf4j.Logger
 import java.io.File
 import java.nio.file.Path
@@ -26,16 +26,11 @@ class VelocityReport @Inject constructor(
     server: ProxyServer,
     logger: Logger,
     @DataDirectory dataDirectory: Path
-) : VRUoMPlugin(server, logger) {
+) : VRUoMPlugin(server, logger, dataDirectory) {
 
     val cooldowns = mutableMapOf<UUID, MilliCounter>()
-    val dataDirectory: Path
     lateinit var bridgeManager: VelocityBridgeManager
         private set
-
-    init {
-        this.dataDirectory = dataDirectory
-    }
 
     @Subscribe
     private fun onProxyInitialization(event: ProxyInitializeEvent) {
@@ -69,7 +64,7 @@ class VelocityReport @Inject constructor(
     }
 
     private fun createFolder() {
-        val dataFile = dataDirectory.toFile()
+        val dataFile = getDataDirectory().toFile()
         if (!dataFile.exists()) {
             dataFile.mkdir()
         }

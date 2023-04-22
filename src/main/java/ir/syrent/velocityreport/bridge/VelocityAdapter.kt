@@ -1,6 +1,6 @@
 package ir.syrent.velocityreport.bridge
 
-import me.mohamad82.ruom.VRuom
+import ir.syrent.velocityreport.utils.ruom.VRuom
 
 class VelocityAdapter {
     fun getAllPlayersName(): List<String> {
