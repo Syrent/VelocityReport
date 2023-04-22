@@ -4,7 +4,7 @@ import com.velocitypowered.api.event.Subscribe
 import com.velocitypowered.api.event.connection.DisconnectEvent
 import com.velocitypowered.api.proxy.Player
 import ir.syrent.velocityreport.VelocityReport
-import me.mohamad82.ruom.VRuom
+import ir.syrent.velocityreport.utils.ruom.VRuom
 import java.util.concurrent.TimeUnit
 
 

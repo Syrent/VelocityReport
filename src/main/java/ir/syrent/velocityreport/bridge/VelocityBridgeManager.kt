@@ -4,9 +4,9 @@ import com.google.common.annotations.Beta
 import com.google.common.io.ByteStreams
 import com.google.gson.JsonObject
 import com.velocitypowered.api.proxy.Player
-import me.mohamad82.ruom.VRuom
-import me.mohamad82.ruom.utils.GsonUtils
-import me.mohamad82.ruom.utils.MilliCounter
+import ir.syrent.velocityreport.utils.ruom.VRuom
+import ir.syrent.velocityreport.utils.ruom.utils.GsonUtils
+import ir.syrent.velocityreport.utils.ruom.utils.MilliCounter
 import java.util.*
 
 @Suppress("UnstableApiUsage")

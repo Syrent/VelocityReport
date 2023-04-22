@@ -3,8 +3,8 @@ package ir.syrent.velocityreport.listener
 import com.velocitypowered.api.event.Subscribe
 import com.velocitypowered.api.event.connection.PostLoginEvent
 import ir.syrent.velocityreport.VelocityReport
-import me.mohamad82.ruom.VRuom
-import me.mohamad82.ruom.utils.MilliCounter
+import ir.syrent.velocityreport.utils.ruom.VRuom
+import ir.syrent.velocityreport.utils.ruom.utils.MilliCounter
 import java.util.concurrent.TimeUnit
 
 

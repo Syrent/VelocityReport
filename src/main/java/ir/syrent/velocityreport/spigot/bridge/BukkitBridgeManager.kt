@@ -7,7 +7,7 @@ import ir.syrent.velocityreport.report.Report
 import ir.syrent.velocityreport.spigot.Ruom
 import ir.syrent.velocityreport.spigot.VelocityReportSpigot
 import ir.syrent.velocityreport.utils.Utils
-import me.mohamad82.ruom.utils.GsonUtils
+import ir.syrent.velocityreport.utils.ruom.utils.GsonUtils
 import org.bukkit.entity.Player
 import java.util.*
 

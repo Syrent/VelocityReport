@@ -3,7 +3,7 @@ package ir.syrent.velocityreport.spigot.listener
 import ir.syrent.velocityreport.spigot.Ruom
 import ir.syrent.velocityreport.spigot.VelocityReportSpigot
 import ir.syrent.velocityreport.utils.Utils
-import me.mohamad82.ruom.utils.MilliCounter
+import ir.syrent.velocityreport.utils.ruom.utils.MilliCounter
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent

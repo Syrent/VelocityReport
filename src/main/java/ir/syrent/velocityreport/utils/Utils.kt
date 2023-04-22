@@ -19,7 +19,7 @@ object Utils {
 
                 player.sendActionbar(Message.REPORT_ACTIONBAR, TextReplacement("reports", reportsCount.toString()))
                 actionbarPlayers.add(player)
-            }, 0, 40)
+            }, 100, 100)
         }
     }
 

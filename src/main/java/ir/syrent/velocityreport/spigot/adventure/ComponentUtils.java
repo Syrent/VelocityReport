@@ -7,6 +7,8 @@ import org.bukkit.entity.Player;
 
 public class ComponentUtils {
 
+    private static MiniMessage miniMessage = MiniMessage.miniMessage();
+
     static {
         Ruom.initializeAdventure();
     }
@@ -22,7 +24,7 @@ public class ComponentUtils {
     }
 
     public static Component parse(String string) {
-        return MiniMessage.miniMessage().deserialize(parseComponentColors(string));
+        return miniMessage.deserialize(string);
     }
 
     public static String parseComponentColors(String msg) {

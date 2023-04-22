@@ -1,8 +1,8 @@
 package ir.syrent.velocityreport.bridge
 
 import com.velocitypowered.api.proxy.Player
-import me.mohamad82.ruom.VRuom
-import me.mohamad82.ruom.messaging.VelocityMessagingChannel
+import ir.syrent.velocityreport.utils.ruom.VRuom
+import ir.syrent.velocityreport.utils.ruom.messaging.VelocityMessagingChannel
 
 class VelocityBridge: Bridge, VelocityMessagingChannel("velocityreport", "main") {
 

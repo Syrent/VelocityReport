@@ -5,7 +5,7 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import com.google.gson.JsonObject;
 import ir.syrent.velocityreport.spigot.Ruom;
-import me.mohamad82.ruom.utils.GsonUtils;
+import ir.syrent.velocityreport.utils.ruom.utils.GsonUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.jetbrains.annotations.NotNull;
