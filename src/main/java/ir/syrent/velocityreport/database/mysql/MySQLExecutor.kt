@@ -55,7 +55,7 @@ abstract class MySQLExecutor(
                 if (query.statusCode == StatusCode.FINISHED.code) removedQueries.add(query)
             }
             queries.removeAll(removedQueries)
-            for (query in queries) {
+            for (query in queries.toList()) {
                 if (query.hasDoneRequirements() && query.statusCode != StatusCode.RUNNING.code) {
                     query.statusCode = StatusCode.RUNNING.code
                     executeQuery(query).whenComplete { statusCode, _ ->
