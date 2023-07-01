@@ -65,7 +65,7 @@ repositories {
 dependencies {
     compileOnly 'me.clip:placeholderapi:2.11.3'
     compileOnly 'com.velocitypowered:velocity-api:3.1.1'
-    compileOnly 'org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT'
 
     compileOnly files('libs/VelocityVanish-3.12.0-2.jar')
 
@@ -128,7 +128,7 @@ jar {
 def targetJavaVersion = 11
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
-    sourceCompatibility = 8
+    sourceCompatibility = javaVersion
     targetCompatibility = javaVersion
     if (JavaVersion.current() < javaVersion) {
         toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
@@ -138,13 +138,6 @@ java {
 tasks.withType(JavaCompile).configureEach {
     options.deprecation = true
     options.encoding = 'UTF-8'
-}
-
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
-    kotlinOptions {
-        jvmTarget = "8"
-        freeCompilerArgs += ["-Xjvm-default=all"]
-    }
 }
 
 compileJava.options.encoding = 'UTF-8'
@@ -174,14 +167,3 @@ def generateTemplates = tasks.register('generateTemplates', Copy) { task ->
 }
 sourceSets.main.java.srcDir(generateTemplates.map { it.outputs })
 rootProject.idea.project.settings.taskTriggers.afterSync generateTemplates
-
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
-compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}

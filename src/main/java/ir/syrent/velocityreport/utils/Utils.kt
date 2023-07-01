@@ -4,6 +4,7 @@ import ir.syrent.velocityreport.spigot.Ruom
 import ir.syrent.velocityreport.spigot.VelocityReportSpigot
 import ir.syrent.velocityreport.spigot.storage.Message
 import ir.syrent.velocityreport.spigot.storage.Settings
+import net.md_5.bungee.api.ChatMessageType
 import org.bukkit.entity.Player
 
 object Utils {
@@ -13,13 +14,12 @@ object Utils {
         if (actionbarPlayers.contains(player)) return
 
         if (Settings.staffActionbarEnabled && player.hasPermission("velocityreport.admin.notify.actionbar")) {
+            val reportsCount = VelocityReportSpigot.instance.reportsCount
+            if (!Settings.staffActionbarSendZero && reportsCount < 1) return
             Ruom.runSync({
-                val reportsCount = VelocityReportSpigot.instance.reportsCount
-                if (!Settings.staffActionbarSendZero && reportsCount < 1) return@runSync
-
                 player.sendActionbar(Message.REPORT_ACTIONBAR, TextReplacement("reports", reportsCount.toString()))
-                actionbarPlayers.add(player)
             }, 100, 100)
+            actionbarPlayers.add(player)
         }
     }
 
