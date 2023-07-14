@@ -9,6 +9,7 @@
 [![Modrinth Downloads](https://img.shields.io/modrinth/dt/mqGjZEIE?label=Modrinth&color=blue&style=flat-square&logo=modrinth&logoColor=white)](https://modrinth.com/plugin/velocityreport)
 [![Spigot Downloads](https://img.shields.io/spiget/downloads/105378?label=Spigot&color=blue&style=flat-square&logo=docusign&logoColor=white)](https://www.spigotmc.org/resources/105378)
 [![Polymart Downloads](https://img.shields.io/polymart/downloads/2896?label=Polymart&color=blue&style=flat-square&logo=docusign&logoColor=white)](https://polymart.org/resource/2896)
+[![License](https://img.shields.io/badge/GPL%20V3-blue?label=License&style=flat-square)](https://github.com/Syrent/VelocityReport/blob/master/LICENSE)
 
 ### [VelocityReport]是一款高性能且简单易用的举报插件，并提供了高度的可自定义性和MySQL支持等。
 
