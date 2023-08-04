@@ -112,18 +112,6 @@
 <tr>
   <td width="80" align="center" valign="top">
     <br>
-    <a href="https://polymart.org/resource/2896"><img src="./blob/images/logo/polymart.png"></a>
-  </td>
-  <td valign="top">
-    <h3>Polymart</h3>
-    <p>
-      <a href="https://polymart.org/resource/2896">Click to go to Polymart plugin release page</a>.
-    </p>
-  </td>
-</tr>
-<tr>
-  <td width="80" align="center" valign="top">
-    <br>
     <a href="https://forums.papermc.io/threads/515"><img src="./blob/images/logo/papermc-logo.png"></a>
   </td>
   <td valign="top">
