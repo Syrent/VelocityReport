@@ -8,7 +8,7 @@ public class ServerVersion {
      * @return The server's version without "1.", That would be an integer.
      */
     public static int getVersion() {
-        return ReflectionUtils.PATCH_NUMBER;
+        return ReflectionUtils.MINOR_NUMBER;
     }
 
     /**
