@@ -28,7 +28,7 @@ public class MySQLDatabase extends MySQLExecutor {
 
     @Override
     public void connect() {
-        super.connect(ServerVersion.supports(13) ? "com.mysql.cj.jdbc.Driver" : "com.mysql.jdbc.Driver");
+        super.connect(ServerVersion.supports(13) && ServerVersion.getVersion() != 15 ? "com.mysql.cj.jdbc.Driver" : "com.mysql.jdbc.Driver");
         this.queueTask = startQueue();
     }
 

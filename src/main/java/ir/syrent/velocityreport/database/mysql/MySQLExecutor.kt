@@ -7,6 +7,7 @@ import ir.syrent.velocityreport.database.Priority
 import ir.syrent.velocityreport.database.Query
 import ir.syrent.velocityreport.database.Query.StatusCode
 import ir.syrent.velocityreport.spigot.Ruom
+import ir.syrent.velocityreport.utils.ServerVersion
 import java.sql.Connection
 import java.sql.ResultSet
 import java.sql.SQLException
@@ -28,6 +29,17 @@ abstract class MySQLExecutor(
     protected var poolingUsed = 0
 
     protected fun connect(driverClassName: String) {
+        Ruom.log("Registering MySQL database connection using $driverClassName driver path.")
+        if (!ServerVersion.supports(13)) {
+            val exception = runCatching { Class.forName("com.mysql.jdbc.Driver") }.exceptionOrNull()
+            if (exception != null) {
+                Ruom.error("Couldn't load MySQL Driver correctly, that may because you're using an outdated version of Minecraft or Java. Please open an issue on plugin's Github page if you think it's plugin's problem.")
+                Ruom.error("Error message: ${exception.message}")
+                Ruom.error("Full error message:")
+                exception.printStackTrace()
+            }
+        }
+
         val hikariConfig = HikariConfig()
         hikariConfig.jdbcUrl = credentials.url
         hikariConfig.driverClassName = driverClassName
