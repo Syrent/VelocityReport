@@ -100,12 +100,12 @@
 <tr>
   <td width="80" align="center" valign="top">
     <br>
-    <a href="https://www.spigotmc.org/resources/91842"><img src="./blob/images/logo/spigotmc.png"></a>
+    <a href="https://www.spigotmc.org/resources/105378"><img src="./blob/images/logo/spigotmc.png"></a>
   </td>
   <td valign="top">
     <h3>SpigotMC</h3>
     <p>
-      <a href="https://www.spigotmc.org/resources/91842">Click to go to SpigotMC plugin release page</a>.
+      <a href="https://www.spigotmc.org/resources/105378">Click to go to SpigotMC plugin release page</a>.
     </p>
   </td>
 </tr>
