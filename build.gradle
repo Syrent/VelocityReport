@@ -77,7 +77,7 @@ dependencies {
     implementation 'org.bstats:bstats-bukkit:3.0.2'
 //    implementation 'me.mohamad82:ruom-velocity:4.2.14'
     implementation 'club.minnced:discord-webhooks:0.8.4'
-    implementation 'com.github.cryptomorin:XSeries:9.4.0'
+    implementation 'com.github.cryptomorin:XSeries:9.5.0'
 
     implementation 'net.kyori:adventure-api:4.14.0'
     implementation 'net.kyori:adventure-platform-bukkit:4.3.0'
