@@ -79,9 +79,9 @@ class VelocityReportSpigot : RUoMPlugin() {
 
     private fun sendWarningMessages() {
         if (velocitySupport && type === Database.DBType.SQLITE) {
-            Ruom.warn("You are using SQLite database, this is not recommended for Velocity servers.")
-            Ruom.warn("Please change database method to MySQL in `storage.yml` file.")
-            Ruom.warn("Otherwise, Data will not be sync between your servers.")
+            Ruom.log("You are using SQLite database, this is not recommended for Velocity servers.")
+            Ruom.log("Please change database method to MySQL in `storage.yml` file.")
+            Ruom.log("Otherwise, Data will not be sync between your servers.")
         }
         if (!ServerVersion.supports(16)) {
             Ruom.warn("Your running your server on a legacy minecraft version (< 16).")
