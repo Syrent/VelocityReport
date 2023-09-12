@@ -41,9 +41,20 @@ object Database {
 
 
         try {
-            Ruom.log("Successfully connected to ${type.name} database.")
             database!!.connect()
-            database!!.queueQuery(Query.query("CREATE TABLE IF NOT EXISTS velocityreport_reports (report_id VARCHAR(64), reporter_id VARCHAR(64), reporter_name VARCHAR(16), reported_name VARCHAR(16), date BIGINT, reason VARCHAR(128), moderator_id VARCHAR(64), server VARCHAR(64), moderator_name VARCHAR(16), stage VARCHAR(64), PRIMARY KEY (report_id));"), Priority.HIGHEST)
+            Ruom.log("Successfully connected to ${type.name} database.")
+            Ruom.log("Creating reports table...")
+            database!!.queueQuery(
+                Query.query("CREATE TABLE IF NOT EXISTS velocityreport_reports (report_id VARCHAR(64), reporter_id VARCHAR(64), reporter_name VARCHAR(16), reported_name VARCHAR(16), date BIGINT, reason VARCHAR(128), moderator_id VARCHAR(64), server VARCHAR(64), moderator_name VARCHAR(16), stage VARCHAR(64), PRIMARY KEY (report_id));"),
+                Priority.HIGHEST
+            ).completableFuture.whenComplete { result, error ->
+                if (error != null) {
+                    error.printStackTrace()
+                    return@whenComplete
+                }
+
+                Ruom.log("Successfully created velocityreport_reports table.")
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }

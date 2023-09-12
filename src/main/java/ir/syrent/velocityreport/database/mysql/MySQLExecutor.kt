@@ -48,7 +48,7 @@ abstract class MySQLExecutor(
         hikariConfig.minimumIdle = 3
         hikariConfig.maximumPoolSize = poolingSize.coerceAtLeast(3)
         hikariConfig.poolName = "${Ruom.getPlugin().name.lowercase()}-hikari-pool"
-        hikariConfig.initializationFailTimeout = -1
+        hikariConfig.initializationFailTimeout = 30000
         hikari = HikariDataSource(hikariConfig)
 
         Ruom.runSync({
