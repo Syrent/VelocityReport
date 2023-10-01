@@ -32,7 +32,7 @@ report:
             commands:
                 - "give %player% diamond 1"
     # Modes: SIMPLE, CATEGORY
-    mode: SIMPLE
+    mode: CATEGORY
     modes:
         simple:
             killaura:
