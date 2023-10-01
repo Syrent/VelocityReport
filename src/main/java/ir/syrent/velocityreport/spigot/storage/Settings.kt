@@ -5,6 +5,7 @@ import club.minnced.discord.webhook.WebhookClientBuilder
 import com.cryptomorin.xseries.XSound
 import ir.syrent.velocityreport.report.Category
 import ir.syrent.velocityreport.report.Reason
+import ir.syrent.velocityreport.report.Report
 import ir.syrent.velocityreport.spigot.Ruom
 import ir.syrent.velocityreport.spigot.adventure.AdventureApi
 import ir.syrent.velocityreport.spigot.configuration.YamlConfig
@@ -21,7 +22,7 @@ import java.time.LocalDate
 
 object Settings {
 
-    const val latestSettingsConfigVersion = 4
+    const val latestSettingsConfigVersion = 5
     const val latestLanguageConfigVersion = 4
 
     lateinit var settings: YamlConfig
@@ -52,6 +53,8 @@ object Settings {
     var staffActionbarSendZero = false
     var preventSelfReport = true
     var customReason = false
+    var mode = Report.Mode.SIMPLE
+    val simple = mutableListOf<Reason>()
     var categories = mutableListOf<Category>()
     var autoDoneEnabled = true
     var autoDoneTime = 3600
@@ -157,9 +160,28 @@ object Settings {
             sendBackupMessage(backupFileName)
         }
 
+        mode = Report.Mode.valueOf(settingsConfig.getString("report.mode")?.uppercase() ?: "NORMAL")
+
+        simple.apply {
+            this.clear()
+            val reasons = settingsConfig.getConfigurationSection("report.modes.simple") ?: return@apply
+            for (reason in reasons.getKeys(false)) {
+                val reasonConfig = reasons.getConfigurationSection(reason) ?: continue
+                this.add(
+                    Reason(
+                        reason,
+                        "normal",
+                        reasonConfig.getBoolean("enabled"),
+                        reasonConfig.getString("displayname") ?: reason,
+                        reasonConfig.getString("description") ?: ""
+                    )
+                )
+            }
+        }
+
         categories.apply {
             this.clear()
-            val categories = settingsConfig.getConfigurationSection("report.categories") ?: return@apply
+            val categories = settingsConfig.getConfigurationSection("report.modes.category") ?: return@apply
             for (category in categories.getKeys(false)) {
                 val categoryConfig = categories.getConfigurationSection(category) ?: continue
                 this.add(

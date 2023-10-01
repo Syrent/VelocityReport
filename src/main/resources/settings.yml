@@ -1,7 +1,7 @@
 #
 # Full wiki is available at https://github.com/Syrent/VelocityReport/wiki
 #
-config_version: 4
+config_version: 5
 default_language: en_US
 show_dependency_suggestions: true
 debug_mode: false
@@ -31,79 +31,99 @@ report:
             enabled: false
             commands:
                 - "give %player% diamond 1"
-    categories:
-        combat:
-            enabled: true
-            displayname: "<dark_red>Combat"
-            reasons:
-                killaura:
-                    enabled: true
-                    displayname: "<red>Killaura"
-                    description: "Killaura is a cheat that allows you to attack players without looking at them."
-                criticals:
-                    enabled: true
-                    displayname: "<red>Criticals"
-                    description: "Criticals is a cheat that allows you to get a critical hit on every single attack without risking extra knock-back by jumping."
-                reach:
-                    enabled: true
-                    displayname: "<red>Reach"
-                    description: "Reach is a cheat that allows you to attack players from a long distance."
-                aimbot:
-                    enabled: true
-                    displayname: "<red>Aimbot"
-                    description: "Aimbot is a cheat that allows you to aim at players automatically."
-        movement:
-            enabled: true
-            displayname: "<dark_red>Movement"
-            reasons:
-                speed:
-                    enabled: true
-                    displayname: "<red>Speed"
-                    description: "Speed is a cheat that allows you to move faster than normal."
-                fly:
-                    enabled: true
-                    displayname: "<red>Fly"
-                    description: "Fly is a cheat that allows you to fly in the air."
-                scaffold:
-                    enabled: true
-                    displayname: "<red>Scaffold"
-                    description: "Scaffold is a cheat that allows you to place blocks under you."
-                antiafk:
-                    enabled: true
-                    displayname: "<red>AntiAFK"
-                    description: "AntiAFK is a cheat that makes the player move around randomly, so that server cannot detect when the user is AFK."
-        blocks:
-            enabled: true
-            displayname: "<dark_red>Blocks"
-            reasons:
-                automine:
-                    enabled: true
-                    displayname: "<red>AutoMine"
-                    description: "Automatically mines the block that crosshair is pointing at."
-                fastbreak:
-                    enabled: true
-                    displayname: "<red>FastBreak"
-                    description: "It makes breaking blocks faster. It automatically breaks blocks for you."
-                fastplace:
-                    enabled: true
-                    displayname: "<red>FastPlace"
-                    description: "It makes place blocks faster. It automatically place blocks for you."
-        other:
-            enabled: true
-            displayname: "<dark_red>Other"
-            reasons:
-                spam:
-                    enabled: true
-                    displayname: "<red>Spam"
-                    description: "Spam is a cheat that cause client to spam messages in chat."
-                esp:
-                    enabled: true
-                    displayname: "<red>ESP"
-                    description: "ESP is a cheat that allows you to see players through walls."
-                other:
-                    enabled: true
-                    displayname: "<red>Other"
-                    description: "Other reasons."
+    # Modes: SIMPLE, CATEGORY
+    mode: SIMPLE
+    modes:
+        simple:
+            killaura:
+                enabled: true
+                displayname: "<red>Killaura"
+                description: "Killaura is a cheat that allows you to attack players without looking at them."
+            speed:
+                enabled: true
+                displayname: "<red>Speed"
+                description: "Speed is a cheat that allows you to move faster than normal."
+            fly:
+                enabled: true
+                displayname: "<red>Fly"
+                description: "Fly is a cheat that allows you to fly in the air."
+            other:
+                enabled: true
+                displayname: "<red>Other"
+                description: "Other reasons."
+        category:
+            combat:
+                enabled: true
+                displayname: "<dark_red>Combat"
+                reasons:
+                    killaura:
+                        enabled: true
+                        displayname: "<red>Killaura"
+                        description: "Killaura is a cheat that allows you to attack players without looking at them."
+                    criticals:
+                        enabled: true
+                        displayname: "<red>Criticals"
+                        description: "Criticals is a cheat that allows you to get a critical hit on every single attack without risking extra knock-back by jumping."
+                    reach:
+                        enabled: true
+                        displayname: "<red>Reach"
+                        description: "Reach is a cheat that allows you to attack players from a long distance."
+                    aimbot:
+                        enabled: true
+                        displayname: "<red>Aimbot"
+                        description: "Aimbot is a cheat that allows you to aim at players automatically."
+            movement:
+                enabled: true
+                displayname: "<dark_red>Movement"
+                reasons:
+                    speed:
+                        enabled: true
+                        displayname: "<red>Speed"
+                        description: "Speed is a cheat that allows you to move faster than normal."
+                    fly:
+                        enabled: true
+                        displayname: "<red>Fly"
+                        description: "Fly is a cheat that allows you to fly in the air."
+                    scaffold:
+                        enabled: true
+                        displayname: "<red>Scaffold"
+                        description: "Scaffold is a cheat that allows you to place blocks under you."
+                    antiafk:
+                        enabled: true
+                        displayname: "<red>AntiAFK"
+                        description: "AntiAFK is a cheat that makes the player move around randomly, so that server cannot detect when the user is AFK."
+            blocks:
+                enabled: true
+                displayname: "<dark_red>Blocks"
+                reasons:
+                    automine:
+                        enabled: true
+                        displayname: "<red>AutoMine"
+                        description: "Automatically mines the block that crosshair is pointing at."
+                    fastbreak:
+                        enabled: true
+                        displayname: "<red>FastBreak"
+                        description: "It makes breaking blocks faster. It automatically breaks blocks for you."
+                    fastplace:
+                        enabled: true
+                        displayname: "<red>FastPlace"
+                        description: "It makes place blocks faster. It automatically place blocks for you."
+            other:
+                enabled: true
+                displayname: "<dark_red>Other"
+                reasons:
+                    spam:
+                        enabled: true
+                        displayname: "<red>Spam"
+                        description: "Spam is a cheat that cause client to spam messages in chat."
+                    esp:
+                        enabled: true
+                        displayname: "<red>ESP"
+                        description: "ESP is a cheat that allows you to see players through walls."
+                    other:
+                        enabled: true
+                        displayname: "<red>Other"
+                        description: "Other reasons."
 discord:
     enabled: false
     webhook_url: ""

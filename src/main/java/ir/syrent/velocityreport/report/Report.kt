@@ -87,4 +87,9 @@ data class Report(
         }
         return future
     }
+
+    enum class Mode {
+        SIMPLE,
+        CATEGORY
+    }
 }
