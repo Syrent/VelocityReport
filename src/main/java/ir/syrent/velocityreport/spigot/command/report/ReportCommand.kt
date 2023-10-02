@@ -17,6 +17,7 @@ import ir.syrent.velocityvanish.spigot.VelocityVanishSpigot
 import net.kyori.adventure.inventory.Book
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
+import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import kotlin.math.roundToInt
@@ -38,32 +39,80 @@ class ReportCommand(
             return
         }
 
-        //           1          2        3
-        // Report <player> <category> <reason>
-        if (args.size <= 3) {
-            val targetPlayer = plugin.server.getPlayerExact(args[0])
-            var target = targetPlayer?.name
+        val targetPlayer = plugin.server.getPlayerExact(args[0])
+        var target = targetPlayer?.name
 
-            if (Settings.velocitySupport && plugin.networkPlayers.isNotEmpty()) {
-                target = plugin.networkPlayers.findLast { it.lowercase() == args[0].lowercase() }
-            } else {
-                /*
-                * Support for SuperVanish/PremiumVanish/VelocityVanish and all plugins that save vanished meta on player
-                * Note: only works on backend servers, so it should only work when `velocity_support` is off
-                */
-                if (targetPlayer != null) {
-                    if (targetPlayer.getMetadata("vanished").map { it.asBoolean() }.contains(true)) {
-                        sender.sendMessage(Message.NO_TARGET)
-                        return
-                    }
+        if (Settings.velocitySupport && plugin.networkPlayers.isNotEmpty()) {
+            target = plugin.networkPlayers.findLast { it.lowercase() == args[0].lowercase() }
+        } else {
+            /*
+            * Support for SuperVanish/PremiumVanish/VelocityVanish and all plugins that save vanished meta on player
+            * Note: only works on backend servers, so it should only work when `velocity_support` is off
+            */
+            if (targetPlayer != null) {
+                if (targetPlayer.getMetadata("vanished").map { it.asBoolean() }.contains(true)) {
+                    sender.sendMessage(Message.NO_TARGET)
+                    return
                 }
             }
+        }
 
-            if (target == null) {
-                sender.sendMessage(Message.NO_TARGET)
+        if (target == null) {
+            sender.sendMessage(Message.NO_TARGET)
+            return
+        }
+
+        if (Settings.mode == Report.Mode.SIMPLE && Settings.customReason && args.size > 1) {
+            val reason = args.subList(1, args.size).joinToString(" ").lowercase()
+            val formattedReason = Settings.simple.filter { it.enabled }.findLast { it.id.lowercase() == reason.lowercase() }?.displayName ?: reason
+
+            if (!Settings.customReason && !Settings.simple.filter { it.enabled }.map { it.id.lowercase() }.contains(reason.lowercase())) {
+                sender.sendMessage(Message.INVALID_REASON, TextReplacement("reason", formattedReason))
                 return
             }
 
+            if (plugin.cooldowns.containsKey(sender.uniqueId) && !sender.hasPermission("velocityreport.bypass.cooldown")) {
+                val cooldownCounter = plugin.cooldowns[sender.uniqueId]!!
+                cooldownCounter.stop()
+                val elapsedCooldown = cooldownCounter.get() / 1000
+                val allowedCooldown = Settings.cooldown
+
+                if (elapsedCooldown < allowedCooldown) {
+                    sender.sendMessage(
+                        Message.REPORT_COOLDOWN,
+                        TextReplacement(
+                            "time",
+                            ((allowedCooldown - elapsedCooldown).roundToInt() + 1).toString()
+                        )
+                    )
+                    return
+                }
+            }
+
+            Report(
+                plugin.networkPlayersServer[sender.uniqueId] ?: "Unknown",
+                sender.uniqueId,
+                sender.name,
+                target,
+                System.currentTimeMillis(),
+                MiniMessage.miniMessage().stripTags(formattedReason),
+                true
+            ).update(true).whenComplete { _, _ ->
+                val newCooldownCounter = MilliCounter()
+                newCooldownCounter.start()
+                plugin.cooldowns[sender.uniqueId] = newCooldownCounter
+                sender.sendMessage(
+                    Message.REPORT_USE,
+                    TextReplacement("player", target),
+                    TextReplacement("reason", formattedReason)
+                )
+            }
+            return
+        }
+
+        //           1          2        3
+        // Report <player> <category> <reason>
+        if (args.size <= 3) {
             /*
             * Prevent players from reporting vanished players if VelocityVanish installed on server
             */
@@ -88,7 +137,6 @@ class ReportCommand(
 
             pageLines -= header.size
             pageLines -= footer.size
-
 
             when (args.size) {
                 1 -> {
@@ -200,7 +248,7 @@ class ReportCommand(
 
                         sender.openBook(Book.book(title, title, pages))
                     } else {
-                        val reason = args.subList(if (Settings.customReason) 0 else 1, args.size).joinToString(" ").lowercase()
+                        val reason = args.subList(1, args.size).joinToString(" ").lowercase()
                         val formattedReason = Settings.simple.filter { it.enabled }.findLast { it.id.lowercase() == reason.lowercase() }?.displayName ?: reason
 
                         if (!Settings.customReason && !Settings.simple.filter { it.enabled }.map { it.id.lowercase() }.contains(reason.lowercase())) {
