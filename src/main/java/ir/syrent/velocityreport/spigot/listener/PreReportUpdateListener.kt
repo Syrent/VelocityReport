@@ -20,7 +20,7 @@ class PreReportUpdateListener : Listener {
 
         val moderator = event.newReport.moderatorName?.let { Bukkit.getPlayerExact(it) } ?: return
         when (event.newReport.stage) {
-            ReportStage.ACTIVE -> {
+            ReportStage.PENDING -> {
                 if (!Settings.acceptCommandsEnabled) return
                 for (command in Settings.acceptCommands) {
                     Ruom.getServer().dispatchCommand(Ruom.getConsoleSender(), command.replace("\$moderator", moderator.name).replace("\$reporter", event.newReport.reporterName).replace("\$reported", event.newReport.reportedName))

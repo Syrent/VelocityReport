@@ -27,10 +27,13 @@ report:
             enabled: false
             commands:
                 - "give $moderator diamond 1"
+                - "give $reporter diamond 1"
         done:
             enabled: false
             commands:
-                - "give %player% diamond 1"
+                - "give $moderator diamond 1"
+                - "give $reporter diamond 1"
+                - "ban $reported 10m cheating"
     # Modes: SIMPLE, CATEGORY
     # Make sure to check plugin FAQ before changing mode to SIMPLE
     # https://github.com/Syrent/VelocityReport/wiki/FAQ
