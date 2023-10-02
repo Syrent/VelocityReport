@@ -23,13 +23,13 @@ class PreReportUpdateListener : Listener {
             ReportStage.ACTIVE -> {
                 if (!Settings.acceptCommandsEnabled) return
                 for (command in Settings.acceptCommands) {
-                    Ruom.getServer().dispatchCommand(Ruom.getConsoleSender(), command.replace("\$moderator", moderator.name))
+                    Ruom.getServer().dispatchCommand(Ruom.getConsoleSender(), command.replace("\$moderator", moderator.name).replace("\$reporter", event.newReport.reporterName).replace("\$reported", event.newReport.reportedName))
                 }
             }
             ReportStage.DONE -> {
                 if (!Settings.doneCommandsEnabled) return
                 for (command in Settings.doneCommands) {
-                    Ruom.getServer().dispatchCommand(Ruom.getConsoleSender(), command.replace("\$moderator", moderator.name))
+                    Ruom.getServer().dispatchCommand(Ruom.getConsoleSender(), command.replace("\$moderator", moderator.name).replace("\$reporter", event.newReport.reporterName).replace("\$reported", event.newReport.reportedName))
                 }
             }
             else -> {}

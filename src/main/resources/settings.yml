@@ -32,6 +32,8 @@ report:
             commands:
                 - "give %player% diamond 1"
     # Modes: SIMPLE, CATEGORY
+    # Make sure to check plugin FAQ before changing mode to SIMPLE
+    # https://github.com/Syrent/VelocityReport/wiki/FAQ
     mode: CATEGORY
     modes:
         simple:
