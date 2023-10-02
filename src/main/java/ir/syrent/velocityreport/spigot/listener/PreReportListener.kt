@@ -29,8 +29,8 @@ class PreReportListener : Listener {
 
         val embed = WebhookEmbedBuilder()
             .setColor(Integer.parseInt(Settings.discordEmbedColor.replaceFirst("#", ""), 16))
-            .setAuthor(WebhookEmbed.EmbedAuthor(Settings.discordEmbedAuthor, Settings.discordEmbedAuthorIconURL, Settings.discordEmbedAuthorURL))
-            .setTitle(WebhookEmbed.EmbedTitle(Settings.discordEmbedTitle, Settings.discordEmbedTitleURL))
+            .setAuthor(WebhookEmbed.EmbedAuthor(Settings.discordEmbedAuthor.replace("\$reported", event.report.reportedName).replace("\$reporter", event.report.reporterName), Settings.discordEmbedAuthorIconURL, Settings.discordEmbedAuthorURL.replace("\$reported", event.report.reportedName).replace("\$reporter", event.report.reporterName)))
+            .setTitle(WebhookEmbed.EmbedTitle(Settings.discordEmbedTitle.replace("\$reported", event.report.reportedName).replace("\$reporter", event.report.reporterName), Settings.discordEmbedTitleURL.replace("\$reported", event.report.reportedName).replace("\$reporter", event.report.reporterName)))
             .setDescription(
                 Settings.discordEmbedDescription
                     .replace("\$reporter", event.report.reporterName)
@@ -39,10 +39,10 @@ class PreReportListener : Listener {
                     .replace("\$server", event.report.server)
                     .replace("\\n", "\n")
             )
-            .setImageUrl(Settings.discordEmbedImageURL)
-            .setThumbnailUrl(Settings.discordEmbedThumbnailURL)
+            .setImageUrl(Settings.discordEmbedImageURL.replace("\$reported", event.report.reportedName).replace("\$reporter", event.report.reporterName))
+            .setThumbnailUrl(Settings.discordEmbedThumbnailURL.replace("\$reported", event.report.reportedName).replace("\$reporter", event.report.reporterName))
             .setTimestamp(Instant.ofEpochMilli(System.currentTimeMillis()))
-            .setFooter(WebhookEmbed.EmbedFooter(Settings.discordEmbedFooter, Settings.discordEmbedFooterIconURL))
+            .setFooter(WebhookEmbed.EmbedFooter(Settings.discordEmbedFooter.replace("\$reported", event.report.reportedName).replace("\$reporter", event.report.reporterName), Settings.discordEmbedFooterIconURL.replace("\$reported", event.report.reportedName).replace("\$reporter", event.report.reporterName)))
             .build()
         Settings.webhookClient?.send(embed)
     }
