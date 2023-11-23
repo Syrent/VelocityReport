@@ -1,0 +1,82 @@
+config_version: 4
+general:
+  raw_prefix: '[VelocityReport]'
+  prefix: <gradient:dark_red:red>VelocityReport</gradient> <gold>|</gold>
+  console_prefix: <gray>[<gradient:dark_red:red>VelocityReport</gradient>]</gray>
+  successful_prefix: <dark_gray>[</dark_gray><dark_green><bold>✔</bold><dark_gray>]</dark_gray>
+  warn_prefix: <dark_gray>[</dark_gray><gold><bold>!</bold><dark_gray>]</dark_gray>
+  error_prefix: <dark_gray>[</dark_gray><dark_red><bold>✘</bold><dark_gray>]</dark_gray>
+  only_players: $error_prefix <gradient:dark_red:red>僅允許玩家使用該指令.
+  valid_parameters: $error_prefix <gradient:dark_red:red>請為此命令使用有效的參數. <dark_gray>($argument)
+  unknown_message: $error_prefix <gradient:dark_red:red>未知訊息!
+command:
+  no_permission: $error_prefix <gradient:dark_red:red>你沒有權限使用這個指令! <dark_gray>($permission)
+  report:
+    usage: '$warn_prefix <gradient:dark_red:red>用法: <gold>/report <yellow><user> [category]
+      [reason]'
+    use: $successful_prefix <gradient:dark_green:green>成功檢舉玩家 $player , 檢舉原因:<aqua>$reason<aqua>!
+    no_target: $error_prefix <gradient:dark_red:red>未找到該玩家!
+    prevent_self: $error_prefix <gradient:dark_red:red>你無法舉報自己!
+    cooldown: $error_prefix <gradient:dark_red:red>冷卻中, 請等待 <gold>$time</gold> 秒後再次使用!
+    invalid:
+      category: $error_prefix <gradient:dark_red:red><gold>$category</gold> 不是有效的檢舉類別!
+      reason: $error_prefix <gradient:dark_red:red><gold>$reason</gold> 不是有效的檢舉理由!
+    book:
+      header:
+      - '<dark_red>❐ <gradient:dark_red:red>檢舉原因:'
+      - ''
+      - ''
+      category: <click:run_command:'/report $player $category'><hover:show_text:'<yellow>點擊檢舉!'><gold>●
+        <dark_red>$name</hover></click>
+      reason: "<click:run_command:'/report $player $category $reason'><hover:show_text:'<dark_green>描\
+        述: <gradient:gray:white>$description \n\n<yellow>點擊檢舉!'><gold>● <red>$name</hover></click>"
+      footer:
+      - ''
+  reportadmin:
+    usage: '$warn_prefix <gradient:dark_red:red>用法: <gold>/reportadmin <yellow><args>'
+    reload:
+      use: $successful_prefix <green>插件重載成功!
+    reports:
+      receive: $warn_prefix <gradient:gold:yellow>正在從資料庫接收檢舉資料...
+      book:
+        header:
+        - '<dark_red>❐ <gradient:dark_red:red>檢舉:'
+        - ''
+        format: |-
+          <click:run_command:'/reportadmin accept $id'><hover:show_text:'<red>檢舉人: <aqua>$reporter</aqua>
+          被檢舉者: <aqua>$reported</aqua>
+          所在伺服器: <aqua>$server</aqua>
+
+          檢舉原因: <aqua>$reason</aqua>
+
+           <yellow>點擊跟進處理這項舉報!'><gold>● <red>$reported</hover></click>
+    accept:
+      usage: '$warn_prefix <gradient:dark_red:red>用法: <gold>/reportadmin accept <yellow><reportid>'
+      use: $successful_prefix <gradient:dark_green:green>已成功接手該檢舉! ($id)
+      already_accepted: $warn_prefix <gradient:red:gold>該舉報不存在或正在處理中! ($id)
+    done:
+      usage: '$warn_prefix <gradient:dark_red:red>用法: <gold>/reportadmin done <yellow><reportid>'
+      use: $successful_prefix <gradient:dark_green:green>已成功處理該檢舉! ($id)
+      already_done: $warn_prefix <gradient:red:gold>該舉報不存在或已被處理! ($id)
+    myreports:
+      receive: $warn_prefix <gradient:gold:yellow>正在从数据库接收处理中的举报数据...
+      use: $successful_prefix <gradient:dark_green:green>已成功處理該檢舉! ($id)
+      book:
+        header:
+        - '<dark_red>❐ <gradient:dark_red:red>處理中的檢舉:'
+        - ''
+        format: |-
+          <click:run_command:'/reportadmin done $id'><hover:show_text:'<red>檢舉人: <aqua>$reporter</aqua>
+          被檢舉者: <aqua>$reported</aqua>
+          所在伺服器: <aqua>$server</aqua>
+
+          檢舉原因: <aqua>$reason</aqua>
+
+           <yellow>點選標記為已完成!'><gold>● <red>$reported</hover></click>
+report:
+  actionbar: <dark_red>⚠ <gradient:gold:yellow>目前共有 <aqua>$reports</aqua> 個檢舉未處理!
+  message: |-
+    <click:run_command:'/reportadmin reports'><hover:show_text:'<red>所在伺服器: <aqua>$server</aqua>
+    檢舉原因: <aqua>$reason</aqua>
+
+    <yellow>點擊查看未處理的檢舉!'><gold>● <red>$reporter</red> 檢舉了 <red>$reported</red></hover></click>
