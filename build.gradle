@@ -67,7 +67,7 @@ dependencies {
     compileOnly 'com.velocitypowered:velocity-api:3.1.1'
     compileOnly 'org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT'
 
-    compileOnly files('libs/VelocityVanish-3.12.0-2.jar')
+    compileOnly files('libs/VelocityVanish-3.23.1.jar')
 
     // gson is not exist in legacy minecraft version
     implementation 'com.google.code.gson:gson:2.10.1'

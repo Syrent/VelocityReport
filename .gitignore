@@ -116,3 +116,8 @@ run/
 /.gradle/
 /build/
 /build/classes/java/main/
+
+# Remove Ignore List
+
+!/gradle/wrapper/gradle-wrapper.jar
+!/libs/VelocityVanish-*.jar
