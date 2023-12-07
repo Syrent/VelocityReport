@@ -60,6 +60,11 @@ repositories {
         name = "jeff-media-public"
         url = 'https://hub.jeff-media.com/nexus/repository/jeff-media-public/'
     }
+
+    maven {
+        name = "jitpack"
+        url = 'https://jitpack.io'
+    }
 }
 
 dependencies {
@@ -67,7 +72,7 @@ dependencies {
     compileOnly 'com.velocitypowered:velocity-api:3.1.1'
     compileOnly 'org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT'
 
-    compileOnly files('libs/VelocityVanish-3.12.0-2.jar')
+    compileOnly 'com.github.Syrent:VelocityVanish:3.27.2'
 
     // gson is not exist in legacy minecraft version
     implementation 'com.google.code.gson:gson:2.10.1'
@@ -75,7 +80,6 @@ dependencies {
     implementation 'com.zaxxer:HikariCP:5.1.0'
     implementation 'io.papermc:paperlib:1.0.8'
     implementation 'org.bstats:bstats-bukkit:3.0.2'
-//    implementation 'me.mohamad82:ruom-velocity:4.2.14'
     implementation 'club.minnced:discord-webhooks:0.8.4'
     implementation 'com.github.cryptomorin:XSeries:9.7.0'
 
