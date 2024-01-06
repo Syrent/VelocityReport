@@ -51,7 +51,7 @@ command:
 
            <yellow>点击跟进处理这条举报!'><gold>● <red>$reported</hover></click>
     accept:
-      usage: '$warn_prefix <gradien、t:dark_red:red>用法: <gold>/reportadmin accept <yellow><reportid>'
+      usage: '$warn_prefix <gradient:dark_red:red>用法: <gold>/reportadmin accept <yellow><reportid>'
       use: $successful_prefix <gradient:dark_green:green>已成功接手该举报! ($id)
       already_accepted: $warn_prefix <gradient:red:gold>该举报不存在或正在处理中! ($id)
     done:
