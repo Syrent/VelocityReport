@@ -12,6 +12,7 @@ enum class Message(val path: String) {
     UNKNOWN_MESSAGE("general.unknown_message"),
     NO_PERMISSION("command.no_permission"),
     REPORT_USAGE("command.report.usage"),
+    REPORT_NO_REASON_CUSTOM("command.report.no_reason_custom"),
     REPORT_USE("command.report.use"),
     NO_TARGET("command.report.no_target"),
     REPORT_COOLDOWN("command.report.cooldown"),

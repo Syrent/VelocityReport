@@ -17,7 +17,6 @@ import ir.syrent.velocityvanish.spigot.VelocityVanishSpigot
 import net.kyori.adventure.inventory.Book
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
-import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import kotlin.math.roundToInt
@@ -72,17 +71,15 @@ class ReportCommand(
             }
 
             if (plugin.cooldowns.containsKey(sender.uniqueId) && !sender.hasPermission("velocityreport.bypass.cooldown")) {
-                val cooldownCounter = plugin.cooldowns[sender.uniqueId]!!
-                cooldownCounter.stop()
-                val elapsedCooldown = cooldownCounter.get() / 1000
+                val cooldown = plugin.cooldowns[sender.uniqueId]!!
                 val allowedCooldown = Settings.cooldown
 
-                if (elapsedCooldown < allowedCooldown) {
+                if (System.currentTimeMillis() > cooldown + allowedCooldown) {
                     sender.sendMessage(
                         Message.REPORT_COOLDOWN,
                         TextReplacement(
                             "time",
-                            ((allowedCooldown - elapsedCooldown).roundToInt() + 1).toString()
+                            ((System.currentTimeMillis() + allowedCooldown - cooldown) / 1000).toString()
                         )
                     )
                     return
@@ -98,15 +95,16 @@ class ReportCommand(
                 MiniMessage.miniMessage().stripTags(formattedReason),
                 true
             ).update(true).whenComplete { _, _ ->
-                val newCooldownCounter = MilliCounter()
-                newCooldownCounter.start()
-                plugin.cooldowns[sender.uniqueId] = newCooldownCounter
+                plugin.cooldowns[sender.uniqueId] = System.currentTimeMillis()
                 sender.sendMessage(
                     Message.REPORT_USE,
                     TextReplacement("player", target),
                     TextReplacement("reason", formattedReason)
                 )
             }
+            return
+        } else if (Settings.mode == Report.Mode.SIMPLE && Settings.customReason) {
+            sender.sendMessage(Message.REPORT_NO_REASON_CUSTOM)
             return
         }
 
@@ -257,17 +255,15 @@ class ReportCommand(
                         }
 
                         if (plugin.cooldowns.containsKey(sender.uniqueId) && !sender.hasPermission("velocityreport.bypass.cooldown")) {
-                            val cooldownCounter = plugin.cooldowns[sender.uniqueId]!!
-                            cooldownCounter.stop()
-                            val elapsedCooldown = cooldownCounter.get() / 1000
+                            val cooldown = plugin.cooldowns[sender.uniqueId]!!
                             val allowedCooldown = Settings.cooldown
 
-                            if (elapsedCooldown < allowedCooldown) {
+                            if (System.currentTimeMillis() > cooldown + allowedCooldown) {
                                 sender.sendMessage(
                                     Message.REPORT_COOLDOWN,
                                     TextReplacement(
                                         "time",
-                                        ((allowedCooldown - elapsedCooldown).roundToInt() + 1).toString()
+                                        ((System.currentTimeMillis() + allowedCooldown - cooldown) / 1000).toString()
                                     )
                                 )
                                 return
@@ -283,9 +279,7 @@ class ReportCommand(
                             MiniMessage.miniMessage().stripTags(formattedReason),
                             true
                         ).update(true).whenComplete { _, _ ->
-                            val newCooldownCounter = MilliCounter()
-                            newCooldownCounter.start()
-                            plugin.cooldowns[sender.uniqueId] = newCooldownCounter
+                            plugin.cooldowns[sender.uniqueId] = System.currentTimeMillis()
                             sender.sendMessage(
                                 Message.REPORT_USE,
                                 TextReplacement("player", target),
@@ -311,17 +305,15 @@ class ReportCommand(
                         }
 
                         if (plugin.cooldowns.containsKey(sender.uniqueId) && !sender.hasPermission("velocityreport.bypass.cooldown")) {
-                            val cooldownCounter = plugin.cooldowns[sender.uniqueId]!!
-                            cooldownCounter.stop()
-                            val elapsedCooldown = cooldownCounter.get() / 1000
+                            val cooldown = plugin.cooldowns[sender.uniqueId]!!
                             val allowedCooldown = Settings.cooldown
 
-                            if (elapsedCooldown < allowedCooldown) {
+                            if (System.currentTimeMillis() > cooldown + allowedCooldown) {
                                 sender.sendMessage(
                                     Message.REPORT_COOLDOWN,
                                     TextReplacement(
                                         "time",
-                                        ((allowedCooldown - elapsedCooldown).roundToInt() + 1).toString()
+                                        ((System.currentTimeMillis() + allowedCooldown - cooldown) / 1000).toString()
                                     )
                                 )
                                 return
@@ -337,9 +329,7 @@ class ReportCommand(
                             MiniMessage.miniMessage().stripTags(formattedReason),
                             true
                         ).update(true).whenComplete { _, _ ->
-                            val newCooldownCounter = MilliCounter()
-                            newCooldownCounter.start()
-                            plugin.cooldowns[sender.uniqueId] = newCooldownCounter
+                            plugin.cooldowns[sender.uniqueId] = System.currentTimeMillis()
                             sender.sendMessage(
                                 Message.REPORT_USE,
                                 TextReplacement("player", target),

@@ -41,15 +41,6 @@ repositories {
         }
     }
 
-    // VRuom
-    /*maven {
-        url = uri("https://maven.pkg.github.com/mohamad82bz/ruom")
-        credentials {
-            username = project.findProperty("gpr.user")
-            password = project.findProperty("gpr.key")
-        }
-    }*/
-
     // PlaceholderAPI
     maven {
         url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
@@ -70,7 +61,7 @@ repositories {
 dependencies {
     compileOnly 'me.clip:placeholderapi:2.11.5'
     compileOnly 'com.velocitypowered:velocity-api:3.1.1'
-    compileOnly 'org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT'
 
     compileOnly 'com.github.Syrent:VelocityVanish:3.27.2'
 
@@ -111,6 +102,7 @@ shadowJar {
 //    relocate('me.mohamad82.ruom', 'ir.syrent.velocityreport.ruom')
     relocate('com.cryptomorin.xseries', 'ir.syrent.velocityreport.xseries')
     relocate('net.kyori.adventure', 'ir.syrent.velocityreport.kyori.adventure')
+    relocate('net.kyori.option', 'ir.syrent.velocityreport.kyori.option')
     relocate('org.bstats', 'ir.syrent.velocityreport.bstats')
     relocate('kotlin', 'ir.syrent.velocityreport.kotlin')
     relocate('com.jeff_media.updatechecker', 'ir.syrent.velocityreport.updatechecker')
@@ -129,7 +121,7 @@ jar {
     archiveFileName = findProperty("plugin-name") + " v" + findProperty("version") + " " + "unshaded" + ".jar"
 }
 
-def targetJavaVersion = 11
+def targetJavaVersion = 17
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion

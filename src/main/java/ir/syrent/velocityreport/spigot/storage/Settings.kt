@@ -48,7 +48,7 @@ object Settings {
     var bookSound: Sound? = null
     var newReportSound: Sound? = null
 
-    var cooldown = 60
+    var cooldown = 60 * 1000
     var staffActionbarEnabled = true
     var staffActionbarSendZero = false
     var preventSelfReport = true
@@ -115,7 +115,7 @@ object Settings {
         bookSound = XSound.valueOf(settingsConfig.getString("sounds.book")!!).parseSound()
         newReportSound = XSound.valueOf(settingsConfig.getString("sounds.new_report")!!).parseSound()
 
-        cooldown = settingsConfig.getInt("report.cooldown")
+        cooldown = settingsConfig.getInt("report.cooldown") * 1000
         staffActionbarEnabled = settingsConfig.getBoolean("report.staff_actionbar.enabled")
         staffActionbarSendZero = settingsConfig.getBoolean("report.staff_actionbar.send_zero")
         preventSelfReport = settingsConfig.getBoolean("report.prevent_self")
