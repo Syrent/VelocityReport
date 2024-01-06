@@ -33,7 +33,7 @@ import java.util.*
 
 class VelocityReportSpigot : RUoMPlugin() {
 
-    var cooldowns = mutableMapOf<UUID, MilliCounter>()
+    var cooldowns = mutableMapOf<UUID, Long>()
     val networkPlayers = mutableSetOf<String>()
     val networkPlayersServer = mutableMapOf<UUID, String>()
     var reportsCount = 0
