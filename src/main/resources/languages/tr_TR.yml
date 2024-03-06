@@ -17,6 +17,7 @@ command:
     no_target: "$error_prefix <gradient:dark_red:red>Oyuncu bulunamadı!"
     prevent_self: "$error_prefix <gradient:dark_red:red>Kendinizi rapor edemezsiniz!"
     cooldown: "$error_prefix <gradient:dark_red:red>Bu komutu <gold>$time</gold> saniye boyunca kullanamazsınız!"
+    no_reason_custom: "$warn_prefix <gradient:dark_red:red>Kullanım: <gold>/report <yellow><user> [reason]"
     invalid:
       category: "$error_prefix <gradient:dark_red:red><gold>$category</gold> geçerli bir kategori değil!"
       reason: "$error_prefix <gradient:dark_red:red><gold>$reason</gold> geçerli bir sebep değil!"

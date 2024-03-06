@@ -18,6 +18,7 @@ command:
     no_target: $error_prefix <gradient:dark_red:red>未找到該玩家!
     prevent_self: $error_prefix <gradient:dark_red:red>你無法舉報自己!
     cooldown: $error_prefix <gradient:dark_red:red>冷卻中, 請等待 <gold>$time</gold> 秒後再次使用!
+    no_reason_custom: "$warn_prefix <gradient:dark_red:red>用法: <gold>/report <yellow><user> [reason]"
     invalid:
       category: $error_prefix <gradient:dark_red:red><gold>$category</gold> 不是有效的檢舉類別!
       reason: $error_prefix <gradient:dark_red:red><gold>$reason</gold> 不是有效的檢舉理由!
