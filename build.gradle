@@ -72,7 +72,7 @@ dependencies {
     implementation 'io.papermc:paperlib:1.0.8'
     implementation 'org.bstats:bstats-bukkit:3.0.2'
     implementation 'club.minnced:discord-webhooks:0.8.4'
-    implementation 'com.github.cryptomorin:XSeries:9.8.1'
+    implementation 'com.github.cryptomorin:XSeries:9.10.0'
 
     implementation 'net.kyori:adventure-api:4.15.0'
     implementation 'net.kyori:adventure-platform-bukkit:4.3.2'
