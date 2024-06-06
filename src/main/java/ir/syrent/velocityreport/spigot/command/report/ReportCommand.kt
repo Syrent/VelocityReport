@@ -74,12 +74,12 @@ class ReportCommand(
                 val cooldown = plugin.cooldowns[sender.uniqueId]!!
                 val allowedCooldown = Settings.cooldown
 
-                if (System.currentTimeMillis() > cooldown + allowedCooldown) {
+                if (System.currentTimeMillis() < cooldown + allowedCooldown) {
                     sender.sendMessage(
                         Message.REPORT_COOLDOWN,
                         TextReplacement(
                             "time",
-                            ((System.currentTimeMillis() + allowedCooldown - cooldown) / 1000).toString()
+                                (Math.abs(System.currentTimeMillis() - cooldown- allowedCooldown) / 1000).toString()
                         )
                     )
                     return
@@ -258,12 +258,12 @@ class ReportCommand(
                             val cooldown = plugin.cooldowns[sender.uniqueId]!!
                             val allowedCooldown = Settings.cooldown
 
-                            if (System.currentTimeMillis() > cooldown + allowedCooldown) {
+                            if (System.currentTimeMillis() < cooldown + allowedCooldown) {
                                 sender.sendMessage(
                                     Message.REPORT_COOLDOWN,
                                     TextReplacement(
                                         "time",
-                                        ((System.currentTimeMillis() + allowedCooldown - cooldown) / 1000).toString()
+                                            (Math.abs(System.currentTimeMillis() - cooldown- allowedCooldown) / 1000).toString()
                                     )
                                 )
                                 return
@@ -308,12 +308,12 @@ class ReportCommand(
                             val cooldown = plugin.cooldowns[sender.uniqueId]!!
                             val allowedCooldown = Settings.cooldown
 
-                            if (System.currentTimeMillis() > cooldown + allowedCooldown) {
+                            if (System.currentTimeMillis() < cooldown + allowedCooldown) {
                                 sender.sendMessage(
                                     Message.REPORT_COOLDOWN,
                                     TextReplacement(
                                         "time",
-                                        ((System.currentTimeMillis() + allowedCooldown - cooldown) / 1000).toString()
+                                            (Math.abs(System.currentTimeMillis() - cooldown- allowedCooldown) / 1000).toString()
                                     )
                                 )
                                 return
