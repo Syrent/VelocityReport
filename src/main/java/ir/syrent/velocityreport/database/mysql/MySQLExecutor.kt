@@ -49,22 +49,36 @@ abstract class MySQLExecutor(
         hikariConfig.maximumPoolSize = poolingSize.coerceAtLeast(3)
         hikariConfig.poolName = "${Ruom.getPlugin().name.lowercase()}-hikari-pool"
         hikariConfig.initializationFailTimeout = 30000
+
+        hikariConfig.addDataSourceProperty("socketTimeout", TimeUnit.SECONDS.toMillis(30).toString());
+
+        hikariConfig.addDataSourceProperty("characterEncoding", "utf8")
+        hikariConfig.addDataSourceProperty("encoding", "UTF-8")
+        hikariConfig.addDataSourceProperty("useUnicode", "true");
+
+        hikariConfig.addDataSourceProperty("rewriteBatchedStatements", "true");
+        hikariConfig.addDataSourceProperty("jdbcCompliantTruncation", "false");
+
+        hikariConfig.addDataSourceProperty("cachePrepStmts", "true");
+        hikariConfig.addDataSourceProperty("prepStmtCacheSize", "275");
+        hikariConfig.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+
         hikari = HikariDataSource(hikariConfig)
 
         Ruom.runSync({
-            for (priority in Priority.values().toList()) {
+            for (priority in Priority.entries) {
                 Ruom.debug("Query statements for ${priority.name}: ${queue[priority]?.toMutableList()!!.map { "${it.statement}:${it.statusCode}" }}")
             }
         }, 20, 20)
     }
 
     protected fun tick() {
-        for (priority in Priority.values()) {
-            val queries = queue[priority] ?: mutableListOf()
+        for (priority in Priority.entries) {
+            val queries = queue[priority] ?: continue
             if (queries.isEmpty()) continue
             val removedQueries = HashSet<Query>()
             for (query in queries) {
-                if (query.statusCode == StatusCode.FINISHED.code) removedQueries.add(query)
+                if (query.statusCode == StatusCode.FINISHED.code || query.statusCode == StatusCode.FAILED.code) removedQueries.add(query)
             }
             queries.removeAll(removedQueries)
             for (query in queries.toList()) {

@@ -1,6 +1,5 @@
 package ir.syrent.velocityreport.bridge
 
-import com.google.common.annotations.Beta
 import com.google.common.io.ByteStreams
 import com.google.gson.JsonObject
 import com.velocitypowered.api.proxy.Player
