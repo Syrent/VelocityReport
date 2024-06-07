@@ -76,7 +76,7 @@ dependencies {
     compileOnly 'org.sayandev:sayanvanish-bukkit:1.0.1'
 
     // gson is not exist in legacy minecraft version
-    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'com.google.code.gson:gson:2.11.0'
 
     implementation 'com.zaxxer:HikariCP:5.1.0'
     implementation 'io.papermc:paperlib:1.0.8'
