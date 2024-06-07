@@ -11,15 +11,14 @@ import ir.syrent.velocityreport.spigot.storage.Settings
 import ir.syrent.velocityreport.utils.TextReplacement
 import ir.syrent.velocityreport.utils.component
 import ir.syrent.velocityreport.utils.openBook
-import ir.syrent.velocityreport.utils.ruom.utils.MilliCounter
 import ir.syrent.velocityreport.utils.sendMessage
-import ir.syrent.velocityvanish.spigot.VelocityVanishSpigot
 import net.kyori.adventure.inventory.Book
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
+import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
-import kotlin.math.roundToInt
+import org.sayandev.sayanvanish.bukkit.api.SayanVanishBukkitAPI
 
 // TODO: Rework command system
 class ReportCommand(
@@ -114,8 +113,8 @@ class ReportCommand(
             /*
             * Prevent players from reporting vanished players if VelocityVanish installed on server
             */
-            if (DependencyManager.velocityVanishHook.exists) {
-                if (VelocityVanishSpigot.instance.vanishedNames.map { it.lowercase() }.contains(target)) {
+            if (DependencyManager.sayanVanishHook.exists) {
+                if (SayanVanishBukkitAPI.getInstance().isVanished(Bukkit.getOfflinePlayer(target).uniqueId, true)) {
                     sender.sendMessage(Message.NO_TARGET)
                     return
                 }

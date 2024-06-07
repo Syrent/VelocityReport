@@ -1,16 +1,15 @@
 package ir.syrent.velocityreport.spigot.command.reportadmin
 
 import ir.syrent.velocityreport.report.ReportStage
+import ir.syrent.velocityreport.spigot.Ruom
 import ir.syrent.velocityreport.spigot.adventure.ComponentUtils
 import ir.syrent.velocityreport.spigot.command.library.SubCommand
 import ir.syrent.velocityreport.spigot.storage.Database
 import ir.syrent.velocityreport.spigot.storage.Message
 import ir.syrent.velocityreport.spigot.storage.Settings
-import ir.syrent.velocityreport.utils.TextReplacement
-import ir.syrent.velocityreport.utils.component
-import ir.syrent.velocityreport.utils.openBook
-import ir.syrent.velocityreport.utils.sendMessage
+import ir.syrent.velocityreport.utils.*
 import net.kyori.adventure.inventory.Book
+import net.kyori.adventure.platform.bukkit.BukkitAudiences
 import net.kyori.adventure.text.Component
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
@@ -22,6 +21,8 @@ class ReportsSubcommand : SubCommand("reports", "velocityreport.admin.reports", 
 
         val title = ComponentUtils.parse("VelocityReport")
         var pageLines = 14
+
+        BukkitAudiences.create(Ruom.getPlugin()).player(sender).sendActionBar("<red>aaaaaaaaa".component())
 
         sender.sendMessage(Message.REPORTADMIN_REPORTS_RECEIVE)
 

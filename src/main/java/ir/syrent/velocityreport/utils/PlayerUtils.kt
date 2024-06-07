@@ -21,15 +21,15 @@ fun Player.sendMessage(message: Message, vararg replacements: TextReplacement) {
         }
     }
 
-    AdventureApi.get().sender(this).sendMessage(Settings.formatMessage(this, message, *replacements).component())
+    AdventureApi.get().player(this).sendMessage(Settings.formatMessage(this, message, *replacements).component())
 }
 
 fun Player.sendMessageOnly(message: Message, vararg replacements: TextReplacement) {
-    AdventureApi.get().sender(this).sendMessage(Settings.formatMessage(this, message, *replacements).component())
+    AdventureApi.get().player(this).sendMessage(Settings.formatMessage(this, message, *replacements).component())
 }
 
 fun Player.sendActionbar(message: Message, vararg replacements: TextReplacement) {
-    AdventureApi.get().sender(this).sendActionBar(Settings.formatMessage(this, message, *replacements).component())
+    AdventureApi.get().player(this).sendActionBar(Settings.formatMessage(this, message, *replacements).component())
 }
 
 fun Player.openBook(book: Book) {
@@ -39,5 +39,5 @@ fun Player.openBook(book: Book) {
         }
     }
 
-    AdventureApi.get().sender(this).openBook(book)
+    AdventureApi.get().player(this).openBook(book)
 }
