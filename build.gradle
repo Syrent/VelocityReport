@@ -56,6 +56,16 @@ repositories {
         name = "jitpack"
         url = 'https://jitpack.io'
     }
+
+    maven {
+        name = 'sonatype-oss-snapshots'
+        url = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+    }
+
+    maven {
+        name = 'sayandevelopment-repository'
+        url = 'https://repo.sayandev.org/snapshots'
+    }
 }
 
 dependencies {
@@ -63,7 +73,7 @@ dependencies {
     compileOnly 'com.velocitypowered:velocity-api:3.1.1'
     compileOnly 'org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT'
 
-    compileOnly 'com.github.Syrent:VelocityVanish:3.27.2'
+    compileOnly 'org.sayandev:sayanvanish-bukkit:1.0.1'
 
     // gson is not exist in legacy minecraft version
     implementation 'com.google.code.gson:gson:2.10.1'
@@ -72,7 +82,7 @@ dependencies {
     implementation 'io.papermc:paperlib:1.0.8'
     implementation 'org.bstats:bstats-bukkit:3.0.2'
     implementation 'club.minnced:discord-webhooks:0.8.4'
-    implementation 'com.github.cryptomorin:XSeries:9.8.1'
+    implementation 'com.github.cryptomorin:XSeries:10.0.0'
 
     implementation 'net.kyori:adventure-api:4.17.0'
     implementation 'net.kyori:adventure-platform-bukkit:4.3.3'
@@ -95,24 +105,16 @@ processResources {
 shadowJar {
     minimize()
 
-    manifest {
-        attributes["Main-Class"] = 'ir.syrent.velocityreport.VelocityReport'
-    }
-
-//    relocate('me.mohamad82.ruom', 'ir.syrent.velocityreport.ruom')
     relocate('com.cryptomorin.xseries', 'ir.syrent.velocityreport.xseries')
-    relocate('net.kyori.adventure', 'ir.syrent.velocityreport.kyori.adventure')
-    relocate('net.kyori.option', 'ir.syrent.velocityreport.kyori.option')
+    relocate('net.kyori', 'ir.syrent.velocityreport.kyori.adventure')
     relocate('org.bstats', 'ir.syrent.velocityreport.bstats')
     relocate('kotlin', 'ir.syrent.velocityreport.kotlin')
     relocate('com.jeff_media.updatechecker', 'ir.syrent.velocityreport.updatechecker')
-    relocate('com.google.gson', 'ir.syrent.velocityreport.google.gson')
     relocate('com.zaxxer.hikari', 'ir.syrent.velocityreport.zaaxer.hikari')
 
-    // @see https://youtrack.jetbrains.com/issue/KT-25709
-    exclude '**/*.kotlin_metadata'
-    exclude '**/*.kotlin_module'
-    exclude '**/*.kotlin_builtins'
+    manifest {
+        attributes["paperweight-mappings-namespace"] = "mojang"
+    }
 
     archiveFileName = findProperty("plugin-name") + " v" + findProperty("version") + ".jar"
 }
@@ -143,6 +145,14 @@ build.dependsOn shadowJar
 
 tasks.withType(Jar) {
     destinationDirectory = file("$rootDir/bin/")
+}
+
+tasks {
+    jar {
+        manifest {
+            attributes["paperweight-mappings-namespace"] = "mojang"
+        }
+    }
 }
 
 clean.doLast {

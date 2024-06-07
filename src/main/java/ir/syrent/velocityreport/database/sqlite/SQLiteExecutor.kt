@@ -37,8 +37,8 @@ abstract class SQLiteExecutor protected constructor(private val dbFile: File, pr
 
     protected fun tick() {
         for (priority in Priority.values()) {
-            val queries = queue[priority]
-            if (queries!!.isEmpty()) continue
+            val queries = queue[priority] ?: continue
+            if (queries.isEmpty()) continue
             val query = queries[0]
             try {
                 val preparedStatement = query.createPreparedStatement(connection)

@@ -51,6 +51,12 @@ class VelocityReportSpigot : RUoMPlugin() {
         registerCommands()
         registerListeners()
 
+        Ruom.runSync({
+            for (player in Ruom.getOnlinePlayers()) {
+                AdventureApi.get().player(player).sendActionBar("<red>ssssssssssss".component())
+            }
+        }, 1, 1)
+
         if (velocitySupport) {
             initializePluginChannels()
         }
