@@ -22,8 +22,6 @@ class ReportsSubcommand : SubCommand("reports", "velocityreport.admin.reports", 
         val title = ComponentUtils.parse("VelocityReport")
         var pageLines = 14
 
-        BukkitAudiences.create(Ruom.getPlugin()).player(sender).sendActionBar("<red>aaaaaaaaa".component())
-
         sender.sendMessage(Message.REPORTADMIN_REPORTS_RECEIVE)
 
         Database.getReports(ReportStage.ACTIVE).whenComplete { reports, _ ->
