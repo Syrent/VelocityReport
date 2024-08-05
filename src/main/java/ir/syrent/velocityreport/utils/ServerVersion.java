@@ -1,6 +1,6 @@
 package ir.syrent.velocityreport.utils;
 
-import com.cryptomorin.xseries.ReflectionUtils;
+import com.cryptomorin.xseries.reflection.XReflection;
 
 public class ServerVersion {
 
@@ -8,7 +8,7 @@ public class ServerVersion {
      * @return The server's version without "1.", That would be an integer.
      */
     public static int getVersion() {
-        return ReflectionUtils.MINOR_NUMBER;
+        return XReflection.MINOR_NUMBER;
     }
 
     /**
@@ -31,7 +31,7 @@ public class ServerVersion {
      * @return true if the version is equal or newer, otherwise false
      */
     public static boolean supports(int version) {
-        return ReflectionUtils.supports(version);
+        return XReflection.supports(version);
     }
 
 }

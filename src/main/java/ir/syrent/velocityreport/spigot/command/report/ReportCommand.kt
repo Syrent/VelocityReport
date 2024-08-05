@@ -114,7 +114,7 @@ class ReportCommand(
             * Prevent players from reporting vanished players if VelocityVanish installed on server
             */
             if (DependencyManager.sayanVanishHook.exists) {
-                if (SayanVanishBukkitAPI.getInstance().isVanished(Bukkit.getOfflinePlayer(target).uniqueId, true)) {
+                if (SayanVanishBukkitAPI.getInstance().isVanished(Bukkit.getOfflinePlayer(target).uniqueId)) {
                     sender.sendMessage(Message.NO_TARGET)
                     return
                 }

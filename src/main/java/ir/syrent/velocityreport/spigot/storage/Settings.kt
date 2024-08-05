@@ -40,7 +40,7 @@ object Settings {
     var languageConfigVersion = 1
     lateinit var defaultLanguage: String
     var showDependencySuggestions = true
-    var velocitySupport = false
+    var velocitySupport = true
     var debugMode = false
     var bstats = true
 
