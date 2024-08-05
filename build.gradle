@@ -66,6 +66,11 @@ repositories {
         name = 'sayandevelopment-repository'
         url = 'https://repo.sayandev.org/snapshots'
     }
+
+    maven {
+        name = "sonatype-oss-snapshots1"
+        url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+    }
 }
 
 dependencies {
@@ -85,7 +90,7 @@ dependencies {
     implementation 'com.github.cryptomorin:XSeries:11.2.0'
 
     implementation 'net.kyori:adventure-api:4.17.0'
-    implementation 'net.kyori:adventure-platform-bukkit:4.3.3'
+    implementation 'net.kyori:adventure-platform-bukkit:4.3.4-SNAPSHOT'
     implementation 'net.kyori:adventure-text-minimessage:4.17.0'
 
     implementation 'com.jeff_media:SpigotUpdateChecker:3.0.3'
