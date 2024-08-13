@@ -1,61 +1,63 @@
 config_version: 4
 general:
-  raw_prefix: "[VelocityReport]"
-  prefix: "<gradient:dark_red:red>VelocityRapor</gradient> <gold>|</gold>"
-  console_prefix: "<gray>[<gradient:dark_red:red>VelocityRapor</gradient>]</gray>"
-  successful_prefix: "<dark_gray>[</dark_gray><dark_green><bold>✔</bold><dark_gray>]</dark_gray>"
-  warn_prefix: "<dark_gray>[</dark_gray><gold><bold>!</bold><dark_gray>]</dark_gray>"
-  error_prefix: "<dark_gray>[</dark_gray><dark_red><bold>✘</bold><dark_gray>]</dark_gray>"
-  only_players: "$error_prefix <gradient:dark_red:red>Bu komutu sadece oyuncular kullanabilir."
-  valid_parameters: "$error_prefix <gradient:dark_red:red>Lütfen bu komut için geçerli bir parametre kullanın. <dark_gray>($argument)"
-  unknown_message: "$error_prefix <gradient:dark_red:red>Bilinmeyen mesaj!"
+    raw_prefix: "[VelocityReport]"
+    prefix: "<gradient:dark_red:red>VelocityReport</gradient> <gold>|</gold>"
+    console_prefix: "<gray>[<gradient:dark_red:red>VelocityReport</gradient>]</gray>"
+    successful_prefix: "<dark_gray>[</dark_gray><dark_green><bold>✔</bold><dark_gray>]</dark_gray>"
+    warn_prefix: "<dark_gray>[</dark_gray><gold><bold>!</bold><dark_gray>]</dark_gray>"
+    error_prefix: "<dark_gray>[</dark_gray><dark_red><bold>✘</bold><dark_gray>]</dark_gray>"
+    only_players: "$error_prefix <gradient:dark_red:red>Bu komutu sadece oyuncular kullanabilir."
+    valid_parameters: "$error_prefix <gradient:dark_red:red>Lütfen bu komut için geçerli bir parametre kullanın. <dark_gray>($argument)"
+    unknown_message: "$error_prefix <gradient:dark_red:red>Bilinmeyen mesaj!"
 command:
-  no_permission: "$error_prefix <gradient:dark_red:red>Bu komutu kullanma izniniz yok! <dark_gray>($permission)"
-  report:
-    usage: "$warn_prefix <gradient:dark_red:red>Kullanım: <gold>/report <yellow><oyuncu> [kategori] [sebep]"
-    use: "$successful_prefix <gradient:dark_green:green>$player başarıyla rapor edildi: <aqua>$reason</aqua>!"
-    no_target: "$error_prefix <gradient:dark_red:red>Oyuncu bulunamadı!"
-    prevent_self: "$error_prefix <gradient:dark_red:red>Kendinizi rapor edemezsiniz!"
-    cooldown: "$error_prefix <gradient:dark_red:red>Bu komutu <gold>$time</gold> saniye boyunca kullanamazsınız!"
-    invalid:
-      category: "$error_prefix <gradient:dark_red:red><gold>$category</gold> geçerli bir kategori değil!"
-      reason: "$error_prefix <gradient:dark_red:red><gold>$reason</gold> geçerli bir sebep değil!"
-    book:
-      header:
-        - "<dark_red>❐ <gradient:dark_red:red>Rapor Sebebi:"
-        - ""
-        - ""
-      category: "<click:run_command:'/report $player $category'><hover:show_text:'<yellow>Raporlamak için tıklayın!'><gold>● <dark_red>$name</hover></click>"
-      reason: "<click:run_command:'/report $player $category $reason'><hover:show_text:'<dark_green>Açıklama: <gradient:gray:white>$description \n\n<yellow>Raporlamak için tıklayın!'><gold>● <red>$name</hover></click>"
-      footer:
-        - ""
-reportadmin:
-  usage: "$warn_prefix <gradient:dark_red:red>Kullanım: <gold>/reportadmin <yellow><argümanlar>"
-  reload:
-    use: "$successful_prefix <green>Eklenti başarıyla yeniden yüklendi!"
-  reports:
-    receive: "$warn_prefix <gradient:gold:yellow>Veritabanından rapor verileri alınıyor..."
-    book:
-      header:
-        - "<dark_red>❐ <gradient:dark_red:red>Raporlar:"
-        - ""
-      format: "<click:run_command:'/reportadmin accept $id'><hover:show_text:'<red>Raporlayan: <aqua>$reporter</aqua>\nRapor Edilen: <aqua>$reported</aqua>\nSunucu: <aqua>$server</aqua>\n\nSebep: <aqua>$reason</aqua>\n\n <yellow>Raporu takip etmek için tıklayın!'><gold>● <red>$reported</hover></click>"
-  accept:
-    usage: "$warn_prefix <gradient:dark_red:red>Kullanım: <gold>/reportadmin accept <yellow><rapor id>"
-    use: "$successful_prefix <gradient:dark_green:green>Rapor başarıyla kabul edildi ($id)!"
-    already_accepted: "$warn_prefix <gradient:red:gold>Bu rapor mevcut değil veya zaten kabul edildi ($id)!"
-  done:
-    usage: "$warn_prefix <gradient:dark_red:red>Kullanım: <gold>/reportadmin done <yellow><rapor id>"
-    use: "$successful_prefix <gradient:dark_green:green>Rapor başarıyla tamamlandı ($id)!"
-    already_done: "$warn_prefix <gradient:red:gold>Bu rapor mevcut değil veya zaten tamamlandı ($id)!"
-  myreports:
-    receive: "$warn_prefix <gradient:gold:yellow>Veritabanından rapor verileriniz alınıyor..."
-    use: "$successful_prefix <gradient:dark_green:green>Rapor başarıyla tamamlandı ($id)!"
-    book:
-      header:
-        - "<dark_red>❐ <gradient:dark_red:red>Sizin raporlarınız:"
-        - ""
-      format: "<click:run_command:'/reportadmin done $id'><hover:show_text:'<red>Raporlayan: <aqua>$reporter</aqua>\nRapor Edilen: <aqua>$reported</aqua>\nSunucu: <aqua>$server</aqua>\n\nSebep: <aqua>$reason</aqua>\n\n <yellow>İşaretlemek için tıklayın!'><gold>● <red>$reported</hover></click>"
+    no_permission: "$error_prefix <gradient:dark_red:red>Bu komutu kullanma izniniz yok! <dark_gray>($permission)"
+    report:
+        usage: "$warn_prefix <gradient:dark_red:red>Kullanım: <gold>/report <yellow><user> [kategori] [neden]"
+        use: "$successful_prefix <gradient:dark_green:green>$player başarıyla şu nedenle bildirildi: <aqua>$reason<aqua>!"
+        no_target: "$error_prefix <gradient:dark_red:red>Oyuncu bulunamadı!"
+        prevent_self: "$error_prefix <gradient:dark_red:red>Kendinizi bildiremezsiniz!"
+        cooldown: "$error_prefix <gradient:dark_red:red>Bu komutu <gold>$time</gold> saniye boyunca kullanamazsınız!"
+        no_reason_custom: "$warn_prefix <gradient:dark_red:red>Kullanım: <gold>/report <yellow><user> [neden]"
+        invalid:
+            category: "$error_prefix <gradient:dark_red:red><gold>$category</gold> geçerli bir kategori değil!"
+            reason: "$error_prefix <gradient:dark_red:red><gold>$reason</gold> geçerli bir neden değil!"
+        book:
+            header:
+                - "<dark_red>❐ <gradient:dark_red:red>Rapor Nedeni:"
+                - ""
+                - ""
+            category: "<click:run_command:'/report $player $category'><hover:show_text:'<yellow>Raporlamak için tıkla!'><gold>● <dark_red>$name</hover></click>"
+            reason: "<click:run_command:'/report $player $category $reason'><hover:show_text:'<dark_green>Açıklama: <gradient:gray:white>$description \n\n<yellow>Raporlamak için tıkla!'><gold>● <red>$name</hover></click>"
+            footer:
+                - ""
+    reportadmin:
+        usage: "$warn_prefix <gradient:dark_red:red>Kullanım: <gold>/reportadmin <yellow><args>"
+        reload:
+            use: "$successful_prefix <green>Plugin başarıyla yeniden yüklendi!"
+        reports:
+            receive: "$warn_prefix <gradient:gold:yellow>Veritabanından rapor verileri alınıyor..."
+            book:
+                header:
+                    - "<dark_red>❐ <gradient:dark_red:red>Raporlar:"
+                    - ""
+                format: "<click:run_command:'/reportadmin accept $id'><hover:show_text:'<red>Raporlayan: <aqua>$reporter</aqua>\nRaporlanan: <aqua>$reported</aqua>\nSunucu: <aqua>$server</aqua>\n\nNeden: <aqua>$reason</aqua>\n\n <yellow>Raporu takip etmek için tıkla!'><gold>● <red>$reported</hover></click>"
+        accept:
+            usage: "$warn_prefix <gradient:dark_red:red>Kullanım: <gold>/reportadmin accept <yellow><rapor id>"
+            use: "$successful_prefix <gradient:dark_green:green>Rapor başarıyla kabul edildi ($id)!"
+            already_accepted: "$warn_prefix <gradient:red:gold>Bu rapor mevcut değil veya zaten kabul edildi ($id)!"
+        done:
+            usage: "$warn_prefix <gradient:dark_red:red>Kullanım: <gold>/reportadmin done <yellow><rapor id>"
+            use: "$successful_prefix <gradient:dark_green:green>Rapor başarıyla tamamlandı ($id)!"
+            already_done: "$warn_prefix <gradient:red:gold>Bu rapor mevcut değil veya zaten tamamlandı ($id)!"
+        myreports:
+            receive: "$warn_prefix <gradient:gold:yellow>Veritabanından rapor verileriniz alınıyor..."
+            use: "$successful_prefix <gradient:dark_green:green>Rapor başarıyla tamamlandı ($id)!"
+            book:
+                header:
+                    - "<dark_red>❐ <gradient:dark_red:red>Sizin raporlarınız:"
+                    - ""
+                format: "<click:run_command:'/reportadmin done $id'><hover:show_text:'<red>Raporlayan: <aqua>$reporter</aqua>\nRaporlanan: <aqua>$reported</aqua>\nSunucu: <aqua>$server</aqua>\n\nNeden: <aqua>$reason</aqua>\n\n <yellow>İşaretlemek için tıkla!'><gold>● <red>$reported</hover></click>"
+
 report:
-  actionbar: "<dark_red>⚠ <gradient:gold:yellow>Toplam <aqua>$reports</aqua> rapor bulunuyor!"
-  message: "<click:run_command:'/reportadmin reports'><hover:show_text:'<red>Sunucu: <aqua>$server</aqua>\nSebep: <aqua>$reason</aqua>\n\n<yellow>Tüm raporları görmek için tıklayın!'><gold>● <red>$reporter</red> <red>$reported</red></hover></click>"
+    actionbar: "<dark_red>⚠ <gradient:gold:yellow>Şu anda <aqua>$reports</aqua> rapor bulunmaktadır!"
+    message: "<click:run_command:'/reportadmin reports'><hover:show_text:'<red>Sunucu: <aqua>$server</aqua>\nNeden: <aqua>$reason</aqua>\n\n<yellow>Tüm raporları görmek için tıkla!'><gold>● <red>$reporter</red> şunu rapor etti: <red>$reported</red></hover></click>"
