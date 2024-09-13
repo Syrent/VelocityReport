@@ -111,9 +111,9 @@ object Settings {
         Ruom.setDebug(debugMode)
         bstats = settingsConfig.getBoolean("bstats")
 
-        commandSound = XSound.valueOf(settingsConfig.getString("sounds.command")!!).parseSound()
-        bookSound = XSound.valueOf(settingsConfig.getString("sounds.book")!!).parseSound()
-        newReportSound = XSound.valueOf(settingsConfig.getString("sounds.new_report")!!).parseSound()
+        commandSound = XSound.entries.find { it.name == settingsConfig.getString("sounds.command") }?.parseSound()
+        bookSound = XSound.entries.find { it.name == settingsConfig.getString("sounds.book") }?.parseSound()
+        newReportSound = XSound.entries.find { it.name == settingsConfig.getString("sounds.new_report") }?.parseSound()
 
         cooldown = settingsConfig.getInt("report.cooldown") * 1000
         staffActionbarEnabled = settingsConfig.getBoolean("report.staff_actionbar.enabled")
