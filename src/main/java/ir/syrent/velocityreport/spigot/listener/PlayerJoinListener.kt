@@ -21,8 +21,6 @@ class PlayerJoinListener(
     fun onPlayerJoin(event: PlayerJoinEvent) {
         val player = event.player
 
-        plugin.cooldowns[player.uniqueId] = System.currentTimeMillis()
-
         Utils.sendReportsActionbar(player)
     }
 
