@@ -6,6 +6,7 @@ import com.velocitypowered.api.event.Subscribe
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent
 import com.velocitypowered.api.plugin.annotation.DataDirectory
 import com.velocitypowered.api.proxy.ProxyServer
+import com.velocitypowered.api.proxy.ServerConnection
 import com.velocitypowered.api.proxy.messages.ChannelMessageSource
 import ir.syrent.velocityreport.bridge.VelocityAdapter
 import ir.syrent.velocityreport.bridge.VelocityBridge
@@ -46,6 +47,9 @@ class VelocityReport @Inject constructor(
         bridgeManager = VelocityBridgeManager(bridge, adapter, cooldowns)
         object : VelocityMessagingEvent(bridge) {
             override fun onPluginMessageReceived(channelMessageSource: ChannelMessageSource, jsonObject: JsonObject) {
+                if (channelMessageSource !is ServerConnection) {
+                    return
+                }
                 bridgeManager.handleMessage(jsonObject)
             }
         }

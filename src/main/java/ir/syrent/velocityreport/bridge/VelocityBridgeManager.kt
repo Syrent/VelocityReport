@@ -62,6 +62,7 @@ class VelocityBridgeManager(
     }
 
     private fun sendPluginMessage(messageJson: JsonObject) {
+        if (messageJson.isEmpty) return
         val byteArrayInputStream = ByteStreams.newDataOutput()
         byteArrayInputStream.writeUTF(GsonUtils.get().toJson(messageJson))
 
@@ -69,6 +70,7 @@ class VelocityBridgeManager(
     }
 
     fun handleMessage(messageJson: JsonObject) {
+        if (messageJson.isEmpty) return
         when (messageJson["type"].asString) {
             "Server" -> {
                 val allowedCooldown = messageJson["cooldown"].asInt

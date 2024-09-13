@@ -43,9 +43,11 @@ public class VelocityMessagingChannel {
         if (!event.getIdentifier().equals(name)) return;
 
         String rawMessage = new String(event.getData(), StandardCharsets.UTF_8);
-        JsonObject message = JsonParser.parseString(rawMessage.substring(2)).getAsJsonObject();
-
-        messagingEvents.forEach(messagingEvent -> messagingEvent.onPluginMessageReceived(event.getSource(), message));
+        if (rawMessage.isEmpty()) return;
+        try {
+            JsonObject message = JsonParser.parseString(rawMessage.substring(2)).getAsJsonObject();
+            messagingEvents.forEach(messagingEvent -> messagingEvent.onPluginMessageReceived(event.getSource(), message));
+        } catch (StringIndexOutOfBoundsException ignored) { }
     }
 
     public void sendMessage(Player sender, JsonObject message) {

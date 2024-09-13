@@ -37,9 +37,11 @@ public class BukkitMessagingChannel implements PluginMessageListener {
     @Override
     public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, byte[] bytes) {
         String rawMessage = new String(bytes, StandardCharsets.UTF_8);
-        JsonObject message = GsonUtils.getParser().parse(rawMessage.substring(2)).getAsJsonObject();
-
-        messagingEvents.forEach(event -> event.onPluginMessageReceived(player, message));
+        if (rawMessage.isEmpty()) return;
+        try {
+            JsonObject message = GsonUtils.getParser().parse(rawMessage.substring(2)).getAsJsonObject();
+            messagingEvents.forEach(event -> event.onPluginMessageReceived(player, message));
+        } catch (StringIndexOutOfBoundsException ignored) { }
     }
 
     @Beta
