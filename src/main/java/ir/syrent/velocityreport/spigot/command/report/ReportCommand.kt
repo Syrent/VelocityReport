@@ -344,8 +344,14 @@ class ReportCommand(
         if (args[args.size - 1].isBlank()) return emptyList()
         when (args.size) {
             1 -> {
-                return if (Settings.velocitySupport && plugin.networkPlayers.isNotEmpty()) plugin.networkPlayers.filter { BukkitVanishUtils.canSee(sender as? Player, Bukkit.getOfflinePlayer(args[0]).uniqueId) }.filter { it.startsWith(args[0], true) }
-                else Ruom.getOnlinePlayers().map { it.name }.filter { BukkitVanishUtils.canSee(sender as? Player, Bukkit.getOfflinePlayer(args[0]).uniqueId) }.filter { it.startsWith(args[0], true) }
+                return if (Settings.velocitySupport && plugin.networkPlayers.isNotEmpty()) {
+                    if (args[0].isBlank()) {
+                        plugin.networkPlayers/*.take(20)*/.filter { it.startsWith(args[0], true) }
+                    } else {
+                        plugin.networkPlayers.filter { it.startsWith(args[0], true) }/*.take(20)*/
+                    }
+                }
+                else Ruom.getOnlinePlayers().map { it.name }/*.take(20)*/.filter { it.startsWith(args[0], true) }
             }
             2 -> {
                 return if (Settings.mode == Report.Mode.CATEGORY) {

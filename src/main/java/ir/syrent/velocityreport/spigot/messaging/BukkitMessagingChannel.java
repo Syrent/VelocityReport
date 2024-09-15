@@ -36,6 +36,7 @@ public class BukkitMessagingChannel implements PluginMessageListener {
     @Deprecated
     @Override
     public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, byte[] bytes) {
+        if (!channel.equals(name)) return;
         String rawMessage = new String(bytes, StandardCharsets.UTF_8);
         if (rawMessage.isEmpty()) return;
         try {

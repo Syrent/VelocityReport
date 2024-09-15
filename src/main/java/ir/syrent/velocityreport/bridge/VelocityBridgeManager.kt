@@ -6,7 +6,9 @@ import com.velocitypowered.api.proxy.Player
 import ir.syrent.velocityreport.utils.ruom.VRuom
 import ir.syrent.velocityreport.utils.ruom.utils.GsonUtils
 import ir.syrent.velocityreport.utils.ruom.utils.MilliCounter
+import org.sayandev.sayanvanish.velocity.api.SayanVanishVelocityAPI
 import java.util.*
+import kotlin.jvm.optionals.getOrNull
 
 @Suppress("UnstableApiUsage")
 class VelocityBridgeManager(
@@ -14,6 +16,8 @@ class VelocityBridgeManager(
     private val velocityAdapter: VelocityAdapter,
     private val cooldowns: MutableMap<UUID, MilliCounter>,
 ) {
+
+    val hasSayanVanish = VRuom.getServer().pluginManager.getPlugin("sayanvanish").getOrNull() != null
 
     fun sendServer(player: Player) {
         val serverName = player.currentServer.let {
@@ -34,18 +38,11 @@ class VelocityBridgeManager(
     fun sendAllPlayersName() {
         val players = velocityAdapter.getAllPlayersName()
 
-        val stringBuilder = StringBuilder()
-        var playersList = ""
-        if (players.isNotEmpty()) {
-            for (player in players) {
-                stringBuilder.append(player).append(",")
-            }
-            playersList = stringBuilder.substring(0, stringBuilder.length - 1)
-        }
+        val vanishedUsers = if (hasSayanVanish) SayanVanishVelocityAPI.getInstance().getVanishedUsers().map { it.username } else emptyList()
 
         val messageJson = JsonObject()
         messageJson.addProperty("type", "PlayerList")
-        messageJson.addProperty("players", playersList)
+        messageJson.addProperty("players", players.filter { !vanishedUsers.contains(it) }.joinToString(","))
 
         sendPluginMessage(messageJson)
     }
