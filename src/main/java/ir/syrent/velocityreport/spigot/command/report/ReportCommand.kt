@@ -8,6 +8,7 @@ import ir.syrent.velocityreport.spigot.command.library.PluginCommand
 import ir.syrent.velocityreport.spigot.hook.DependencyManager
 import ir.syrent.velocityreport.spigot.storage.Message
 import ir.syrent.velocityreport.spigot.storage.Settings
+import ir.syrent.velocityreport.spigot.utils.BukkitVanishUtils
 import ir.syrent.velocityreport.utils.TextReplacement
 import ir.syrent.velocityreport.utils.component
 import ir.syrent.velocityreport.utils.openBook
@@ -19,6 +20,7 @@ import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.sayandev.sayanvanish.bukkit.api.SayanVanishBukkitAPI
+import kotlin.math.abs
 
 // TODO: Rework command system
 class ReportCommand(
@@ -41,21 +43,21 @@ class ReportCommand(
         var target = targetPlayer?.name
 
         if (Settings.velocitySupport && plugin.networkPlayers.isNotEmpty()) {
-            target = plugin.networkPlayers.findLast { it.lowercase() == args[0].lowercase() }
+            target = plugin.networkPlayers.filter { BukkitVanishUtils.canSee(sender as? Player, Bukkit.getOfflinePlayer(args[0]).uniqueId) }.findLast { it.lowercase() == args[0].lowercase() }
         } else {
             /*
             * Support for SuperVanish/PremiumVanish/VelocityVanish and all plugins that save vanished meta on player
             * Note: only works on backend servers, so it should only work when `velocity_support` is off
             */
             if (targetPlayer != null) {
-                if (targetPlayer.getMetadata("vanished").map { it.asBoolean() }.contains(true)) {
+                if (!BukkitVanishUtils.canSee(sender as? Player, targetPlayer.uniqueId)) {
                     sender.sendMessage(Message.NO_TARGET)
                     return
                 }
             }
         }
 
-        if (target == null) {
+        if (target == null || (!Bukkit.getOfflinePlayer(target).hasPlayedBefore() && Bukkit.getOfflinePlayer(target).player == null) || !BukkitVanishUtils.canSee(sender as? Player, Bukkit.getOfflinePlayer(target).uniqueId)) {
             sender.sendMessage(Message.NO_TARGET)
             return
         }
@@ -69,19 +71,14 @@ class ReportCommand(
                 return
             }
 
-            if (plugin.cooldowns.containsKey(sender.uniqueId) && !sender.hasPermission("velocityreport.bypass.cooldown")) {
-                val cooldown = plugin.cooldowns[sender.uniqueId]!!
-                val allowedCooldown = Settings.cooldown
+            if (!sender.hasPermission("velocityreport.bypass.cooldown")) {
+                plugin.cooldowns[sender.uniqueId]?.let { cooldown ->
+                    val allowedCooldown = Settings.cooldown
 
-                if (System.currentTimeMillis() < cooldown + allowedCooldown) {
-                    sender.sendMessage(
-                        Message.REPORT_COOLDOWN,
-                        TextReplacement(
-                            "time",
-                                (Math.abs(System.currentTimeMillis() - cooldown- allowedCooldown) / 1000).toString()
-                        )
-                    )
-                    return
+                    if (System.currentTimeMillis() < cooldown + allowedCooldown) {
+                        sender.sendMessage(Message.REPORT_COOLDOWN, TextReplacement("time", (abs(System.currentTimeMillis() - cooldown- allowedCooldown) / 1000).toString()))
+                        return
+                    }
                 }
             }
 
@@ -113,6 +110,11 @@ class ReportCommand(
             /*
             * Prevent players from reporting vanished players if VelocityVanish installed on server
             */
+            if (!BukkitVanishUtils.canSee(sender, Bukkit.getOfflinePlayer(args[0]).uniqueId)) {
+                sender.sendMessage(Message.NO_TARGET)
+                return
+            }
+
             if (DependencyManager.sayanVanishHook.exists) {
                 if (SayanVanishBukkitAPI.getInstance().isVanished(Bukkit.getOfflinePlayer(target).uniqueId)) {
                     sender.sendMessage(Message.NO_TARGET)
@@ -253,19 +255,14 @@ class ReportCommand(
                             return
                         }
 
-                        if (plugin.cooldowns.containsKey(sender.uniqueId) && !sender.hasPermission("velocityreport.bypass.cooldown")) {
-                            val cooldown = plugin.cooldowns[sender.uniqueId]!!
-                            val allowedCooldown = Settings.cooldown
+                        if (!sender.hasPermission("velocityreport.bypass.cooldown")) {
+                            plugin.cooldowns[sender.uniqueId]?.let { cooldown ->
+                                val allowedCooldown = Settings.cooldown
 
-                            if (System.currentTimeMillis() < cooldown + allowedCooldown) {
-                                sender.sendMessage(
-                                    Message.REPORT_COOLDOWN,
-                                    TextReplacement(
-                                        "time",
-                                            (Math.abs(System.currentTimeMillis() - cooldown- allowedCooldown) / 1000).toString()
-                                    )
-                                )
-                                return
+                                if (System.currentTimeMillis() < cooldown + allowedCooldown) {
+                                    sender.sendMessage(Message.REPORT_COOLDOWN, TextReplacement("time", (abs(System.currentTimeMillis() - cooldown- allowedCooldown) / 1000).toString()))
+                                    return
+                                }
                             }
                         }
 
@@ -303,19 +300,14 @@ class ReportCommand(
                             return
                         }
 
-                        if (plugin.cooldowns.containsKey(sender.uniqueId) && !sender.hasPermission("velocityreport.bypass.cooldown")) {
-                            val cooldown = plugin.cooldowns[sender.uniqueId]!!
-                            val allowedCooldown = Settings.cooldown
+                        if (!sender.hasPermission("velocityreport.bypass.cooldown")) {
+                            plugin.cooldowns[sender.uniqueId]?.let { cooldown ->
+                                val allowedCooldown = Settings.cooldown
 
-                            if (System.currentTimeMillis() < cooldown + allowedCooldown) {
-                                sender.sendMessage(
-                                    Message.REPORT_COOLDOWN,
-                                    TextReplacement(
-                                        "time",
-                                            (Math.abs(System.currentTimeMillis() - cooldown- allowedCooldown) / 1000).toString()
-                                    )
-                                )
-                                return
+                                if (System.currentTimeMillis() < cooldown + allowedCooldown) {
+                                    sender.sendMessage(Message.REPORT_COOLDOWN, TextReplacement("time", (abs(System.currentTimeMillis() - cooldown- allowedCooldown) / 1000).toString()))
+                                    return
+                                }
                             }
                         }
 
@@ -349,10 +341,17 @@ class ReportCommand(
     }
 
     override fun tabComplete(sender: CommandSender, args: List<String>): List<String> {
+        if (args[args.size - 1].isBlank()) return emptyList()
         when (args.size) {
             1 -> {
-                return if (Settings.velocitySupport && plugin.networkPlayers.isNotEmpty()) plugin.networkPlayers.filter { it.startsWith(args[0], true) }
-                else Ruom.getOnlinePlayers().map { it.name }.filter { it.startsWith(args[0], true) }
+                return if (Settings.velocitySupport && plugin.networkPlayers.isNotEmpty()) {
+                    if (args[0].isBlank()) {
+                        plugin.networkPlayers/*.take(20)*/.filter { it.startsWith(args[0], true) }
+                    } else {
+                        plugin.networkPlayers.filter { it.startsWith(args[0], true) }/*.take(20)*/
+                    }
+                }
+                else Ruom.getOnlinePlayers().map { it.name }/*.take(20)*/.filter { it.startsWith(args[0], true) }
             }
             2 -> {
                 return if (Settings.mode == Report.Mode.CATEGORY) {
