@@ -57,7 +57,7 @@ class ReportCommand(
             }
         }
 
-        if (target == null || (!Bukkit.getOfflinePlayer(target).hasPlayedBefore() && Bukkit.getOfflinePlayer(target).player == null) || !BukkitVanishUtils.canSee(sender as? Player, Bukkit.getOfflinePlayer(target).uniqueId)) {
+        if (target == null || (!Bukkit.getOfflinePlayer(target).hasPlayedBefore() && (!Settings.velocitySupport && Bukkit.getOfflinePlayer(target).player == null)) || !BukkitVanishUtils.canSee(sender as? Player, Bukkit.getOfflinePlayer(target).uniqueId)) {
             sender.sendMessage(Message.NO_TARGET)
             return
         }
