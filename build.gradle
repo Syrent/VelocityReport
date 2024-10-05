@@ -65,6 +65,16 @@ repositories {
         name = "sonatype-oss-snapshots1"
         url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
     }
+
+    maven {
+        name = "codeberg"
+        url = uri("https://codeberg.org/api/packages/Andre601/maven/")
+    }
+
+    maven {
+        name = "discordsrv"
+        url = uri("https://nexus.scarsz.me/content/groups/public/")
+    }
 }
 
 dependencies {
@@ -72,6 +82,7 @@ dependencies {
     compileOnly 'com.velocitypowered:velocity-api:3.1.1'
     compileOnly 'org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT'
 
+    compileOnly 'org.sayandev:sayanvanish-api:1.5.0-SNAPSHOT'
     compileOnly 'org.sayandev:sayanvanish-bukkit:1.5.0-SNAPSHOT'
     compileOnly 'org.sayandev:sayanvanish-proxy-velocity:1.5.0-SNAPSHOT'
 

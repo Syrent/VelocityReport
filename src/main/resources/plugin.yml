@@ -8,6 +8,9 @@ description: Report plugin for velocity servers
 website: syrent.ir
 softdepend:
   - 'VelocityVanish'
+  - 'SayanVanish'
+  - 'SuperVanish'
+  - 'PremiumVanish'
   - 'PlaceholderAPI'
 commands:
   report:
