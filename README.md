@@ -8,7 +8,6 @@
 [![Bstats player stats](https://img.shields.io/bstats/players/16576?color=%2300B4DB&style=flat-square&logo=odnoklassniki&logoColor=white)](https://bstats.org/plugin/bukkit/VelocityReport/16576)
 [![Modrinth Downloads](https://img.shields.io/modrinth/dt/mqGjZEIE?label=Modrinth&color=blue&style=flat-square&logo=modrinth&logoColor=white)](https://modrinth.com/plugin/velocityreport)
 [![Spigot Downloads](https://img.shields.io/spiget/downloads/105378?label=Spigot&color=blue&style=flat-square&logo=docusign&logoColor=white)](https://www.spigotmc.org/resources/105378)
-[![Polymart Downloads](https://img.shields.io/polymart/downloads/2896?label=Polymart&color=blue&style=flat-square&logo=docusign&logoColor=white)](https://polymart.org/resource/2896)
 [![License](https://img.shields.io/badge/GPL%20V3-blue?label=License&style=flat-square)](https://github.com/Syrent/VelocityReport/blob/master/LICENSE)
 
 ### [VelocityReport] aims to be the best report plugin out there.
@@ -115,9 +114,9 @@
     <a href="https://forums.papermc.io/threads/515"><img src="./blob/images/logo/papermc-logo.png"></a>
   </td>
   <td valign="top">
-    <h3>PaperMC</h3>
+    <h3>Hangar</h3>
     <p>
-      <a href="https://forums.papermc.io/threads/515">Click to go to PaperMC plugin release page</a>.
+      <a href="https://hangar.papermc.io/Syrent/VelocityReport">Click to go to Hangar plugin release page</a>.
     </p>
   </td>
 </tr>
