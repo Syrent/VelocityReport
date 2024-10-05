@@ -5,6 +5,7 @@ config_version: 5
 default_language: en_US
 show_dependency_suggestions: true
 debug_mode: false
+velocity_support: false
 bstats: true
 sounds:
     command: "ENTITY_EXPERIENCE_ORB_PICKUP"

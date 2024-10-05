@@ -105,7 +105,7 @@ object Settings {
         }
 
         defaultLanguage = settingsConfig.getString("default_language") ?: "en_US"
-        velocitySupport = settingsConfig.getBoolean("velocity_support")
+        velocitySupport = settingsConfig.getBoolean("velocity_support", true)
         showDependencySuggestions = settingsConfig.getBoolean("show_dependency_suggestions")
         debugMode = settingsConfig.getBoolean("debug_mode")
         Ruom.setDebug(debugMode)
