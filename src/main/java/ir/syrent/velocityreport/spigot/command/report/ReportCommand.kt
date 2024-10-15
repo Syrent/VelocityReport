@@ -39,25 +39,25 @@ class ReportCommand(
             return
         }
 
-        val targetPlayer = plugin.server.getPlayerExact(args[0])
-        var target = targetPlayer?.name
-
-        if (Settings.velocitySupport && plugin.networkPlayers.isNotEmpty()) {
-            target = plugin.networkPlayers.filter { BukkitVanishUtils.canSee(sender as? Player, Bukkit.getOfflinePlayer(args[0]).uniqueId) }.findLast { it.lowercase() == args[0].lowercase() }
+        val targetName = args[0]
+        val target = if (Settings.velocitySupport && plugin.networkPlayers.isNotEmpty()) {
+            plugin.networkPlayers.findLast { it.lowercase() == targetName.lowercase() }
         } else {
-            /*
-            * Support for SuperVanish/PremiumVanish/VelocityVanish and all plugins that save vanished meta on player
-            * Note: only works on backend servers, so it should only work when `velocity_support` is off
-            */
-            if (targetPlayer != null) {
-                if (!BukkitVanishUtils.canSee(sender as? Player, targetPlayer.uniqueId)) {
-                    sender.sendMessage(Message.NO_TARGET)
-                    return
+            val targetPlayer = Bukkit.getPlayer(targetName)
+            val targetOfflinePlayer = Bukkit.getOfflinePlayer(targetName)
+            if (!plugin.networkPlayers.contains(targetName) && plugin.networkPlayers.isNotEmpty()) {
+                null
+            } else {
+                val uniqueId = targetPlayer?.uniqueId ?: targetOfflinePlayer.uniqueId
+                if (!BukkitVanishUtils.canSee(sender, uniqueId)) {
+                    null
+                } else {
+                    targetOfflinePlayer.name
                 }
             }
         }
 
-        if (target == null || (!Bukkit.getOfflinePlayer(target).hasPlayedBefore() && (!Settings.velocitySupport && Bukkit.getOfflinePlayer(target).player == null)) || !BukkitVanishUtils.canSee(sender as? Player, Bukkit.getOfflinePlayer(target).uniqueId)) {
+        if (target == null) {
             sender.sendMessage(Message.NO_TARGET)
             return
         }
@@ -70,6 +70,7 @@ class ReportCommand(
                 sender.sendMessage(Message.INVALID_REASON, TextReplacement("reason", formattedReason))
                 return
             }
+
 
             if (!sender.hasPermission("velocityreport.bypass.cooldown")) {
                 plugin.cooldowns[sender.uniqueId]?.let { cooldown ->
@@ -346,12 +347,12 @@ class ReportCommand(
             1 -> {
                 return if (Settings.velocitySupport && plugin.networkPlayers.isNotEmpty()) {
                     if (args[0].isBlank()) {
-                        plugin.networkPlayers/*.take(20)*/.filter { it.startsWith(args[0], true) }
+                        plugin.networkPlayers.take(20).filter { it.startsWith(args[0], true) }
                     } else {
-                        plugin.networkPlayers.filter { it.startsWith(args[0], true) }/*.take(20)*/
+                        plugin.networkPlayers.filter { it.startsWith(args[0], true) }.take(20)
                     }
                 }
-                else Ruom.getOnlinePlayers().map { it.name }/*.take(20)*/.filter { it.startsWith(args[0], true) }
+                else Ruom.getOnlinePlayers().map { it.name }.take(20).filter { it.startsWith(args[0], true) }
             }
             2 -> {
                 return if (Settings.mode == Report.Mode.CATEGORY) {
