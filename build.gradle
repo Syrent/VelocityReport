@@ -4,6 +4,7 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.9.21'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'org.jetbrains.gradle.plugin.idea-ext' version '1.1.7'
+    id 'xyz.jpenilla.run-paper' version '2.3.1'
 }
 
 group = 'ir.syrent.velocityreport'
@@ -132,7 +133,7 @@ jar {
     archiveFileName = findProperty("plugin-name") + " v" + findProperty("version") + " " + "unshaded" + ".jar"
 }
 
-def targetJavaVersion = 11
+def targetJavaVersion = 17
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion
@@ -162,6 +163,10 @@ tasks {
         manifest {
             attributes["paperweight-mappings-namespace"] = "mojang"
         }
+    }
+
+    runServer {
+        minecraftVersion("1.19.4")
     }
 }
 
