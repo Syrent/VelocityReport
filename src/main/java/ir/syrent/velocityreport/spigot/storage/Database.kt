@@ -6,7 +6,6 @@ import ir.syrent.velocityreport.database.mysql.MySQLCredentials
 import ir.syrent.velocityreport.report.Report
 import ir.syrent.velocityreport.report.ReportStage
 import ir.syrent.velocityreport.spigot.Ruom
-import ir.syrent.velocityreport.spigot.adventure.AdventureApi
 import ir.syrent.velocityreport.spigot.configuration.YamlConfig
 import ir.syrent.velocityreport.spigot.database.MySQLDatabase
 import ir.syrent.velocityreport.spigot.database.sqlite.SQLiteDatabase
@@ -169,6 +168,40 @@ object Database {
         database!!.queueQuery(
             Query.query("SELECT * FROM velocityreport_reports WHERE report_id = ? AND stage = ?;")
                 .setStatementValue(1, id).setStatementValue(2, stage.name)).completableFuture.whenComplete { result, _ ->
+            if (result.next()) {
+                future.complete(
+                    Report(
+                        result.getString("server"),
+                        UUID.fromString(result.getString("reporter_id")),
+                        result.getString("reporter_name"),
+                        result.getString("reported_name"),
+                        result.getLong("date"),
+                        result.getString("reason"),
+                        false
+                    ).apply {
+                        this.reportID = UUID.fromString(result.getString("report_id"))
+                        this.stage = ReportStage.valueOf(result.getString("stage"))
+                        this.moderatorUUID = result.getString("moderator_id").let {
+                            if (it != "null") {
+                                UUID.fromString(it)
+                            }
+                            else null
+                        }
+                        this.moderatorName = result.getString("moderator_name")
+                    }
+                )
+            } else {
+                future.complete(null)
+            }
+        }
+        return future
+    }
+
+    fun getLastReportByReported(reported: String): CompletableFuture<Report?> {
+        val future = CompletableFuture<Report?>()
+        database!!.queueQuery(
+            Query.query("SELECT * FROM velocityreport_reports WHERE reported_name = ? AND stage = ? ORDER BY date DESC LIMIT 1;")
+                .setStatementValue(1, reported).setStatementValue(2, ReportStage.ACTIVE.name)).completableFuture.whenComplete { result, _ ->
             if (result.next()) {
                 future.complete(
                     Report(

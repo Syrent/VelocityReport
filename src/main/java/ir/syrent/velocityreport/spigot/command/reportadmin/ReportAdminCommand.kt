@@ -14,6 +14,7 @@ class ReportAdminCommand : PluginCommand("reportadmin", "velocityreport.admin.us
         addSubcommand(ReportsSubcommand())
         addSubcommand(MyReportsSubcommand())
         addSubcommand(AcceptSubcommand())
+        addSubcommand(DeclineSubcommand())
         addSubcommand(DoneSubcommand())
     }
 

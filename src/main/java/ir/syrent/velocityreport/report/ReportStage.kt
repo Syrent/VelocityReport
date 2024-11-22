@@ -4,5 +4,6 @@ enum class ReportStage {
     ACTIVE,
     PENDING,
     DONE,
+    DECLINE,
     CUSTOM
 }

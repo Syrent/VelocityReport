@@ -45,6 +45,10 @@ command:
             usage: "$warn_prefix <gradient:dark_red:red>Usage: <gold>/reportadmin accept <yellow><report id>"
             use: "$successful_prefix <gradient:dark_green:green>Report successfully accepted ($id)!"
             already_accepted: "$warn_prefix <gradient:red:gold>This report doesn't exist or already accepted ($id)!"
+        decline:
+            usage: "$warn_prefix <gradient:dark_red:red>Usage: <gold>/reportadmin decline <yellow><report/reporter id>"
+            use: "$successful_prefix <gradient:dark_green:green>Report successfully declined ($id)!"
+            already_declined: "$warn_prefix <gradient:red:gold>This report doesn't exist or already declined ($id)!"
         done:
             usage: "$warn_prefix <gradient:dark_red:red>Usage: <gold>/reportadmin done <yellow><report id>"
             use: "$successful_prefix <gradient:dark_green:green>Report successfully done ($id)!"

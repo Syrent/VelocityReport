@@ -58,6 +58,10 @@ data class Report(
         stage = ReportStage.DONE
     }
 
+    fun decline() {
+        stage = ReportStage.DECLINE
+    }
+
     fun update(callEvent: Boolean): CompletableFuture<Boolean> {
         val future = CompletableFuture<Boolean>()
 
