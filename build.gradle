@@ -83,9 +83,9 @@ dependencies {
     compileOnly 'com.velocitypowered:velocity-api:3.1.1'
     compileOnly 'org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT'
 
-    compileOnly 'org.sayandev:sayanvanish-api:1.5.0-SNAPSHOT'
-    compileOnly 'org.sayandev:sayanvanish-bukkit:1.5.0-SNAPSHOT'
-    compileOnly 'org.sayandev:sayanvanish-proxy-velocity:1.5.0-SNAPSHOT'
+    compileOnly 'org.sayandev:sayanvanish-api:1.5.2-SNAPSHOT'
+    compileOnly 'org.sayandev:sayanvanish-bukkit:1.5.2-SNAPSHOT'
+    compileOnly 'org.sayandev:sayanvanish-proxy-velocity:1.5.2-SNAPSHOT'
 
     // gson is not exist in legacy minecraft version
     implementation 'com.google.code.gson:gson:2.10.1'
