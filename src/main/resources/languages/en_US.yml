@@ -40,7 +40,7 @@ command:
                 header:
                     - "<dark_red>❐ <gradient:dark_red:red>Reports:"
                     - ""
-                format: "<click:run_command:'/reportadmin accept $id'><hover:show_text:'<red>Reporter: <aqua>$reporter</aqua>\nReported: <aqua>$reported</aqua>\nServer: <aqua>$server</aqua>\n\nReason: <aqua>$reason</aqua>\n\n <yellow>Click to follow up report!'><gold>● <red>$reported</hover></click>"
+                format: "<click:run_command:'/reportadmin accept $id'><hover:show_text:'<red>Reporter: <aqua>$reporter</aqua>\nReported: <aqua>$reported</aqua>\nServer: <aqua>$server</aqua>\n\nReason: <aqua>$reason</aqua>\n\n <yellow>Click to follow up report!'><gold>● <red>$reported</hover></click>  <click:run_command:'/reportadmin decline $id'><hover:show_text:'<red>Click to decline this report'><dark_red>(Decline)</dark_red></hover></click>"
         accept:
             usage: "$warn_prefix <gradient:dark_red:red>Usage: <gold>/reportadmin accept <yellow><report id>"
             use: "$successful_prefix <gradient:dark_green:green>Report successfully accepted ($id)!"
