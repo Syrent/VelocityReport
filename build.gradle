@@ -118,7 +118,7 @@ shadowJar {
     relocate('com.cryptomorin.xseries', 'ir.syrent.velocityreport.xseries')
     relocate('net.kyori', 'ir.syrent.velocityreport.kyori.adventure')
     relocate('org.bstats', 'ir.syrent.velocityreport.bstats')
-    relocate('kotlin', 'ir.syrent.velocityreport.kotlin')
+//    relocate('kotlin', 'ir.syrent.velocityreport.kotlin')
     relocate('com.jeff_media.updatechecker', 'ir.syrent.velocityreport.updatechecker')
     relocate('com.zaxxer.hikari', 'ir.syrent.velocityreport.zaaxer.hikari')
 
