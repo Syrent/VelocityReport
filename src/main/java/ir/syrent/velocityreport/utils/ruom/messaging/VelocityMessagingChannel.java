@@ -39,8 +39,9 @@ public class VelocityMessagingChannel {
 
     @Subscribe
     public void onMessageReceive(PluginMessageEvent event) {
-        if (!(event.getSource() instanceof ServerConnection)) return;
-        if (!event.getIdentifier().equals(name)) return;
+        if (!event.getIdentifier().equals(name)) return; // Not our channel
+        event.setResult(PluginMessageEvent.ForwardResult.handled()); // Drop the packet
+        if (!(event.getSource() instanceof ServerConnection)) return; // Somebody is trying to hack us
 
         String rawMessage = new String(event.getData(), StandardCharsets.UTF_8);
         if (rawMessage.isEmpty()) return;
