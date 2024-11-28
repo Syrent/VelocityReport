@@ -25,7 +25,7 @@ jobs:
     - name: Checkout codes
       uses: actions/checkout@v3
     - name: cache gradle packages
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         key: ${{ runner.os }}-build-${{ hashFiles('**/build.gradle') }}
         path: |
