@@ -45,6 +45,10 @@ command:
             usage: "$warn_prefix <gradient:dark_red:red>Kullanım: <gold>/reportadmin accept <yellow><rapor id>"
             use: "$successful_prefix <gradient:dark_green:green>Rapor başarıyla kabul edildi ($id)!"
             already_accepted: "$warn_prefix <gradient:red:gold>Bu rapor mevcut değil veya zaten kabul edildi ($id)!"
+        decline:
+            usage: "$warn_prefix <gradient:dark_red:red>Kullanım:: <gold>/reportadmin decline <yellow><report/rapor id>"
+            use: "$successful_prefix <gradient:dark_green:green>Rapor başarıyla reddedildi ($id)!"
+            already_declined: "$warn_prefix <gradient:red:gold>Bu rapor yok ya da zaten reddedildi ($id)!"
         done:
             usage: "$warn_prefix <gradient:dark_red:red>Kullanım: <gold>/reportadmin done <yellow><rapor id>"
             use: "$successful_prefix <gradient:dark_green:green>Rapor başarıyla tamamlandı ($id)!"
