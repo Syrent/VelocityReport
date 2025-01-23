@@ -58,7 +58,8 @@ data class Report(
         stage = ReportStage.DONE
     }
 
-    fun decline() {
+    fun decline(by: Player) {
+        setModerator(by)
         stage = ReportStage.DECLINE
     }
 

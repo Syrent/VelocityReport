@@ -23,7 +23,7 @@ class DeclineSubcommand : SubCommand("decline", "velocityreport.admin.decline", 
             if (report == null) {
                 Database.getLastReportByReported(args[0]).whenComplete { report, _ ->
                     report?.let { report ->
-                        report.decline()
+                        report.decline(sender)
                         report.update(true).whenComplete { _, _ ->
                             sender.sendMessage(Message.REPORTADMIN_DECLINE_USE, TextReplacement("id", report.reportID.toString()))
                         }
@@ -33,7 +33,7 @@ class DeclineSubcommand : SubCommand("decline", "velocityreport.admin.decline", 
                     }
                 }
             } else {
-                report.decline()
+                report.decline(sender)
                 report.update(true).whenComplete { _, _ ->
                     sender.sendMessage(Message.REPORTADMIN_DECLINE_USE, TextReplacement("id", report.reportID.toString()))
                 }
