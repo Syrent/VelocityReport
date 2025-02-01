@@ -61,7 +61,7 @@ class PlaceholderAPIHook constructor(plugin: VelocityReportSpigot, name: String)
             if (params.startsWith("reports_")) {
                 val type = params.substring(8)
                 val amount = reportsCache[ReportStage.valueOf(type.uppercase())]
-                val amountFormat = if (amount == 24) "24+" else amount.toString()
+                val amountFormat = if (amount == Settings.databaseFetchLimit) "${Settings.databaseFetchLimit}+" else amount.toString()
 
                 return amountFormat
             }

@@ -54,6 +54,7 @@ object Settings {
     var preventSelfReport = true
     var customReason = false
     var placeholderUpdateTicks = 200
+    var databaseFetchLimit = 24
     var mode = Report.Mode.SIMPLE
     val simple = mutableListOf<Reason>()
     var categories = mutableListOf<Category>()
@@ -122,6 +123,7 @@ object Settings {
         preventSelfReport = settingsConfig.getBoolean("report.prevent_self")
         customReason = settingsConfig.getBoolean("report.custom_reason")
         placeholderUpdateTicks = settingsConfig.getInt("report.placeholder_update_ticks")
+        databaseFetchLimit = settingsConfig.getInt("report.database_fetch_limit")
         autoDoneEnabled = settingsConfig.getBoolean("report.auto_done.enabled")
         autoDoneTime = settingsConfig.getInt("report.auto_done.time")
         autoDoneCallUpdateEvent = settingsConfig.getBoolean("report.auto_done.call_update_event")

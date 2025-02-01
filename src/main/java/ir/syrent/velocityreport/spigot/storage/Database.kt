@@ -99,7 +99,7 @@ object Database {
         val reports = mutableListOf<Report>()
         val future = CompletableFuture<List<Report>>()
         database!!.queueQuery(
-            Query.query("SELECT * FROM velocityreport_reports WHERE stage = ? LIMIT 24;")
+            Query.query("SELECT * FROM velocityreport_reports WHERE stage = ? LIMIT ${Settings.databaseFetchLimit};")
                 .setStatementValue(1, stage.name)).completableFuture.whenComplete { result, _ ->
             while (result.next()) {
                 reports.add(
@@ -133,7 +133,7 @@ object Database {
         val reports = mutableListOf<Report>()
         val future = CompletableFuture<List<Report>>()
         database!!.queueQuery(
-            Query.query("SELECT * FROM velocityreport_reports WHERE moderator_id = ? AND stage = ? LIMIT 24;")
+            Query.query("SELECT * FROM velocityreport_reports WHERE moderator_id = ? AND stage = ? LIMIT ${Settings.databaseFetchLimit};")
                 .setStatementValue(1, id.toString()).setStatementValue(2, stage.name)).completableFuture.whenComplete { result, _ ->
             while (result.next()) {
                 reports.add(

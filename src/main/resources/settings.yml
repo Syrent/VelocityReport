@@ -20,6 +20,7 @@ report:
     prevent_self: true
     custom_reason: false
     placeholder_update_ticks: 200
+    database_fetch_limit: 24
     auto_done:
         enabled: true
         time: 3600
