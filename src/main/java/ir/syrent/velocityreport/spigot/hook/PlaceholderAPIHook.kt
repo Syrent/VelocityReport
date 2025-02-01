@@ -18,7 +18,7 @@ class PlaceholderAPIHook constructor(plugin: VelocityReportSpigot, name: String)
         }
 
         Ruom.runSync({
-            for (stage in ReportStage.values()) {
+            for (stage in ReportStage.entries) {
                 Database.getReports(stage).whenComplete { reports, _ ->
                     reportsCache[stage] = reports.size
                 }
@@ -59,8 +59,10 @@ class PlaceholderAPIHook constructor(plugin: VelocityReportSpigot, name: String)
         override fun onRequest(player: OfflinePlayer, params: String): String? {
             if (params.startsWith("reports_")) {
                 val type = params.substring(8)
+                val amount = reportsCache[ReportStage.valueOf(type.uppercase())]
+                val amountFormat = if (amount == 24) "24+" else amount.toString()
 
-                return reportsCache[ReportStage.valueOf(type.uppercase())].toString()
+                return amountFormat
             }
             return null
         }
