@@ -14,11 +14,12 @@ class PlaceholderAPIHook constructor(plugin: VelocityReportSpigot, name: String)
     val reportsCache = mutableMapOf<ReportStage, Int>()
 
     init {
-        if (exists) {
+        if (exists && Settings.placeholderHookEnabled) {
             ReportExpansion(plugin).register()
         }
 
         Ruom.runSync({
+            if (!Settings.placeholderHookEnabled) return@runSync
             for (stage in ReportStage.entries) {
                 Database.getReports(stage).whenComplete { reports, _ ->
                     reportsCache[stage] = reports.size

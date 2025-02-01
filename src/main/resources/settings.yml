@@ -11,6 +11,10 @@ sounds:
     command: "ENTITY_EXPERIENCE_ORB_PICKUP"
     book: "ENTITY_EXPERIENCE_ORB_PICKUP"
     new_report: "ENTITY_EXPERIENCE_ORB_PICKUP"
+hooks:
+    placeholderapi:
+        enabled: true
+        update_ticks: 200
 report:
     cooldown: 60
     send_new_report_message: true
@@ -19,7 +23,6 @@ report:
         send_zero: false
     prevent_self: true
     custom_reason: false
-    placeholder_update_ticks: 200
     database_fetch_limit: 24
     auto_done:
         enabled: true
