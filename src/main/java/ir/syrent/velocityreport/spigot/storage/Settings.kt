@@ -53,6 +53,7 @@ object Settings {
     var staffActionbarSendZero = false
     var preventSelfReport = true
     var customReason = false
+    var placeholderUpdateTicks = 200
     var mode = Report.Mode.SIMPLE
     val simple = mutableListOf<Reason>()
     var categories = mutableListOf<Category>()
@@ -120,6 +121,7 @@ object Settings {
         staffActionbarSendZero = settingsConfig.getBoolean("report.staff_actionbar.send_zero")
         preventSelfReport = settingsConfig.getBoolean("report.prevent_self")
         customReason = settingsConfig.getBoolean("report.custom_reason")
+        placeholderUpdateTicks = settingsConfig.getInt("report.placeholder_update_ticks")
         autoDoneEnabled = settingsConfig.getBoolean("report.auto_done.enabled")
         autoDoneTime = settingsConfig.getInt("report.auto_done.time")
         autoDoneCallUpdateEvent = settingsConfig.getBoolean("report.auto_done.call_update_event")
