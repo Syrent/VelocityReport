@@ -48,7 +48,7 @@ class MyReportsSubcommand : SubCommand("myreports", "velocityreport.admin.myrepo
                     Message.REPORTADMIN_MYREPORTS_BOOK_FORMAT,
                     TextReplacement("reporter", report.reporterName),
                     TextReplacement("reported", report.reportedName),
-                    TextReplacement("server", report.server),
+                    TextReplacement("server", Settings.getServerAlias(report.server)),
                     TextReplacement("reason", report.reason),
                     TextReplacement("id", report.reportID.toString())
                 ).replace("\\n", "\n")).append("\n")

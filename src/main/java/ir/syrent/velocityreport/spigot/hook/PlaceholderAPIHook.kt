@@ -8,7 +8,7 @@ import ir.syrent.velocityreport.spigot.storage.Settings
 import me.clip.placeholderapi.expansion.PlaceholderExpansion
 import org.bukkit.OfflinePlayer
 
-class PlaceholderAPIHook constructor(plugin: VelocityReportSpigot, name: String) : Dependency(name) {
+class PlaceholderAPIHook(plugin: VelocityReportSpigot, name: String) : Dependency(name) {
 
 
     val reportsCache = mutableMapOf<ReportStage, Int>()

@@ -39,6 +39,7 @@ object Settings {
     var settingsConfigVersion = 1
     var languageConfigVersion = 1
     lateinit var defaultLanguage: String
+    val serverAliases = mutableMapOf<String, List<String>>()
     var showDependencySuggestions = true
     var velocitySupport = true
     var debugMode = false
@@ -109,6 +110,18 @@ object Settings {
 
         defaultLanguage = settingsConfig.getString("default_language") ?: "en_US"
         velocitySupport = settingsConfig.getBoolean("velocity_support", true)
+
+        serverAliases.clear()
+        val serverAliasListSection = settingsConfig.getConfigurationSection("server.alias")
+        if (serverAliasListSection != null) {
+            for (serverKey in serverAliasListSection.getKeys(false)) {
+                val serverAliasSection = serverAliasListSection.getConfigurationSection(serverKey)!!
+                val alias = serverAliasSection.getString("alias")!!
+                val servers = serverAliasSection.getStringList("servers")
+                serverAliases[alias] = servers
+            }
+        }
+
         showDependencySuggestions = settingsConfig.getBoolean("show_dependency_suggestions")
         debugMode = settingsConfig.getBoolean("debug_mode")
         Ruom.setDebug(debugMode)
@@ -258,6 +271,10 @@ object Settings {
         settings.reloadConfig()
         language.saveConfig()
         language.reloadConfig()
+    }
+
+    fun getServerAlias(server: String): String {
+        return serverAliases.entries.find { it.value.contains(server) }?.key ?: server
     }
 
     fun formatMessage(player: Player, message: String, vararg replacements: TextReplacement): String {

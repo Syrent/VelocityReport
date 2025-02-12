@@ -7,6 +7,15 @@ show_dependency_suggestions: true
 debug_mode: false
 velocity_support: false
 bstats: true
+server:
+    alias:
+        bedwars:
+            alias: "Bedwars"
+            servers:
+                - "bw-lobby"
+                - "bw-lobby2"
+                - "bw-arena-1"
+                - "bw-arena-2"
 sounds:
     command: "ENTITY_EXPERIENCE_ORB_PICKUP"
     book: "ENTITY_EXPERIENCE_ORB_PICKUP"

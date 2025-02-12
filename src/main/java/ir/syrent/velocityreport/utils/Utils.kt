@@ -31,7 +31,7 @@ object Utils {
                     Message.REPORT_MESSAGE,
                     TextReplacement("reporter", reporter),
                     TextReplacement("reported", reported),
-                    TextReplacement("server", server),
+                    TextReplacement("server", Settings.getServerAlias(server)),
                     TextReplacement("reason", reason)
                 )
 
