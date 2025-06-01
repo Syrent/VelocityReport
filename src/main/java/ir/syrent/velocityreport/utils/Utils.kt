@@ -9,20 +9,6 @@ import org.bukkit.entity.Player
 import java.util.*
 
 object Utils {
-    val actionbarPlayers = mutableSetOf<UUID>()
-
-    fun sendReportsActionbar(player: Player) {
-        if (actionbarPlayers.contains(player.uniqueId)) return
-
-        if (Settings.staffActionbarEnabled && player.hasPermission("velocityreport.admin.notify.actionbar")) {
-            Ruom.runSync({
-                val reportsCount = VelocityReportSpigot.instance.reportsCount
-                if (!Settings.staffActionbarSendZero && reportsCount < 1) return@runSync
-                player.sendActionbar(Message.REPORT_ACTIONBAR, TextReplacement("reports", reportsCount.toString()))
-            }, 100, 100)
-            actionbarPlayers.add(player.uniqueId)
-        }
-    }
 
     fun sendNewReportMessage(reporter: String, reported: String, server: String, reason: String) {
         for (player in Ruom.getOnlinePlayers()) {

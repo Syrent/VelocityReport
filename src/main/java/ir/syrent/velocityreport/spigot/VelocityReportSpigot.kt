@@ -10,19 +10,21 @@ import ir.syrent.velocityreport.spigot.command.report.ReportCommand
 import ir.syrent.velocityreport.spigot.command.reportadmin.ReportAdminCommand
 import ir.syrent.velocityreport.spigot.command.reports.ReportsCommand
 import ir.syrent.velocityreport.spigot.hook.DependencyManager
-import ir.syrent.velocityreport.spigot.listener.PlayerJoinListener
 import ir.syrent.velocityreport.spigot.listener.PlayerQuitListener
 import ir.syrent.velocityreport.spigot.listener.PreReportListener
 import ir.syrent.velocityreport.spigot.listener.PreReportUpdateListener
 import ir.syrent.velocityreport.spigot.messaging.BukkitMessagingEvent
 import ir.syrent.velocityreport.spigot.storage.Database
 import ir.syrent.velocityreport.spigot.storage.Database.type
+import ir.syrent.velocityreport.spigot.storage.Message
 import ir.syrent.velocityreport.spigot.storage.Settings
 import ir.syrent.velocityreport.spigot.storage.Settings.bstats
 import ir.syrent.velocityreport.spigot.storage.Settings.velocitySupport
 import ir.syrent.velocityreport.utils.ServerVersion
+import ir.syrent.velocityreport.utils.TextReplacement
 import ir.syrent.velocityreport.utils.Utils
 import ir.syrent.velocityreport.utils.component
+import ir.syrent.velocityreport.utils.sendActionbar
 import org.bstats.bukkit.Metrics
 import org.bukkit.entity.Player
 import java.util.*
@@ -56,6 +58,8 @@ class VelocityReportSpigot : RUoMPlugin() {
         if (Settings.autoDoneEnabled) {
             autoDoneOldReportsRunnable()
         }
+
+        initializeActionbarTask()
     }
 
     private fun sendFiglet() {
@@ -111,7 +115,6 @@ class VelocityReportSpigot : RUoMPlugin() {
                         if (velocitySupport) {
                             bridgeManager?.sendGetAllPlayersNameRequest(it.iterator().next())
                         }
-                        it.map { player -> Utils.sendReportsActionbar(player) }
                     }
                 }
 
@@ -145,7 +148,6 @@ class VelocityReportSpigot : RUoMPlugin() {
     }
 
     private fun registerListeners() {
-        PlayerJoinListener(this)
         PlayerQuitListener(this)
 
         PreReportListener()
@@ -161,6 +163,18 @@ class VelocityReportSpigot : RUoMPlugin() {
                 bridgeManager!!.handleMessage(jsonObject)
             }
         }
+    }
+
+    fun initializeActionbarTask() {
+        Ruom.runSync({
+            if (!Settings.staffActionbarEnabled) return@runSync
+            if (!Settings.staffActionbarSendZero && reportsCount < 1) return@runSync
+            for (player in Ruom.getOnlinePlayers()) {
+                if (player.hasPermission("velocityreport.admin.notify.actionbar")) {
+                    player.sendActionbar(Message.REPORT_ACTIONBAR, TextReplacement("reports", reportsCount.toString()))
+                }
+            }
+        }, 1000, 1000)
     }
 
     override fun onDisable() {
