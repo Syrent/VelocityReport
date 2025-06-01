@@ -42,7 +42,6 @@ class VelocityReportSpigot : RUoMPlugin() {
         dataFolder.mkdir()
 
         initializeInstances()
-        sendFiglet()
         sendWarningMessages()
         fetchData()
         registerCommands()
@@ -60,19 +59,6 @@ class VelocityReportSpigot : RUoMPlugin() {
         }
 
         initializeActionbarTask()
-    }
-
-    private fun sendFiglet() {
-       sendConsoleMessage(" ")
-       sendConsoleMessage("<gold>__     __   _            _ _         ____                       _   ")
-       sendConsoleMessage("<gold>\\ \\   / /__| | ___   ___(_) |_ _   _|  _ \\ ___ _ __   ___  _ __| |_ ")
-       sendConsoleMessage("<gold> \\ \\ / / _ \\ |/ _ \\ / __| | __| | | | |_) / _ \\ '_ \\ / _ \\| '__| __|")
-       sendConsoleMessage("<gold>  \\ V /  __/ | (_) | (__| | |_| |_| |  _ <  __/ |_) | (_) | |  | |_ ")
-       sendConsoleMessage("<gold>   \\_/ \\___|_|\\___/ \\___|_|\\__|\\__, |_| \\_\\___| .__/ \\___/|_|   \\__|")
-       sendConsoleMessage("<gold>                               |___/          |_|                   v${Ruom.getServer().pluginManager.getPlugin("VelocityReport")?.description?.version ?: " Unknown"}")
-       sendConsoleMessage(" ")
-       sendConsoleMessage("<white>Wiki: <blue><u>https://github.com/Syrent/VelocityReport/wiki</u></blue>")
-       sendConsoleMessage(" ")
     }
 
     private fun sendWarningMessages() {
