@@ -12,21 +12,21 @@ interface CommandBase {
      *
      * @return The name.
      */
-    val name: String
+    var name: String
 
     /**
      * Get command permission.
      *
      * @return The permission.
      */
-    val permission: String
+    var permission: String
 
     /**
      * If only players can execute the command.
      *
      * @return If true.
      */
-    val isPlayersOnly: Boolean
+    var isPlayersOnly: Boolean
 
     /**
      * Add a subcommand to the command.

@@ -18,7 +18,6 @@ class PlayerQuitListener(
     @EventHandler
     private fun onPlayerQuit(event: PlayerQuitEvent) {
         val player = event.player
-        Utils.actionbarPlayers.remove(player.uniqueId)
         plugin.cooldowns.remove(player.uniqueId)
     }
 }

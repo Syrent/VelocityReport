@@ -17,40 +17,7 @@ import java.util.stream.Collectors
  * in order to execute the command-specific code. It's essentially an internal
  * layer, hence why it's a package-private class.
  */
-abstract class HandledCommand(name: String, permission: String, playersOnly: Boolean) : CommandBase {
-    /**
-     * Get the command name.
-     *
-     * @return The name.
-     */
-    /**
-     * The name of the command.
-     */
-    override val name: String
-    /**
-     * Get the permission required to execute the command.
-     *
-     * @return The permission.
-     */
-    /**
-     * The permission required to execute the command.
-     *
-     *
-     * Written out as a string for flexibility with subclasses.
-     */
-    override val permission: String
-    /**
-     * Get if the command can only be executed by players.
-     *
-     * @return If players only.
-     */
-    /**
-     * Should the command only be allowed to be executed by players?
-     *
-     *
-     * In other worlds, only allowed to be executed by console.
-     */
-    override val isPlayersOnly: Boolean
+abstract class HandledCommand(override var name: String, override var permission: String, override var isPlayersOnly: Boolean) : CommandBase {
 
     /**
      * All subcommands for the command.
@@ -68,9 +35,6 @@ abstract class HandledCommand(name: String, permission: String, playersOnly: Boo
      * @param playersOnly If only players should be able to execute this command.
      */
     init {
-        this.name = name
-        this.permission = permission
-        this.isPlayersOnly = playersOnly
         subcommands = ArrayList<CommandBase>()
     }
 
