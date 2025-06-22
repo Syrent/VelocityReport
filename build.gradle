@@ -92,7 +92,7 @@ dependencies {
 
     implementation 'com.zaxxer:HikariCP:5.1.0'
     implementation 'io.papermc:paperlib:1.0.8'
-    implementation 'org.bstats:bstats-bukkit:3.0.2'
+    implementation 'org.bstats:bstats-bukkit:3.1.0'
     implementation 'club.minnced:discord-webhooks:0.8.4'
     implementation 'com.github.cryptomorin:XSeries:11.2.0'
 
