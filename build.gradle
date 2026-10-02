@@ -138,15 +138,24 @@ java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion
     targetCompatibility = javaVersion
-    if (JavaVersion.current() < javaVersion) {
-        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
-    }
+    // Always request a JDK 17 toolchain so the build is consistent and a
+    // compiler (javac) is guaranteed to be available. Gradle auto-provisions
+    // it via the foojay-resolver-convention plugin declared in settings.gradle.
+    toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
     disableAutoTargetJvm()
 }
 
 tasks.withType(JavaCompile).configureEach {
     options.deprecation = true
     options.encoding = 'UTF-8'
+}
+
+// Align Kotlin's JVM target with the Java target (17) so the build is
+// consistent regardless of which JDK is running Gradle.
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+    }
 }
 
 compileJava.options.encoding = 'UTF-8'

@@ -1,11 +1,12 @@
 {
   "id": "velocityreport",
   "name": "VelocityReport",
-  "version": "3.11.9",
+  "version": "3.13.0",
   "description": "Report plugin for velocity servers",
   "url": "syrent.ir",
   "authors": [
-    "Syrent"
+    "Syrent",
+    "Mr_Stable"
   ],
   "dependencies": [
     {

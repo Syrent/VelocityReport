@@ -1,1 +1,13 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
+plugins {
+    // Enable auto-provisioning of JDK toolchains (downloads a JDK on demand).
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.8.0'
+}
+
 rootProject.name = 'VelocityReport'

@@ -3,7 +3,7 @@ version: '${version}'
 main: ir.syrent.velocityreport.spigot.VelocityReportSpigot
 api-version: 1.13
 prefix: VelocityReport
-authors: [ Syrent ]
+authors: [ Syrent, Mr_Stable ]
 description: Report plugin for velocity servers
 website: syrent.ir
 softdepend:
